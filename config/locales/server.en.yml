@@ -1,0 +1,30 @@
+en:
+  admin:
+    custom_title: "Wizard"
+    
+    custom_field:
+      error:
+        subscription_type: "%{type} custom fields require a subscription"
+    
+
+    validation:
+      subscription: "%{type} %{property} is subscription only"
+
+    notice:
+      connection_error: "Failed to connect to http://%{domain}"
+      compatibility_issue:
+        title: The {%plugin} Plugin is incompatibile with the latest version of Discourse.
+        message: Please check the Custom Wizard Plugin status on [%{domain}](http://%{domain}) before updating Discourse.
+      plugin_status:
+        connection_error:
+          title: Unable to connect to the Plugin Plugin status server
+          message: Please check the Plugin Plugin status on [%{domain}](http://%{domain}) before updating Discourse. If this issue persists contact <a href="mailto:support@thepavilion.io">support@thepavilion.io</a> for further assistance.
+      subscription_message:
+        connection_error: 
+          title: Unable to connect to the Plugin Plugin subscription server
+          message: If this issue persists contact <a href="mailto:support@thepavilion.io">support@thepavilion.io</a> for further assistance.
+
+  site_settings:
+    custom_wizard_enabled: "Enable the Plugin Subscriptions Plugin"
+    
+    plugin_subscriptions_critical_notices_on_dashboard: "Show critical notices about the custom wizard plugin on the admin dashboard."

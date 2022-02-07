@@ -1,0 +1,82 @@
+en:
+  admin_js:
+    admin:
+      plugin_subscriptions:
+        title: "Plugin Subscriptions"
+        support_button:
+          title: "Request Support"
+          label: "Support"
+
+        message:
+          subscription:
+            documentation: Check out the subscription documentation
+            authorize: "Authorize this forum to use your subscription plans on %{server}."
+            not_subscribed: "You've authorized, but are not currently subscribed to a plugin plan on %{server}."
+            please_authenticate: "You need to authorize with %{server} but clicking the button above"
+            subsciptions_listed: "You are authorized with %{server} and your subsciptions should be listed above"
+            subscription_expiring: "Your subscription is active, but will expire in the next 48 hours."
+            subscription_active: "Your subscription is active."
+            subscription_inactive: "Your subscription is inactive on this forum. Read more in <a href='https://thepavilion.io/t/3652'>the documentation</a>."
+            unauthorized: "You're unauthorized. If you have a subscription, it will become inactive in the next 48 hours."
+            unauthorize_failed: Failed to unauthorize.
+          notices:
+            info: "Plugin status and subscription notices"
+            documentation: Check out the notices documentation
+  
+        error:
+
+        subscription_container:
+          title: Subscriber Features
+          subscribed: 
+            label: Subscribed
+            title: You're subscribed and can use these features
+          not_subscribed:
+            label: Not Subscribed
+            title: Subscribe to use these features
+
+        subscriptions:
+          no_subscriptions: please hit Authorize to bring back your subscriptions
+          nav_label: Subscriptions
+          label: In subscription
+          additional_label: "Add subscription"
+          title: Plugin Subscriptions
+          authorize: Authorize
+          authorized: Authorized
+          unauthorize: cancel
+          not_subscribed: You're not currently subscribed
+          subscription:
+            title:
+              standard: Standard Subscription
+              business: Business Subscription
+            status:
+              active: Active
+              inactive: Inactive
+            update: Update
+            last_updated: Last updated
+
+        notice:
+          plugin: Custom Wizard Plugin
+          message: Message
+          time: Time
+          status: Status
+          title: Title
+          dismiss:
+            label: Dismiss
+            title: Dismiss notice
+          dismiss_all:
+            label: Dismiss All
+            title: Dismiss all informational Custom Wizard notices
+            confirm: Are you sure you want to dismiss all informational Custom Wizard notices?
+          active: active
+          created_at: issued
+          updated_at: updated
+          expired_at: expired
+          dismissed_at: dismissed
+          type:
+            label: Type
+            info: Information
+            warning: Warning
+            connection_error: Connection Error
+        notices:
+          nav_label: Notices
+          title: Plugin Notices

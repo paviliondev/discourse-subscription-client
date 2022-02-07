@@ -1,0 +1,68 @@
+<div class="admin-plugin-subscriptions-controls">
+  <h3>{{i18n "admin.plugin_subscriptions.subscriptions.title"}}</h3>
+
+  <div class="buttons">
+    {{#if model.authentication.active}}
+      {{conditional-loading-spinner size="small" condition=unauthorizing}}
+      <a {{action "unauthorize"}} title={{i18n "admin.plugin_subscriptions.subscriptions.unauthorize"}} role="button">
+        {{i18n "admin.plugin_subscriptions.subscriptions.unauthorize"}}
+      </a>
+      <label title={{i18n "admin.plugin_subscriptions.subscriptions.authorized"}}>
+        {{i18n "admin.plugin_subscriptions.subscriptions.authorized"}}
+      </label>
+    {{else}}
+      {{d-button
+        icon="id-card"
+        class="btn-primary"
+        label="admin.plugin_subscriptions.subscriptions.authorize"
+        title="admin.plugin_subscriptions.subscriptions.authorize"
+        action=(route-action "authorize")}}
+    {{/if}}
+  </div>
+</div>
+
+{{#unless hasSubscriptions}}
+  <p>{{i18n "admin.plugin_subscriptions.subscriptions.no_subscriptions"}}</p>
+{{else}}
+  <table class="subscription-list table grid">
+    <thead>
+      <tr>
+        <th class="unique_id">Unique Id</th>
+        <th>Supplier</th>
+        <th>Product</th>
+        <th>Level</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each model.subscriptions as |subscription|}}
+        <tr>
+          <td class="unique_id">{{subscription.unique_id}}</td>
+          <td>{{subscription.supplier_name}}</td>
+          <td>{{subscription.product_name}}</td>
+          <td>{{subscription.price_nickname}}</td>
+          <td>
+            {{#if subscription.active}}
+              Active
+            {{else}}
+              Expired
+            {{/if}}
+          </td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+{{/unless}}
+
+{{plugin-subscriptions-message
+  key=messageKey
+  url=messageUrl
+  type=messageType
+  opts=messageOpts
+  component="subscription"}}
+
+<div class="admin-plugin-subscriptions-container">
+  {{#if showSubscription}}
+    {{plugin-subscriptions-subscription subscription=model.subscription}}
+  {{/if}}
+</div>
