@@ -9,12 +9,12 @@ export default Controller.extend({
   messageUrl: "https://thepavilion.io/t/3652",
   messageType: "info",
   messageKey: null,
-  showSubscription: alias("model.authentication.active"),
+  showSubscriptions: alias("model.authentication.active"),
 
   setup() {
     const authentication = this.get("model.authentication");
-    const subscription = this.get("model.subscription");
-    const subscribed = subscription && subscription.active;
+    const subscriptions = this.get("model.subscriptions");
+    //const subscribed = subscriptions && subscriptions.active;
     const authenticated = authentication && authentication.active;
 
     if (!this.hasSubscriptions) {

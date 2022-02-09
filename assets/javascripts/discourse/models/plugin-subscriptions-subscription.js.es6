@@ -24,7 +24,7 @@ PluginSubscriptionsSubscription.reopenClass({
   },
 
   update() {
-    return ajax(basePath, {
+    return ajax(`${basePath}/subscriptions`, {
       type: "POST",
     }).catch(popupAjaxError);
   },

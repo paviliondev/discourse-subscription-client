@@ -1,5 +1,5 @@
 import Component from "@ember/component";
-import PluginSubscription from "../models/plugin-subscription";
+import PluginSubscription from "../models/plugin-subscriptions-subscription";
 import { notEmpty } from "@ember/object/computed";
 import discourseComputed from "discourse-common/utils/decorators";
 import I18n from "I18n";
@@ -9,13 +9,13 @@ export default Component.extend({
     ":plugin-subscription",
     "subscription.active:active:inactive",
   ],
-  subscribed: notEmpty("subscription"),
+  subscribed: notEmpty("subscriptions"),
 
-  @discourseComputed("subscription.type")
-  title(type) {
-    return type
-      ? I18n.t(`admin.plugin_subscriptions.subscription.subscription.title.${type}`)
-      : I18n.t("admin.plugin_subscriptions.subscription.not_subscribed");
+  @discourseComputed("subscribed")
+  title(subscribed) {
+    return subscribed
+      ? I18n.t("admin.plugin_subscriptions.subscriptions.have_subscriptions")
+      : I18n.t("admin.plugin_subscriptions.subscriptions.no_subscriptions");
   },
 
   @discourseComputed("subscription.active")
@@ -38,7 +38,7 @@ export default Component.extend({
           if (result.success) {
             this.setProperties({
               updateIcon: "check",
-              subscription: result.subscription,
+              subscriptions: result.subscriptions,
             });
           } else {
             this.set("updateIcon", "times");

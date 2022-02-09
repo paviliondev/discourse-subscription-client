@@ -35,7 +35,7 @@ en:
             title: Subscribe to use these features
 
         subscriptions:
-          no_subscriptions: please hit Authorize to bring back your subscriptions
+          not_authorized: Please hit Authorize to bring back your subscriptions
           nav_label: Subscriptions
           label: In subscription
           additional_label: "Add subscription"
@@ -43,8 +43,9 @@ en:
           authorize: Authorize
           authorized: Authorized
           unauthorize: cancel
-          not_subscribed: You're not currently subscribed
-          subscription:
+          no_subscriptions: You don't appear to have any subscriptions
+          have_subscriptions: Your subsciptions are listed below
+          subscriptions:
             title:
               standard: Standard Subscription
               business: Business Subscription

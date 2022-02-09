@@ -38,10 +38,11 @@ class PluginSubscriptions::AdminSubscriptionsController < PluginSubscriptions::A
 
   def update_subscriptions
     if subscriptions.update
+      render_serialized(subscriptions, PluginSubscriptions::SubscriptionPageSerializer, root: false)
       # serialized_subscriptions = PluginSubscriptions::SubscriptionSerializer.new(subscription.subscription, root: false)
-      render_json_dump(
-        subscriptions: ActiveModel::ArraySerializer.new(subscriptions, each_serializer: PluginSubscriptions::SubscriptionSerializer),
-      )
+      # render_json_dump(
+      #   subscriptions: ActiveModel::ArraySerializer.new(subscriptions, each_serializer: PluginSubscriptions::SubscriptionSerializer),
+      # )
     else
       render json: failed_json
     end
