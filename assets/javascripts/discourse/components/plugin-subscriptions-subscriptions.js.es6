@@ -1,6 +1,6 @@
 import Component from "@ember/component";
 import PluginSubscription from "../models/plugin-subscriptions-subscription";
-import { notEmpty } from "@ember/object/computed";
+import { alias, notEmpty } from "@ember/object/computed";
 import discourseComputed from "discourse-common/utils/decorators";
 import I18n from "I18n";
 
@@ -9,7 +9,8 @@ export default Component.extend({
     ":plugin-subscription",
     "subscription.active:active:inactive",
   ],
-  subscribed: notEmpty("subscriptions"),
+  subscribed: notEmpty("model.subscriptions"),
+  subscriptions: alias("model.subscriptions"),
 
   @discourseComputed("subscribed")
   title(subscribed) {
@@ -39,6 +40,7 @@ export default Component.extend({
             this.setProperties({
               updateIcon: "check",
               subscriptions: result.subscriptions,
+              updated_at: result.updated_at
             });
           } else {
             this.set("updateIcon", "times");

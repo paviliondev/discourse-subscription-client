@@ -21,15 +21,8 @@
   </div>
 </div>
 
-{{plugin-subscriptions-message
-  key=messageKey
-  url=messageUrl
-  type=messageType
-  opts=messageOpts
-  component="subscription"}}
-
 <div class="admin-plugin-subscriptions-container">
   {{#if showSubscriptions}}
-    {{plugin-subscriptions-subscriptions subscriptions=model.subscriptions}}
+    {{plugin-subscriptions-subscriptions model=model}}
   {{/if}}
 </div>

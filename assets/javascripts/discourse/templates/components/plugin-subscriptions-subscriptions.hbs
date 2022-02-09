@@ -1,5 +1,10 @@
 <div class="title-container">
-  <h3 class="subscription-title">{{title}}</h3>
+
+  <h4 class="subscription-title">
+    {{#unless subscribed}}
+      {{d-icon "exclamation-circle"}}
+    {{/unless}}
+    {{title}}</h4>
 
   <div class="buttons">
     <span>
@@ -20,9 +25,7 @@
 
 
   <div class="detail-container">
-    {{#unless subscribed}}
-      <p>{{i18n "admin.plugin_subscriptions.subscriptions.no_subscriptions"}}</p>
-    {{else}}
+    {{#if subscribed}}
       <table class="subscription-list table grid">
         <thead>
           <tr>
@@ -51,11 +54,11 @@
           {{/each}}
         </tbody>
       </table>
-    {{/unless}}
+    {{/if}}
 
-    {{#if subscriptions.updated_at}}
-      <div class="subscription-updated-at" title={{subscription.updated_at}}>
-        {{i18n "admin.plugin_subscriptions.subscriptions.subscriptions.last_updated"}} {{format-date subscription.updated_at leaveAgo="true"}}
+    {{#if model.updated_at}}
+      <div class="subscription-updated-at" title={{model.updated_at}}>
+        {{i18n "admin.plugin_subscriptions.subscriptions.subscriptions.last_updated"}}: {{format-date model.updated_at leaveAgo="true"}}
       </div>
     {{/if}}
   </div>
