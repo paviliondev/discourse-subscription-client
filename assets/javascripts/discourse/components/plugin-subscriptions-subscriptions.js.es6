@@ -35,7 +35,7 @@ export default Component.extend({
       this.set("updating", true);
       PluginSubscription.update()
         .then((result) => {
-          if (result.success) {
+          if (result.subscriptions.length > 0) {
             this.setProperties({
               updateIcon: "check",
               subscriptions: result.subscriptions,
