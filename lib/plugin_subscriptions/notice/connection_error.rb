@@ -18,7 +18,7 @@ class PluginSubscriptions::Notice::ConnectionError
       id = SecureRandom.hex(8)
       attrs = {
         id: id,
-        message: I18n.t("wizard.notice.connection_error", domain: domain),
+        message: I18n.t("plugin_subscriptions.notice.connection_error", domain: domain),
         archetype: PluginSubscriptions::Notice.archetypes[archetype.to_sym],
         created_at: Time.now,
         count: 1

@@ -191,12 +191,12 @@ class PluginSubscriptions::Notice
     notice = nil
 
     if PLUGIN_STATUSES_TO_WARN.include?(plugin_status[:status])
-      title = I18n.t('wizard.notice.compatibility_issue.title')
+      title = I18n.t('admin.plugin_subscriptions.notice.compatibility_issue.title')
       created_at = plugin_status[:status_changed_at]
       id = generate_notice_id(title, created_at)
 
       unless exists?(id)
-        message = I18n.t('wizard.notice.compatibility_issue.message', domain: plugin_status_domain)
+        message = I18n.t('admin.plugin_subscriptions.notice.compatibility_issue.message', domain: plugin_status_domain)
         notice = {
           id: id,
           title: title,
@@ -215,7 +215,7 @@ class PluginSubscriptions::Notice
 
   def self.notify_connection_errors(archetype)
     domain = self.send("#{archetype.to_s}_domain")
-    title = I18n.t("wizard.notice.#{archetype.to_s}.connection_error.title")
+    title = I18n.t("admin.plugin_subscriptions.notice.#{archetype.to_s}.connection_error.title")
     notices = list(type: types[:connection_error], archetype: archetypes[archetype.to_sym], title: title)
 
     if notices.any?
@@ -225,7 +225,7 @@ class PluginSubscriptions::Notice
     else
       notice = new(
         title: title,
-        message: I18n.t("wizard.notice.#{archetype.to_s}.connection_error.message", domain: domain),
+        message: I18n.t("admin.plugin_subscriptions.notice.#{archetype.to_s}.connection_error.message", domain: domain),
         archetype: archetypes[archetype.to_sym],
         type: types[:connection_error],
         created_at: DateTime.now.iso8601(3),

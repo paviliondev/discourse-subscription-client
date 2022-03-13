@@ -56,7 +56,7 @@ en:
             last_updated: Last updated
 
         notice:
-          plugin: Custom Wizard Plugin
+          plugin: Plugin Subscriptions Plugin
           message: Message
           time: Time
           status: Status
@@ -66,8 +66,8 @@ en:
             title: Dismiss notice
           dismiss_all:
             label: Dismiss All
-            title: Dismiss all informational Custom Wizard notices
-            confirm: Are you sure you want to dismiss all informational Custom Wizard notices?
+            title: Dismiss all informational Plugin Subscriptions notices
+            confirm: Are you sure you want to dismiss all informational Plugin Subscriptions notices?
           active: active
           created_at: issued
           updated_at: updated

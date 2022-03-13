@@ -1,0 +1,49 @@
+<div class="admin-plugin-subscriptions-controls">
+  <h3>{{i18n "admin.plugin_subscriptions.notices.title"}}</h3>
+
+  <div class="buttons">
+    {{d-button
+      label="admin.plugin_subscriptions.notice.dismiss_all.label"
+      title="admin.plugin_subscriptions.notice.dismiss_all.title"
+      action=(action "dismissAll")
+      disabled=allDismisssed
+      icon="check"}}
+  </div>
+</div>
+
+{{plugin-subscriptions-message
+  key=messageKey
+  url=messageUrl
+  type=messageType
+  opts=messageOpts
+  items=messageItems
+  loading=loading
+  component="notices"}}
+
+<div class="plugin-subscriptions-table">
+  {{#load-more selector=".plugin-subscriptions-table tr" action=(action "loadMore")}}
+    {{#if hasNotices}}
+      <table>
+        <thead>
+          <tr>
+            <th>{{I18n "admin.plugin_subscriptions.notice.time"}}</th>
+            <th>{{I18n "admin.plugin_subscriptions.notice.type.label"}}</th>
+            <th>{{I18n "admin.plugin_subscriptions.notice.title"}}</th>
+            <th>{{I18n "admin.plugin_subscriptions.notice.status"}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each notices as |notice|}}
+            {{plugin-subscriptions-notice-row notice=notice}}
+          {{/each}}
+        </tbody>
+      </table>
+    {{else}}
+      {{#unless loadingMore}}
+        <p>{{i18n "search.no_results"}}</p>
+      {{/unless}}
+    {{/if}}
+
+    {{conditional-loading-spinner condition=loadingMore}}
+  {{/load-more}}
+</div>
