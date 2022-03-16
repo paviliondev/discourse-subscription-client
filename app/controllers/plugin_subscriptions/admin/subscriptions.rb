@@ -5,11 +5,6 @@ class PluginSubscriptions::AdminSubscriptionsController < PluginSubscriptions::A
 
   def index
     render_serialized(subscriptions, PluginSubscriptions::SubscriptionPageSerializer, root: false)
-    # subscriptions = PluginSubscription.all
-
-    # render_json_dump(
-    #   subscriptions: ActiveModel::ArraySerializer.new(subscriptions, each_serializer: PluginSubscriptions::SubscriptionSerializer),
-    # )
   end
 
   def authorize
@@ -39,10 +34,6 @@ class PluginSubscriptions::AdminSubscriptionsController < PluginSubscriptions::A
   def update_subscriptions
     if subscriptions.update
       render_serialized(subscriptions, PluginSubscriptions::SubscriptionPageSerializer, root: false)
-      # serialized_subscriptions = PluginSubscriptions::SubscriptionSerializer.new(subscription.subscription, root: false)
-      # render_json_dump(
-      #   subscriptions: ActiveModel::ArraySerializer.new(subscriptions, each_serializer: PluginSubscriptions::SubscriptionSerializer),
-      # )
     else
       render json: failed_json
     end

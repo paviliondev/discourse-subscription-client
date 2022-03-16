@@ -4,8 +4,6 @@ class PluginSubscriptions::AdminController < ::Admin::AdminController
 
   def index
     render_json_dump(
-      #TODO replace with appropriate static?
-      #api_section: ["business"].include?(TopicPreviews::Subscription.type),
       active_notice_count: PluginSubscriptions::Notice.active_count,
       featured_notices: ActiveModel::ArraySerializer.new(
         PluginSubscriptions::Notice.list(

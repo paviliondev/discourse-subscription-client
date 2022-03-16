@@ -43,10 +43,6 @@ class PluginSubscriptions::Subscriptions
     @authentication.active?
   end
 
-  # def subscribed?
-  #   @subscription.active?
-  # end
-
   def server
     "test.thepavilion.io"
   end
@@ -54,10 +50,6 @@ class PluginSubscriptions::Subscriptions
   def subscription_type
     "stripe"
   end
-
-  # def type
-  #   @subscription.type
-  # end
 
   def client_name
     "plugin-subscriptions"
@@ -186,15 +178,6 @@ class PluginSubscriptions::Subscriptions
     value
   end
 
-  # def destroy_subscription
-  #   if remove_subscription
-  #     @subscriptions = PluginSubscriptions::Subscription::Subscription.new(get_subscription)
-  #     !@subscription.active?
-  #   else
-  #     false
-  #   end
-  # end
-
   def authentication_url(user_id, request_id)
     keys = @authentication.generate_keys(user_id, request_id)
     params = {
@@ -236,18 +219,6 @@ class PluginSubscriptions::Subscriptions
     end
   end
 
-  # def self.subscribed?
-  #   self.new.subscribed?
-  # end
-
-  # def self.type
-  #   self.new.type
-  # end
-
-  # def self.requires_additional_subscription(kategory, sub_kategory)
-  #   self.new.requires_additional_subscription(kategory, sub_kategory)
-  # end
-
   def self.authorized?
     self.new.authorized?
   end
@@ -262,34 +233,13 @@ class PluginSubscriptions::Subscriptions
 
   private
 
-  # def subscription_db_key
-  #   "subscription"
-  # end
-
   def authentication_db_key
     "authentication"
   end
 
   def get_subscriptions
     PluginSubscription.all
-    # raw = PluginStore.get(self.class.namespace, subscription_db_key)
-
-    # if raw.present?
-    #   OpenStruct.new(
-    #     type: raw['type'],
-    #     updated_at: raw['updated_at']
-    #   )
-    # end
   end
-
-  # def remove_subscription
-  #   PluginStore.remove(self.class.namespace, subscription_db_key)
-  # end
-
-  # def set_subscription(type)
-  #   PluginStore.set(PluginSubscriptions::Subscriptions.namespace, subscription_db_key, type: type, updated_at: Time.now)
-  #   PluginSubscriptions::Subscription::Subscription.new(get_subscription)
-  # end
 
   def get_authentication
     raw = PluginStore.get(self.class.namespace, authentication_db_key)
