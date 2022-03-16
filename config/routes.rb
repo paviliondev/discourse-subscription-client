@@ -2,7 +2,7 @@
 Discourse::Application.routes.append do
   post 'admin/plugins/plugin-subs/authorization/callback' => "plugin_subscriptions/authorization#callback"
 
-  scope module: 'plugin_subscriptions', constraints: AdminConstraint.new do
+  scope module: PluginSubscriptions::PLUGIN_NAME, constraints: AdminConstraint.new do
     get 'admin/plugins/plugin-subs' => 'admin#index'
 
     get 'admin/plugins/plugin-subs/subscriptions' => 'admin_subscriptions#index'

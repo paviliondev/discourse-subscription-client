@@ -17,23 +17,6 @@ class PluginSubscriptions::Subscriptions
   attr_accessor :authentication,
                 :subscriptions
 
-  SUBSCRIPTION_LEVELS = {
-    standard: {
-      actions: ["send_message", "add_to_group", "watch_categories"],
-      custom_fields: {
-        klass: [],
-        type: ["json"],
-      },
-    },
-    business: {
-      actions: ["create_category", "create_group", "send_to_api"],
-      custom_fields: {
-        klass: ["group", "category"],
-        type: [],
-      },
-    },
-  }
-
   def initialize
     @authentication = PluginSubscriptions::Authentication.new(get_authentication)
     @subscriptions = PluginSubscription.all
@@ -57,31 +40,6 @@ class PluginSubscriptions::Subscriptions
 
   def scope
     "discourse-subscription-server:user_subscription"
-  end
-
-  def requires_additional_subscription(kategory, sub_kategory)
-    case kategory
-    when "actions"
-      case self.type
-      when "business"
-        []
-      when "standard"
-        SUBSCRIPTION_LEVELS[:business][kategory.to_sym]
-      else
-        SUBSCRIPTION_LEVELS[:standard][kategory.to_sym] + SUBSCRIPTION_LEVELS[:business][kategory.to_sym]
-      end
-    when "custom_fields"
-      case self.type
-      when "business"
-        []
-      when "standard"
-        SUBSCRIPTION_LEVELS[:business][kategory.to_sym][sub_kategory.to_sym]
-      else
-        SUBSCRIPTION_LEVELS[:standard][kategory.to_sym][sub_kategory.to_sym] + SUBSCRIPTION_LEVELS[:business][kategory.to_sym][sub_kategory.to_sym]
-      end
-    else
-      []
-    end
   end
 
   def update
@@ -108,12 +66,10 @@ class PluginSubscriptions::Subscriptions
         @result = PluginSubscriptions::SubscriptionsRetrieveResults.new
 
         subscriptions.each do |entry|
-
           entry = validate_item_hash(entry)
           next unless entry
 
           create_result = false
-          invalid_record = false
           begin
             create_result = PluginSubscription.create!(entry)
             PluginSubscription.activate!(entry[:product_id], entry[:price_id])
@@ -122,21 +78,16 @@ class PluginSubscriptions::Subscriptions
             PluginSubscription.activate!(entry[:product_id], entry[:price_id])
           end
 
-          if create_result
+          if create_result || dupe_record
             @result.success += 1
           else
-            if dupe_record
-              @result.duplicate += 1
-              @result.success += 1
-            else
-              @result.failed_to_create += 1
-            end
+            @result.failed_to_create += 1
           end
+
+          @result.duplicate += 1 if dupe_record
         end
 
-        if @result.success > 0
-          return true
-        end
+        return @result.success > 0
       end
     end
 
@@ -228,17 +179,13 @@ class PluginSubscriptions::Subscriptions
   end
 
   def self.namespace
-    "plugin_subscriptions"
+    PluginSubscriptions::PLUGIN_NAME
   end
 
   private
 
   def authentication_db_key
     "authentication"
-  end
-
-  def get_subscriptions
-    PluginSubscription.all
   end
 
   def get_authentication
