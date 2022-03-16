@@ -1,8 +1,9 @@
+# frozen_string_literal: true
 # name: discourse-plugin-subscriptions
-# about: install Plugin's subscription system
+# about: Plugin subscription client
 # version: 0.0.1
 # authors: Robert Barrow, Angus McLeod
-# url: https://github.com/plugindev/discourse-plugin-subscriptions
+# url: https://github.com/paviliondev/discourse-plugin-subscriptions.git
 
 register_asset 'stylesheets/admin/admin.scss', :desktop
 register_asset 'stylesheets/admin/variables.scss', :desktop
@@ -35,7 +36,7 @@ after_initialize do
   end
 
   #    ../lib/plugin_subscriptions/subscriptions/subscriptions.rb
-  
+
   Discourse::Application.routes.append do
     mount ::PluginSubscriptions::Engine, at: '/plugin-subs'
   end

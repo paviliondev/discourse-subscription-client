@@ -23,11 +23,16 @@ export default Component.extend({
 
   @discourseComputed("key", "component", "opts")
   message(key, component, opts) {
-    return I18n.t(`admin.plugin_subscriptions.message.${component}.${key}`, opts || {});
+    return I18n.t(
+      `admin.plugin_subscriptions.message.${component}.${key}`,
+      opts || {}
+    );
   },
 
   @discourseComputed("component")
   documentation(component) {
-    return I18n.t(`admin.plugin_subscriptions.message.${component}.documentation`);
+    return I18n.t(
+      `admin.plugin_subscriptions.message.${component}.documentation`
+    );
   },
 });

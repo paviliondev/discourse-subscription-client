@@ -1,8 +1,7 @@
 import Controller from "@ember/controller";
 import discourseComputed from "discourse-common/utils/decorators";
 import PluginSubscriptionsSubscription from "../models/plugin-subscriptions-subscription";
-import { alias } from "@ember/object/computed";
-import { notEmpty } from "@ember/object/computed";
+import { alias, notEmpty } from "@ember/object/computed";
 
 export default Controller.extend({
   hasSubscriptions: notEmpty("model.subscriptions"),
@@ -13,8 +12,6 @@ export default Controller.extend({
 
   setup() {
     const authentication = this.get("model.authentication");
-    const subscriptions = this.get("model.subscriptions");
-    //const subscribed = subscriptions && subscriptions.active;
     const authenticated = authentication && authentication.active;
 
     if (!this.hasSubscriptions) {
@@ -22,9 +19,7 @@ export default Controller.extend({
     } else {
       this.set(
         "messageKey",
-        !authenticated
-          ? "please_authenticate"
-          : "subsciptions_listed"
+        !authenticated ? "please_authenticate" : "subsciptions_listed"
       );
     }
   },

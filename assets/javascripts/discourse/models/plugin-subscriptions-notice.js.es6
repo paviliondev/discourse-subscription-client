@@ -46,7 +46,9 @@ const PluginSubscriptionsNotice = EmberObject.extend({
       return;
     }
 
-    return ajax(`/admin/plugins/plugin-subs/notice/${this.get("id")}/hide`, { type: "PUT" })
+    return ajax(`/admin/plugins/plugin-subs/notice/${this.get("id")}/hide`, {
+      type: "PUT",
+    })
       .then((result) => {
         if (result.success) {
           this.set("hidden_at", result.hidden_at);

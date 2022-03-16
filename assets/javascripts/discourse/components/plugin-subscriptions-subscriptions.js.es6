@@ -40,7 +40,7 @@ export default Component.extend({
             this.setProperties({
               updateIcon: "check",
               subscriptions: result.subscriptions,
-              updated_at: result.updated_at
+              updated_at: result.updated_at,
             });
           } else {
             this.set("updateIcon", "times");

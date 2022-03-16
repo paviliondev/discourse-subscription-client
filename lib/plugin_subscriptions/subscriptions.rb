@@ -100,7 +100,7 @@ class PluginSubscriptions::Subscriptions
           "User-Api-Key" => @authentication.api_key
         }
       )
-      
+
       if response.status == 200
         begin
           data = JSON.parse(response.body).deep_symbolize_keys
@@ -110,7 +110,7 @@ class PluginSubscriptions::Subscriptions
 
         return false unless data && data.is_a?(Hash)
         subscriptions = data[:subscriptions]
-        
+
         PluginSubscription.invalidate_all
 
         @result = PluginSubscriptions::SubscriptionsRetrieveResults.new
@@ -119,7 +119,7 @@ class PluginSubscriptions::Subscriptions
 
           entry = validate_item_hash(entry)
           next unless entry
-    
+
           create_result = false
           invalid_record = false
           begin
@@ -129,7 +129,7 @@ class PluginSubscriptions::Subscriptions
             dupe_record = true
             PluginSubscription.activate!(entry[:product_id], entry[:price_id])
           end
-    
+
           if create_result
             @result.success += 1
           else

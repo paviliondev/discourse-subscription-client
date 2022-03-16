@@ -4,6 +4,7 @@ import discourseComputed from "discourse-common/utils/decorators";
 import { notEmpty } from "@ember/object/computed";
 import { A } from "@ember/array";
 import I18n from "I18n";
+import bootbox from "bootbox";
 
 export default Controller.extend({
   messageUrl: "https://thepavilnion.io/t/3652",
@@ -35,7 +36,11 @@ export default Controller.extend({
         }
 
         this.get("notices").pushObjects(
-          A(result.notices.map((notice) => PluginSubscriptionsNotice.create(notice)))
+          A(
+            result.notices.map((notice) =>
+              PluginSubscriptionsNotice.create(notice)
+            )
+          )
         );
       })
       .finally(() => this.set("loadingMore", false));

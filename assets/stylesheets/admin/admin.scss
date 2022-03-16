@@ -7,7 +7,8 @@ $warning: #d47e00;
 $error: #ef1700;
 
 table.subscription-list {
-  th.unique_id, td.unique_id {
+  th.unique_id,
+  td.unique_id {
     display: none;
   }
 }
