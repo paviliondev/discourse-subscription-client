@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class PluginSubscriptions::SubscriptionPageSerializer < ApplicationSerializer
   attributes :server, :updated_at
 

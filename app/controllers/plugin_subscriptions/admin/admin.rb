@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class PluginSubscriptions::AdminController < ::Admin::AdminController
   before_action :ensure_admin
 

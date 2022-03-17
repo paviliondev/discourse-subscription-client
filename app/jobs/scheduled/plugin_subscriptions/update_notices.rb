@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Jobs::PluginSubscrioptionsUpdateNotices < ::Jobs::Scheduled
+class Jobs::PluginSubscriptionsUpdateNotices < ::Jobs::Scheduled
   every 5.minutes
 
   def execute(args = {})

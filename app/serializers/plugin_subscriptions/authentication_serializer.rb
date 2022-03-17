@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class PluginSubscriptions::AuthenticationSerializer < ApplicationSerializer
   attributes :active,
              :client_id,

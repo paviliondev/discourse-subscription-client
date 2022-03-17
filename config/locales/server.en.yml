@@ -16,11 +16,11 @@ en:
             title: Unable to connect to the Plugin Subscriptions plugin status server
             message: Please check the Plugin Subscriptions plugin status on [%{domain}](http://%{domain}) before updating Discourse. If this issue persists contact <a href="mailto:support@thepavilion.io">support@thepavilion.io</a> for further assistance.
         subscription_message:
-          connection_error: 
+          connection_error:
             title: Unable to connect to the Plugin Subscriptions subscription server
             message: If this issue persists contact <a href="mailto:support@thepavilion.io">support@thepavilion.io</a> for further assistance.
 
   site_settings:
     plugin_subscriptions_enabled: "Enable the Plugin Subscriptions plugin"
-    
+
     plugin_subscriptions_critical_notices_on_dashboard: "Show critical notices about the Plugin Subsciptions plugin on the admin dashboard."

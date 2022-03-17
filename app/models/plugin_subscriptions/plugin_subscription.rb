@@ -48,5 +48,26 @@ class PluginSubscription < ActiveRecord::Base
       .first
       .update(active: true)
   end
-
 end
+
+# == Schema Information
+#
+# Table name: plugin_subscriptions
+#
+#  id                  :bigint           not null, primary key
+#  unique_id           :string           not null
+#  supplier_name       :string
+#  product_id          :string           not null
+#  product_name        :string           not null
+#  product_name_slug   :string           not null
+#  price_id            :string           not null
+#  price_nickname      :string           not null
+#  price_nickname_slug :string           not null
+#  active              :boolean          default(FALSE), not null
+#  created_at          :datetime
+#  updated_at          :datetime
+#
+# Indexes
+#
+#  index_plugin_subscriptions_on_unique_id  (unique_id) UNIQUE
+#

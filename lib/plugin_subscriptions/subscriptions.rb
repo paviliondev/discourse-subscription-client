@@ -45,7 +45,7 @@ class PluginSubscriptions::Subscriptions
   def update
     if @authentication.active?
       response = Excon.get(
-        "https://#{server}/subscription-server/user-subscriptions/#{subscription_type}",
+        "https://#{server}/subscription-server/user-subscriptions/#{subscription_type}/#{client_name}",
         headers: {
           "User-Api-Key" => @authentication.api_key
         }
@@ -95,7 +95,7 @@ class PluginSubscriptions::Subscriptions
   end
 
   def validate_item_hash(item)
-    item = item.delete_if { |k, v| v.empty? }
+    item = item.delete_if { |k, v| v.blank? }
     identifier = find_first_required_value(item)
 
     if REQUIRED_KEYS.any? { |key| !item.has_key?(key.to_sym) }
