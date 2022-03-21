@@ -1,0 +1,32 @@
+<div class="admin-subscription-client-controls">
+  <h3>{{i18n "admin.subscription_client.suppliers.title"}}</h3>
+</div>
+
+{{subscription-client-message
+  key=messageKey
+  url=messageUrl
+  type=messageType
+  opts=messageOpts
+  items=messageItems
+  loading=loading
+  component="suppliers"}}
+
+<div class="admin-subscription-client-container">
+  {{#if hasSuppliers}}
+    <table>
+      <thead>
+        <tr>
+          <th>{{I18n "admin.subscription_client.supplier.name"}}</th>
+          <th>{{I18n "admin.subscription_client.supplier.actions"}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each suppliers as |supplier|}}
+          {{supplier-row supplier=supplier}}
+        {{/each}}
+      </tbody>
+    </table>
+  {{else}}
+    <p>{{i18n "admin.subscription_client.supplier.none"}}</p>
+  {{/if}}
+</div>

@@ -1,17 +1,14 @@
 en:
   admin_js:
     admin:
-      plugin_subscriptions:
-        title: "Plugin Subscriptions"
-        support_button:
-          title: "Request Support"
-          label: "Support"
+      subscription_client:
+        title: "Subscriptions"
 
         message:
-          subscription:
-            documentation: Check out the subscription documentation
+          subscriptions:
+            documentation: Learn more about subscriptions
             authorize: "Authorize this forum to use your subscription plans on %{server}."
-            not_subscribed: "You've authorized, but are not currently subscribed to a plugin plan on %{server}."
+            not_subscribed: "You've authorized, but are not currently subscribed to a plan on %{server}."
             please_authenticate: "You need to authorize with %{server} but clicking the button above"
             subsciptions_listed: "You are authorized with %{server} and your subsciptions should be listed above"
             subscription_expiring: "Your subscription is active, but will expire in the next 48 hours."
@@ -21,42 +18,40 @@ en:
             unauthorize_failed: Failed to unauthorize.
           notices:
             info: "Plugin status and subscription notices"
-            documentation: Check out the notices documentation
-  
-        error:
+            documentation: Learn more about notices
 
         subscription_container:
           title: Subscriber Features
-          subscribed: 
+          subscribed:
             label: Subscribed
             title: You're subscribed and can use these features
           not_subscribed:
             label: Not Subscribed
             title: Subscribe to use these features
 
-        subscriptions:
-          not_authorized: Please hit Authorize to bring back your subscriptions
-          nav_label: Subscriptions
-          label: In subscription
-          additional_label: "Add subscription"
-          title: Plugin Subscriptions
+        suppliers:
+          nav_label: Suppliers
+          title: Suppliers
           authorize: Authorize
           authorized: Authorized
           unauthorize: cancel
-          no_subscriptions: You don't appear to have any subscriptions
-          have_subscriptions: Your subsciptions are listed below
-          subscriptions:
-            title:
-              standard: Standard Subscription
-              business: Business Subscription
+
+        subscriptions:
+          nav_label: Subscriptions
+          title: Subscriptions
+          update: Update
+          none: There are no subscriptions authorized for this forum.
+          subscription:
+            supplier: Supplier
+            product: Product
+            price: Price
             status:
               active: Active
               inactive: Inactive
-            update: Update
             last_updated: Last updated
 
         notice:
-          plugin: Plugin Subscriptions Plugin
+          subscription: Subscription
           message: Message
           time: Time
           status: Status
@@ -66,8 +61,8 @@ en:
             title: Dismiss notice
           dismiss_all:
             label: Dismiss All
-            title: Dismiss all informational Plugin Subscriptions notices
-            confirm: Are you sure you want to dismiss all informational Plugin Subscriptions notices?
+            title: Dismiss all informational subscription notices
+            confirm: Are you sure you want to dismiss all informational subscription notices?
           active: active
           created_at: issued
           updated_at: updated
@@ -78,6 +73,8 @@ en:
             info: Information
             warning: Warning
             connection_error: Connection Error
+
         notices:
           nav_label: Notices
-          title: Plugin Notices
+          title: Notices
+          none: No notices at the moment.

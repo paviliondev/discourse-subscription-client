@@ -1,4 +1,6 @@
 plugins:
-  plugin_subscriptions_enabled:
+  subscription_client_enabled:
     default: true
     client: true
+  subscription_client_verbose_logs:
+    default: false

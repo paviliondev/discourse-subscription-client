@@ -1,51 +1,47 @@
 # frozen_string_literal: true
-# name: discourse-plugin-subscriptions
-# about: Plugin subscription client
-# version: 0.0.1
+# name: discourse-subscription-client
+# about: Subscription client
+# version: 0.1.0
 # authors: Robert Barrow, Angus McLeod
-# url: https://github.com/paviliondev/discourse-plugin-subscriptions.git
+# url: https://github.com/paviliondev/discourse-subscription-client.git
 
-register_asset 'stylesheets/admin/admin.scss', :desktop
-register_asset 'stylesheets/admin/variables.scss', :desktop
-
-enabled_site_setting :plugin_subscriptions_enabled
-add_admin_route "admin.plugin_subscriptions.title", "plugin-subscriptions"
+register_asset 'stylesheets/common/common.scss'
+enabled_site_setting :subscription_client_enabled
+add_admin_route "admin.subscription_client.title", "subscriptionClient"
 
 after_initialize do
-
   %w[
-    ../lib/plugin_subscriptions/engine.rb
+    ../lib/subscription_client/engine.rb
     ../config/routes.rb
-    ../lib/plugin_subscriptions/notice.rb
-    ../lib/plugin_subscriptions/notice/connection_error.rb
-    ../lib/plugin_subscriptions/subscriptions.rb
-    ../lib/plugin_subscriptions/subscriptions_retrieve_results.rb
-    ../lib/plugin_subscriptions/subscriptions/authentication.rb
-    ../app/models/plugin_subscriptions/plugin_subscription.rb
-    ../app/controllers/plugin_subscriptions/admin/admin.rb
-    ../app/controllers/plugin_subscriptions/admin/subscriptions.rb
-    ../app/controllers/plugin_subscriptions/admin/notice.rb
-    ../app/jobs/scheduled/plugin_subscriptions/update_subscriptions.rb
-    ../app/jobs/scheduled/plugin_subscriptions/update_notices.rb
-    ../app/serializers/plugin_subscriptions/authentication_serializer.rb
-    ../app/serializers/plugin_subscriptions/subscription_serializer.rb
-    ../app/serializers/plugin_subscriptions/subscription_page_serializer.rb
-    ../app/serializers/plugin_subscriptions/notice_serializer.rb
+    ../lib/subscription_client/request.rb
+    ../lib/subscription_client/authorization.rb
+    ../lib/subscription_client/resources.rb
+    ../lib/subscription_client/notices.rb
+    ../lib/subscription_client/subscriptions.rb
+    ../lib/subscription_client/subscriptions/result.rb
+    ../app/models/subscription_client_notice.rb
+    ../app/models/subscription_client_resource.rb
+    ../app/models/subscription_client_subscription.rb
+    ../app/models/subscription_client_supplier.rb
+    ../app/controllers/subscription_client/admin_controller.rb
+    ../app/controllers/subscription_client/subscriptions_controller.rb
+    ../app/controllers/subscription_client/authorization_controller.rb
+    ../app/controllers/subscription_client/notices_controller.rb
+    ../app/jobs/scheduled/subscription_client/update_subscriptions.rb
+    ../app/jobs/scheduled/subscription_client/update_notices.rb
+    ../app/serializers/subscription_client_notice_serializer.rb
+    ../app/serializers/subscription_client_subscription_serializer.rb
+    ../app/serializers/subscription_client_supplier_serializer.rb
   ].each do |path|
     load File.expand_path(path, __FILE__)
   end
 
-  Discourse::Application.routes.append do
-    mount ::PluginSubscriptions::Engine, at: '/plugin-subs'
-  end
-
   AdminDashboardData.add_problem_check do
-    warning_notices = PluginSubscriptions::Notice.list(
-      type: PluginSubscriptions::Notice.types[:warning],
-      archetype: PluginSubscriptions::Notice.archetypes[:plugin_status]
-    )
-    warning_notices.any? ? ActionView::Base.full_sanitizer.sanitize(warning_notices.first.message, tags: %w(a)) : nil
+    warnings = SubscriptionClientNotice.list_warnings
+    warnings.any? ? ActionView::Base.full_sanitizer.sanitize(warnings.first.message, tags: %w(a)) : nil
   end
 
-  DiscourseEvent.trigger(:plugin_subscriptions_ready)
+  SubscriptionClient::Resources.find_all unless Rails.env.test?
+
+  DiscourseEvent.trigger(:subscription_client_ready)
 end

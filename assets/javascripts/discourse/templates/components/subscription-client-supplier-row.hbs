@@ -1,0 +1,20 @@
+<td>{{supplier.name}}</td>
+<td>
+  {{#if authorized}}
+    {{conditional-loading-spinner size="small" condition=unauthorizing}}
+    <a {{action "unauthorize"}} title={{i18n "admin.subscription_client.supplier.unauthorize"}} role="button" disabled={{unauthorizing}}>
+      {{i18n "admin.subscription_client.supplier.unauthorize"}}
+    </a>
+    <label title={{i18n "admin.subscription_client.supplier.authorized"}}>
+      {{i18n "admin.subscription_client.supplier.authorized"}}
+    </label>
+  {{else}}
+    {{d-button
+      icon="id-card"
+      class="btn-primary"
+      label="admin.subscription_client.supplier.authorize"
+      title="admin.subscription_client.supplier.authorize"
+      action=(action "authorize")
+      actionParam=supplier}}
+  {{/if}}
+</td>

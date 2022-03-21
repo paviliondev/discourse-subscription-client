@@ -1,0 +1,88 @@
+@import "common/components/buttons";
+@import "components/container";
+@import "components/message";
+@import "components/notice";
+
+.admin-subscription-client-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5em;
+
+  h3,
+  label {
+    margin: 0;
+  }
+
+  label {
+    padding: 0.4em 0.5em;
+    margin-left: 0.75em;
+    background-color: var(--success);
+    color: var(--secondary);
+  }
+
+  .buttons {
+    display: flex;
+    align-items: center;
+
+    .loading-container {
+      margin-right: 1em;
+    }
+  }
+}
+
+.admin-subscription-client-container {
+  .detail-container {
+    padding: 1em;
+    background-color: var(--primary-very-low);
+
+    .subscription-state {
+      padding: 0.25em 0.5em;
+      margin-right: 0.75em;
+
+      &.active {
+        background-color: var(--success);
+        color: var(--secondary);
+      }
+    }
+    .subscription-updated-at {
+      padding: 0.25em;
+      font-size: 0.7em;
+    }
+  }
+}
+
+.subscription-client-actions {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+}
+
+.subscription-notices-link {
+  position: relative;
+
+  div > a {
+    @include btn;
+    color: var(--secondary) !important;
+    background-color: var(--primary-medium);
+
+    &.active {
+      background-color: var(--tertiary) !important;
+      color: var(--secondary) !important;
+    }
+  }
+}
+
+.active-notice-count {
+  background-color: var(--danger);
+  color: var(--secondary);
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  line-height: 18px;
+  text-align: center;
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  font-size: 0.7em;
+}

@@ -1,0 +1,50 @@
+.subscription-client-message {
+  background-color: var(--primary-low);
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+
+  .message-block {
+    .d-icon {
+      margin-right: 4px;
+    }
+
+    .d-icon-check-circle {
+      color: var(--success);
+    }
+
+    .d-icon-times-circle {
+      color: var(--danger);
+    }
+
+    a + a {
+      border-left: 1px solid var(--primary-medium);
+      padding-left: 5px;
+      margin-left: 5px;
+    }
+
+    .message {
+      white-space: nowrap;
+    }
+
+    .list-colon {
+      margin-right: 5px;
+    }
+
+    ul {
+      list-style: none;
+      margin: 0;
+
+      span.action {
+        margin-left: 5px;
+      }
+    }
+  }
+
+  & + div {
+    margin-top: 30px;
+  }
+}

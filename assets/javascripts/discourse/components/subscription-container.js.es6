@@ -11,14 +11,14 @@ export default Component.extend({
 
   @discourseComputed("subscribed")
   subscribedLabel(subscribed) {
-    return `admin.plugin_subscriptions.subscription_container.${
+    return `admin.subscription_client.subscription_container.${
       subscribed ? "subscribed" : "not_subscribed"
     }.label`;
   },
 
   @discourseComputed("subscribed")
   subscribedTitle(subscribed) {
-    return `admin.plugin_subscriptions.subscription_container.${
+    return `admin.subscription_client.subscription_container.${
       subscribed ? "subscribed" : "not_subscribed"
     }.title`;
   },

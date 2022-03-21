@@ -1,0 +1,101 @@
+$info: #038ae7;
+$warning: #d47e00;
+
+.subscription-client-notice-row {
+  padding: 0.75em;
+  margin-bottom: 1em;
+  border: 1px solid var(--primary-low);
+
+  &.dismissed {
+    display: none;
+  }
+
+  &.expired .notice-badge:not(.notice-expired-at),
+  &.expired a,
+  &.expired p {
+    color: var(--primary-medium) !important;
+  }
+
+  .notice-badge {
+    padding: 0 0.5em;
+  }
+
+  .notice-header {
+    display: flex;
+
+    .notice-title {
+      padding: 0;
+    }
+
+    .notice-header-right {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+
+      .notice-badge {
+        margin-left: 0.5em;
+      }
+    }
+  }
+
+  .dismiss-notice-container,
+  .hide-notice-container {
+    width: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .dismiss-notice,
+  .hide-notice {
+    display: flex;
+    align-items: center;
+
+    .d-icon {
+      margin-right: 0;
+      color: var(--primary);
+    }
+  }
+}
+
+.notice-badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 25px;
+  box-sizing: border-box;
+  color: var(--primary) !important;
+}
+
+a.show-notice-message {
+  padding: 0.25em 0.5em;
+  color: var(--primary);
+}
+
+.subscription-client-notice,
+.subscription-client-notice-row:not(.expired):not(.dismissed) {
+  &.info {
+    background-color: rgba($info, 0.1);
+    border: 1px solid rgba($info, 0.5);
+  }
+  &.warning,
+  &.connection-error {
+    background-color: rgba($warning, 0.1);
+    border: 1px solid rgba($warning, 0.5);
+  }
+}
+
+.notice-message {
+  position: relative;
+
+  .cooked-notice-message {
+    background-color: var(--secondary);
+    padding: 1em;
+    z-index: 1;
+    box-shadow: shadow("dropdown");
+    border-top: 1px solid var(--primary-low);
+
+    p {
+      margin: 0;
+    }
+  }
+}
