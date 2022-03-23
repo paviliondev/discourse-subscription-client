@@ -25,13 +25,13 @@ after_initialize do
     ../app/models/subscription_client_supplier.rb
     ../app/controllers/subscription_client/admin_controller.rb
     ../app/controllers/subscription_client/subscriptions_controller.rb
-    ../app/controllers/subscription_client/authorization_controller.rb
+    ../app/controllers/subscription_client/suppliers_controller.rb
     ../app/controllers/subscription_client/notices_controller.rb
-    ../app/jobs/scheduled/subscription_client/update_subscriptions.rb
-    ../app/jobs/scheduled/subscription_client/update_notices.rb
     ../app/serializers/subscription_client_notice_serializer.rb
     ../app/serializers/subscription_client_subscription_serializer.rb
     ../app/serializers/subscription_client_supplier_serializer.rb
+    ../app/jobs/scheduled/subscription_client/update_subscriptions.rb
+    ../app/jobs/scheduled/subscription_client/update_notices.rb
   ].each do |path|
     load File.expand_path(path, __FILE__)
   end
@@ -42,6 +42,8 @@ after_initialize do
   end
 
   SubscriptionClient::Resources.find_all unless Rails.env.test?
+
+  User.has_many(:subscription_client_suppliers)
 
   DiscourseEvent.trigger(:subscription_client_ready)
 end

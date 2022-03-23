@@ -7,12 +7,11 @@ export default DiscourseRoute.extend({
   },
 
   afterModel() {
-    this.transitionTo('adminPlugins.subscriptionClient.subscriptions')
+    this.transitionTo('adminPlugins.subscriptionClient.suppliers')
   },
 
   setupController(controller, model) {
     controller.setProperties({
-      server: model.server,
       authentication: model.authentication,
       featuredNotices: model.featured_notices,
       activeNoticeCount: model.active_notice_count

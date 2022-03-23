@@ -35,10 +35,14 @@ class SubscriptionClient::Notices
     if messages.present?
       messages[:messages].each do |message|
         notice_type = SubscriptionClientNotice.types[message[:notice_type].to_sym]
-        notice_subject_type =  SubscriptionClientNotice.notice_subject_types[:supplier]
-        notice_subject_id = supplier.id
+        if message[:resource] && resource = SubscriptionClientResource.find_by(name: message[:resource], supplier_id: supplier.id)
+          notice_subject_type = SubscriptionClientNotice.notice_subject_types[:resource]
+          notice_subject_id = resource.id
+        else
+          notice_subject_type = SubscriptionClientNotice.notice_subject_types[:supplier]
+          notice_subject_id = supplier.id
+        end
         changed_at = message[:created_at]
-
         notice = SubscriptionClientNotice.find_by(
           notice_type: notice_type,
           notice_subject_type: notice_subject_type,

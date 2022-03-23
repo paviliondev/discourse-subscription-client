@@ -13,11 +13,6 @@ export default Controller.extend({
   authenticated: alias("authentication.active"),
   showSubscriptions: alias("authenticated"),
 
-  @discourseComputed("server")
-  messageOpts(server) {
-    return { server };
-  },
-
   unsubscribe() {
     this.messageBus.unsubscribe("/subscription-client/notices");
   },

@@ -4,7 +4,7 @@ class CreateSubscriptionClientSuppliers < ActiveRecord::Migration[6.1]
       t.string :name
       t.string :url, null: false
       t.string :api_key
-      t.datetime :user_id
+      t.references :user
       t.datetime :authorized_at
 
       t.timestamps

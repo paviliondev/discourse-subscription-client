@@ -104,7 +104,7 @@ class SubscriptionClientNotice < ActiveRecord::Base
     query.order("expired_at DESC, updated_at DESC, dismissed_at DESC, created_at DESC")
   end
 
-  def self.notify_connection_error(notice_subject_type, notice_subject_id, url)
+  def self.notify_connection_error(notice_subject_type, notice_subject_id)
     notices = list(
       notice_type: types[:connection_error],
       notice_subject_type: notice_subject_types[notice_subject_type.to_sym],
@@ -116,9 +116,18 @@ class SubscriptionClientNotice < ActiveRecord::Base
       notice.updated_at = DateTime.now.iso8601(3)
       notice.save
     else
+      opts = {}
+      if notice_subject_type === notice_subject_types[:supplier]
+        supplier = SubscriptionClientSupplier.find(notice_subject_id)
+        opts[:supplier] = supplier.name
+      end
+      if notice_subject_type === notice_subject_types[:resource]
+        opts[:url] = SubscriptionClient.plugin_status_server_url
+      end
+
       create!(
-        title: I18n.t("subscription_client.notices.#{notice_subject_type.to_s}.connection_error.title"),
-        message: I18n.t("subscription_client.notices.#{notice_subject_type.to_s}.connection_error.message", url: url),
+        title: I18n.t("subscription_client.notices.#{notice_subject_type.to_s}.connection_error.title", opts),
+        message: I18n.t("subscription_client.notices.#{notice_subject_type.to_s}.connection_error.message", opts),
         notice_subject_type: notice_subject_types[notice_subject_type.to_sym],
         notice_subject_id: notice_subject_id,
         notice_type: types[:connection_error],

@@ -25,11 +25,6 @@ export default Controller.extend({
     }
   },
 
-  @discourseComputed("server")
-  messageOpts(server) {
-    return { server };
-  },
-
   actions: {
     update() {
       this.set("updating", true);

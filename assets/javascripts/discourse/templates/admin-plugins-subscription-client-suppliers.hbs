@@ -22,11 +22,11 @@
       </thead>
       <tbody>
         {{#each suppliers as |supplier|}}
-          {{supplier-row supplier=supplier}}
+          {{subscription-client-supplier-row supplier=supplier}}
         {{/each}}
       </tbody>
     </table>
   {{else}}
-    <p>{{i18n "admin.subscription_client.supplier.none"}}</p>
+    <p>{{i18n "admin.subscription_client.suppliers.none"}}</p>
   {{/if}}
 </div>

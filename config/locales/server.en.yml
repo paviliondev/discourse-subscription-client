@@ -16,16 +16,15 @@ en:
           message: Please check the plugins status on [%{url}](%{url}) before updating Discourse. If this issue persists contact the plugin provider.
       supplier:
         connection_error:
-          title: Unable to connect to the subscription server
-          message: If this issue persists contact the creator of ${resource_name} for further assistance.
+          title: Unable to connect to %{supplier}'s subscription server
+          message: Any subscriptions you have with %{supplier} have been deactivated. You can reactivate them once an authorized connection is re-established. If this issue persists contact %{supplier} for further assistance.
 
     subscriptions:
       error:
         supplier_connection: Failed to connect to %{supplier} (%{supplier_url})
         invalid_response: Invalid response from %{supplier} (%{supplier_url})
       info:
-        not_authorized: "Supplier is not authorized: %{supplier} (%{supplier_url})"
-        no_suppliers: "Update was not run as there are no suppliers."
+        no_suppliers: "Update was not run as there are no authorized suppliers."
         no_subscriptions: "There are no active subscriptions for %{supplier} (%{supplier_url})."
         no_resource: "There is no %{resource} resource associated with %{supplier} (%{supplier_url})."
         deactivated_subscription: "Deactivated subscription for %{resource_name} (%{resource_id})."

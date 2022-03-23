@@ -3,7 +3,7 @@
 require_relative '../plugin_helper'
 
 describe SubscriptionClientNoticeSerializer do
-  fab!(:notice) { Fabricator(:subscription_client_notice) }
+  fab!(:notice) { Fabricate(:subscription_client_notice) }
 
   it 'should return notice attributes' do
     serialized_notice = described_class.new(notice)

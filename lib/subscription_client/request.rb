@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class SubscriptionClient::Request
-  SUPPLIER_ERROR_LIMIT = 2
+  SUPPLIER_ERROR_LIMIT = 3
   RESOURCE_ERROR_LIMIT = 5
   VALID_TYPES = %w(resource supplier)
 
@@ -64,8 +64,6 @@ class SubscriptionClient::Request
     self.send("#{@type}_limit")
   end
 
-  private
-
   def create_error(url)
     if attrs = current_error
       attrs[:updated_at] = Time.now
@@ -85,7 +83,11 @@ class SubscriptionClient::Request
     @current_error = nil
 
     if reached_limit?
-      SubscriptionClientNotice.notify_connection_error(type, id, url)
+      SubscriptionClientNotice.notify_connection_error(type, id)
+
+      if type === 'supplier' && supplier = SubscriptionClientSupplier.find_by_id(id)
+        supplier.deactivate_all_subscriptions!
+      end
     end
   end
 

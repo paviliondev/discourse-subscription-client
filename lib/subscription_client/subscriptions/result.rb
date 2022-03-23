@@ -2,7 +2,7 @@
 
 class ::SubscriptionClient::Subscriptions::Result
   REQUIRED_KEYS ||= %i(
-    resource
+    resource_id
     product_id
     price_id
   )
@@ -10,9 +10,10 @@ class ::SubscriptionClient::Subscriptions::Result
     product_name
     price_name
   )
-  KEYS ||= REQUIRED_KEYS + OPTIONAL_KEYS
+  KEYS = REQUIRED_KEYS + REQUIRED_KEYS
 
   attr_reader :errors,
+              :errored_suppliers,
               :info
 
   def initialize
@@ -32,34 +33,35 @@ class ::SubscriptionClient::Subscriptions::Result
       return nil
     end
 
-    subscriptions_data
-      .map(&:symbolize_keys)
-      .select { |data| validate_subscription_data(data) }
-      .map { |data| data.slice(*KEYS) }
-      .reject(&:empty?)
-  end
+    # subscriptions must be properly formed
 
-  def validate_subscription_data(subscription_data)
-    REQUIRED_KEYS.all? { |key| subscription_data.has_key?(key) }
-  end
+    subscriptions_data =
+      subscriptions_data
+        .map(&:symbolize_keys)
+        .each { |data| data[:resource_id] = data[:resource] }
+        .select { |data| REQUIRED_KEYS.all? { |key| data.has_key?(key) } }
 
-  def with_resources(supplier, subscription_data)
+
+    # we only care about subscriptions for resources on this instance
+
     resources = SubscriptionClientResource.where(
       supplier_id: supplier.id,
-      name: subscription_data.map { |data| data[:resource] }
+      name: subscriptions_data.map { |data| data[:resource] }
     )
 
-    subscription_data.reduce([]) do |subs, data|
-      matching_resource = resources.select { |resource| resource.name === data[:resource] }.first
-
-      if matching_resource.present?
-        data[:resource_id] = matching_resource.id
-        subs << data.except(:resource)
+    subscriptions_data.reduce([]) do |result, data|
+      resource = resources.select { |r| r.name === data[:resource] }.first
+      if resource.present?
+        data[:resource_id] = resource.id
+        result << OpenStruct.new(
+          required: data.slice(*REQUIRED_KEYS),
+          create: data.slice(*KEYS),
+          subscription: nil
+        )
       else
         info("no_resource", supplier, resource: data[:resource])
       end
-
-      subs
+      result
     end
   end
 

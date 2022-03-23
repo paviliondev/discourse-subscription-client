@@ -34,9 +34,9 @@ class SubscriptionClient::Resources
   end
 
   def find_suppliers
-    supplier_urls = @resources.map { |resource| resource[:supplier_url] }.uniq
+    supplier_urls = @resources.map { |resource| resource[:supplier_url] }.uniq.compact
 
-    supplier_urls.each do |result, url|
+    supplier_urls.each do |url|
       supplier = SubscriptionClientSupplier.find_by(url: url)
 
       if supplier && supplier.name
@@ -44,13 +44,13 @@ class SubscriptionClient::Resources
       else
         supplier = supplier || SubscriptionClientSupplier.create!(url: url)
         request = SubscriptionClient::Request.new(:supplier, supplier.id)
-        response = request.perform("#{url}/subscription-server")
+        data = request.perform("#{url}/subscription-server")
 
-        if response.status === 200
-          data = JSON.parse(response.body)
-          supplier.update(name: data['supplier'])
-
+        if data
+          supplier.update(name: data[:supplier])
           @suppliers << supplier
+        else
+          supplier.destroy!
         end
       end
     end

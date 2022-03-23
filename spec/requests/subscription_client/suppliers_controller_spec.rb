@@ -1,7 +1,7 @@
 # frozen_string_literal: true
-require_relative '../../../plugin_helper'
+require_relative '../../plugin_helper'
 
-describe SubscriptionClient::AuthorizationController do
+describe SubscriptionClient::SuppliersController do
   fab!(:user) { Fabricate(:user, admin: true) }
   fab!(:supplier) { Fabricate(:subscription_client_supplier) }
   fab!(:resource) { Fabricate(:subscription_client_resource, supplier: supplier) }
@@ -20,7 +20,7 @@ describe SubscriptionClient::AuthorizationController do
   end
 
   it "#authorize" do
-    get "/admin/plugins/subscription-client/authorize", params: { supplier_id: supplier.id }
+    get "/admin/plugins/subscription-client/suppliers/authorize", params: { supplier_id: supplier.id }
     expect(response.status).to eq(302)
     expect(cookies[:user_api_request_id].present?).to eq(true)
   end
@@ -30,7 +30,7 @@ describe SubscriptionClient::AuthorizationController do
     payload = generate_auth_payload(user.id, request_id)
     stub_subscription_request(200, resource, subscription_response)
 
-    get "/admin/plugins/subscription-client/authorize/callback", params: { payload: payload }
+    get "/admin/plugins/subscription-client/suppliers/authorize/callback", params: { payload: payload }
     expect(response).to redirect_to("/admin/plugins/subscription-client/subscriptions")
 
     subscription = SubscriptionClientSubscription.find_by(resource_id: resource.id)
@@ -43,7 +43,7 @@ describe SubscriptionClient::AuthorizationController do
     payload = generate_auth_payload(user.id, request_id)
     SubscriptionClient::Authorization.process_response(request_id, payload)
 
-    delete "/admin/plugins/subscription-client/authorize.json", params: { supplier_id: supplier.id }
+    delete "/admin/plugins/subscription-client/suppliers/authorize", params: { supplier_id: supplier.id }
     expect(response.status).to eq(200)
     expect(supplier.authorized?).to eq(false)
   end

@@ -1,8 +1,11 @@
 # frozen_string_literal: true
 
 class SubscriptionClientSupplier < ActiveRecord::Base
-  has_many :resources, foreign_key: "resource_id", class_name: "SubscriptionClientResource"
+  has_many :resources, foreign_key: "supplier_id", class_name: "SubscriptionClientResource"
+  has_many :subscriptions, through: :resources
   has_many :notices, class_name: "SubscriptionClientNotice", as: :notice_subject, dependent: :destroy
+
+  belongs_to :user
 
   scope :with_keys, -> { where("api_key IS NOT NULL") }
 
@@ -12,6 +15,10 @@ class SubscriptionClientSupplier < ActiveRecord::Base
 
   def authorized?
     api_key.present?
+  end
+
+  def deactivate_all_subscriptions!
+    subscriptions.update_all(active: false)
   end
 end
 

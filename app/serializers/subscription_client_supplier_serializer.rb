@@ -2,6 +2,7 @@
 
 class SubscriptionClientSupplierSerializer < ApplicationSerializer
   attributes :name,
-             :user_id,
              :authorized_at
+
+  has_one :user, serializer: BasicUserSerializer
 end

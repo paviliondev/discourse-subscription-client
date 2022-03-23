@@ -3,4 +3,5 @@
 Fabricator(:subscription_client_supplier) do
   name { "Pavilion" }
   url { sequence(:url) { |i| "https://supplier/#{i}/url" } }
+  user { Fabricate(:user, admin: true) }
 end

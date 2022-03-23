@@ -1,9 +1,10 @@
 # frozen_string_literal: true
-require_relative '../../../plugin_helper'
+require_relative '../../plugin_helper'
 
 describe SubscriptionClient::NoticesController do
   fab!(:admin_user) { Fabricate(:user, admin: true) }
   fab!(:supplier) { Fabricate(:subscription_client_supplier) }
+  fab!(:resource) { Fabricate(:subscription_client_resource, supplier: supplier) }
   let(:subscription_notice_params) {
     {
       notice_type: SubscriptionClientNotice.types[:info],
@@ -16,7 +17,7 @@ describe SubscriptionClient::NoticesController do
     Fabricate(:subscription_client_notice,
       notice_type: SubscriptionClientNotice.types[:warning],
       notice_subject_type: SubscriptionClientNotice.notice_subject_types[:resource],
-      notice_subject_id: supplier.id
+      notice_subject_id: resource.id
     )
   }
 

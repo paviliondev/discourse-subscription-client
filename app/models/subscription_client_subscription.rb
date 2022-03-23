@@ -10,6 +10,10 @@ class SubscriptionClientSubscription < ActiveRecord::Base
   def active?
     self.active && updated_at.to_datetime > (Time.zone.now - 2.hours).to_datetime
   end
+
+  def deactivate!
+    self.update(active: false)
+  end
 end
 
 # == Schema Information

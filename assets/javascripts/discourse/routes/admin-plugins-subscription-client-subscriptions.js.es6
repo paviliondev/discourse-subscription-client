@@ -12,7 +12,6 @@ export default DiscourseRoute.extend({
     const parentController = this.controllerFor('adminPluginsSubscriptionClient');
     controller.setProperties({
       subscriptions: A(model),
-      server: parentController.get('server'),
       authentication: parentController.get('authentication')
     });
     controller.setup();

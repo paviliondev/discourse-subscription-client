@@ -2,7 +2,6 @@
 
 class SubscriptionClient::SubscriptionsController < SubscriptionClient::AdminController
   def index
-    byebug
     render_serialized(SubscriptionClientSubscription.all, ::SubscriptionClientSubscriptionSerializer, root: false)
   end
 

@@ -1,8 +1,12 @@
 # frozen_string_literal: true
 
-class SubscriptionClient::AuthorizationController < SubscriptionClient::AdminController
+class SubscriptionClient::SuppliersController < SubscriptionClient::AdminController
   skip_before_action :check_xhr, :preload_json, :verify_authenticity_token, only: [:authorize, :authorize_callback]
   before_action :find_supplier, only: [:authorize, :destroy]
+
+  def index
+    render_serialized(SubscriptionClientSupplier.all, ::SubscriptionClientSupplierSerializer, root: false)
+  end
 
   def authorize
     request_id = SubscriptionClient::Authorization.request_id(@supplier.id)

@@ -7,7 +7,7 @@ en:
         message:
           subscriptions:
             documentation: Learn more about subscriptions
-            authorize: "Authorize this forum to use your subscription plans on %{server}."
+            authorize: "Authorize this forum to use your subscription plans."
             not_subscribed: "You've authorized, but are not currently subscribed to a plan on %{server}."
             please_authenticate: "You need to authorize with %{server} but clicking the button above"
             subsciptions_listed: "You are authorized with %{server} and your subsciptions should be listed above"
@@ -19,6 +19,9 @@ en:
           notices:
             info: "Plugin status and subscription notices"
             documentation: Learn more about notices
+          suppliers:
+            info: "Subscription suppliers"
+            documentation: Learn more about subscription suppliers
 
         subscription_container:
           title: Subscriber Features
@@ -32,23 +35,29 @@ en:
         suppliers:
           nav_label: Suppliers
           title: Suppliers
+          unauthorize: cancel
+          none: No suppliers.
+
+        supplier:
+          name: Name
+          actions: Actions
           authorize: Authorize
           authorized: Authorized
-          unauthorize: cancel
 
         subscriptions:
           nav_label: Subscriptions
           title: Subscriptions
           update: Update
           none: There are no subscriptions authorized for this forum.
-          subscription:
-            supplier: Supplier
-            product: Product
-            price: Price
-            status:
-              active: Active
-              inactive: Inactive
-            last_updated: Last updated
+
+        subscription:
+          supplier: Supplier
+          product: Product
+          price: Price
+          status:
+            active: Active
+            inactive: Inactive
+          last_updated: Last updated
 
         notice:
           subscription: Subscription

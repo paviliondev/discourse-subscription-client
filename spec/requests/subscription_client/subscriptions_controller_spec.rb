@@ -1,13 +1,11 @@
 # frozen_string_literal: true
-require_relative '../../../plugin_helper'
+require_relative '../../plugin_helper'
 
 describe SubscriptionClient::SubscriptionsController do
   fab!(:user) { Fabricate(:user, admin: true) }
   fab!(:supplier) { Fabricate(:subscription_client_supplier, api_key: Fabricate(:subscription_client_user_api_key)) }
   fab!(:resource) { Fabricate(:subscription_client_resource, supplier: supplier) }
-  fab!(:subscription) {
-    Fabricate(:subscription_client_subscription, resource: resource)
-  }
+  fab!(:subscription) { Fabricate(:subscription_client_subscription, resource: resource) }
 
   before do
     sign_in(user)
