@@ -4,7 +4,7 @@
   </h3>
 
   <div class="buttons">
-    <span>
+    <span class="loading-container">
       {{#if updating}}
         {{loading-spinner size="small"}}
       {{else if updateIcon}}
@@ -35,23 +35,26 @@
       <table class="subscription-list table grid">
         <thead>
           <tr>
-            <th>{{i18n "admin.subscription_client.subscriptions.subscription.supplier"}}</th>
-            <th>{{i18n "admin.subscription_client.subscriptions.subscription.product"}}</th>
-            <th>{{i18n "admin.subscription_client.subscriptions.subscription.price"}}</th>
-            <th>{{i18n "admin.subscription_client.subscriptions.subscription.status"}}</th>
+            <th>{{i18n "admin.subscription_client.subscription.supplier"}}</th>
+            <th>{{i18n "admin.subscription_client.subscription.resource"}}</th>
+            <th>{{i18n "admin.subscription_client.subscription.product"}}</th>
+            <th>{{i18n "admin.subscription_client.subscription.price"}}</th>
+            <th>{{i18n "admin.subscription_client.subscription.status.label"}}</th>
+            <th>{{i18n "admin.subscription_client.subscription.last_updated"}}</th>
           </tr>
         </thead>
         <tbody>
           {{#each subscriptions as |subscription|}}
             <tr>
               <td>{{subscription.supplier_name}}</td>
+              <td>{{subscription.resource_name}}</td>
               <td>{{subscription.product_name}}</td>
               <td>{{subscription.price_name}}</td>
               <td>
                 {{#if subscription.active}}
-                  {{i18n "admin.subscription_client.subscriptions.subscription.active"}}
+                  {{i18n "admin.subscription_client.subscription.status.active"}}
                 {{else}}
-                  {{i18n "admin.subscription_client.subscriptions.subscription.inactive"}}
+                  {{i18n "admin.subscription_client.subscription.status.inactive"}}
                 {{/if}}
               </td>
               <td>

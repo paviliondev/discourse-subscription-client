@@ -7,10 +7,11 @@ class SubscriptionClientSupplier < ActiveRecord::Base
 
   belongs_to :user
 
-  scope :with_keys, -> { where("api_key IS NOT NULL") }
+  scope :authorized, -> { where("api_key IS NOT NULL") }
 
   def destroy_authorization
     update(api_key: nil, user_id: nil, authorized_at: nil)
+    deactivate_all_subscriptions!
   end
 
   def authorized?
@@ -19,6 +20,11 @@ class SubscriptionClientSupplier < ActiveRecord::Base
 
   def deactivate_all_subscriptions!
     subscriptions.update_all(active: false)
+  end
+
+  def self.publish_authorized_supplier_count
+    payload = { authorized_supplier_count: authorized.count }
+    MessageBus.publish("/subscription-client", payload, group_ids: [Group::AUTO_GROUPS[:admins]])
   end
 end
 

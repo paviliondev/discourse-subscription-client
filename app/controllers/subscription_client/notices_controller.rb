@@ -20,7 +20,7 @@ class SubscriptionClient::NoticesController < SubscriptionClient::AdminControlle
 
     if notice_subject_type
       if notice_subject_type.is_a?(Array)
-        notice_subject_type = notice_subject_type.map { |a| SubscriptionClientNotice.notice_subject_types[a.to_sym] }
+        notice_subject_type = notice_subject_type.map { |t| SubscriptionClientNotice.notice_subject_types[t.to_sym] }
       else
         notice_subject_type = SubscriptionClientNotice.notice_subject_types[notice_subject_type.to_sym]
       end

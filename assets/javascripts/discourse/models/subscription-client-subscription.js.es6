@@ -12,16 +12,6 @@ SubscriptionClientSubscription.reopenClass({
     }).catch(popupAjaxError);
   },
 
-  authorize() {
-    window.location.href = `${basePath}/authorize`;
-  },
-
-  unauthorize() {
-    return ajax(`${basePath}/authorize`, {
-      type: "DELETE",
-    }).catch(popupAjaxError);
-  },
-
   update() {
     return ajax(`${basePath}/subscriptions`, {
       type: "POST",

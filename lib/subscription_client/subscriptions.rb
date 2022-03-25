@@ -2,7 +2,7 @@
 
 class SubscriptionClient::Subscriptions
   def initialize
-    @suppliers = SubscriptionClientSupplier.with_keys
+    @suppliers = SubscriptionClientSupplier.authorized
   end
 
   def self.update
@@ -33,36 +33,43 @@ class SubscriptionClient::Subscriptions
         Rails.logger.info "SubscriptionClient::Subscriptions.update: #{info}"
       end
     end
+
+    @result.errors.blank?
   end
 
   def update_supplier(supplier)
+    resources = supplier.resources
+    return unless resources.present?
+
     request = SubscriptionClient::Request.new(:supplier, supplier.id)
     headers = { "User-Api-Key" => supplier.api_key }
     url = "#{supplier.url}/subscription-server/user-subscriptions"
 
-    response = request.perform(url, headers: headers)
+    response = request.perform(url, headers: headers, body: { resources: resources.map(&:name) })
     return @result.connection_error(supplier) if response.nil?
 
     subscription_data = @result.retrieve_subscriptions(supplier, response)
     return if @result.errors.any?
 
     # deactivate any of the supplier's subscriptions not retrieved from supplier
-    supplier.subscriptions.each do |subscription|
-      has_match = false
-      subscription_data.each do |data|
-        if data_matches_subscription(data, subscription)
-          data.subscription = subscription
-          has_match = true
+    if supplier.subscriptions.present?
+      supplier.subscriptions.each do |subscription|
+        has_match = false
+        subscription_data.each do |data|
+          if data_matches_subscription(data, subscription)
+            data.subscription = subscription
+            has_match = true
+          end
         end
+        subscription.deactivate! unless has_match
       end
-      subscription.deactivate! unless has_match
     end
 
     return @result.no_subscriptions(supplier) if subscription_data.blank?
 
     subscription_data.each do |data|
       if data.subscription.present?
-        data.subscription.touch
+        data.subscription.update(active: true)
         @result.updated_subscription(supplier, subscription_ids: data.required)
       else
         subscription = SubscriptionClientSubscription.create!(data.create.merge(active: true))
@@ -77,6 +84,6 @@ class SubscriptionClient::Subscriptions
   end
 
   def data_matches_subscription(data, subscription)
-    data.required.all? { |k,v| subscription.send(k.to_s) == v }
+    data.required.all? { |k, v| subscription.send(k.to_s) == v }
   end
 end

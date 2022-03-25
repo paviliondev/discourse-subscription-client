@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 def authenticate_subscription
   SubscriptionClient::Authentication.any_instance.stubs(:active?).returns(true)
 end
@@ -19,7 +20,7 @@ end
 
 def stub_subscription_request(status, resource, response)
   url = resource.supplier.url
-  stub_request(:get, "#{url}/subscription-server/user-subscriptions").to_return(status: status, body: { subscriptions: [response] }.to_json)
+  stub_request(:get, "#{url}/subscription-server/user-subscriptions?resources[]=#{resource.name}").to_return(status: status, body: { subscriptions: [response] }.to_json)
 end
 
 def stub_server_request(server_url, supplier, status = 200)

@@ -3,7 +3,7 @@
 class CreateSubscriptionClientSubscriptions < ActiveRecord::Migration[6.1]
   def change
     create_table :subscription_client_subscriptions do |t|
-      t.references :resource, foreign_key: { to_table: :subscription_client_resources }
+      t.references :resource, foreign_key: { to_table: :subscription_client_resources } # rubocop:disable Discourse/NoAddReferenceOrAliasesActiveRecordMigration
       t.string :product_id, null: false
       t.string :product_name
       t.string :price_id, null: false

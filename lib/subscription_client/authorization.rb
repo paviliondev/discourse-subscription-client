@@ -13,7 +13,7 @@ class SubscriptionClient::Authorization
       public_key: keys.public_key,
       nonce: keys.nonce,
       client_id: get_client_id || set_client_id,
-      auth_redirect: "#{Discourse.base_url}/admin/plugins/subscription-client/authorize/callback",
+      auth_redirect: "#{Discourse.base_url}/admin/plugins/subscription-client/suppliers/authorize/callback",
       application_name: SiteSetting.title,
       scopes: SCOPE
     }

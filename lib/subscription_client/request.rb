@@ -17,11 +17,19 @@ class SubscriptionClient::Request
     "#{type}_#{id}"
   end
 
-  def perform(url, headers: {})
+  def perform(url, headers: {}, body: nil, opts: { type: "GET" })
     return nil unless VALID_TYPES.include?(type)
 
+    if body
+      uri = URI.parse(url)
+      uri.query = CGI.unescape(body.to_query)
+      url = uri.to_s
+    end
+
+    connection = Excon.new(url, headers: headers)
+
     begin
-      response = Excon.get(url, headers: headers)
+      response = connection.request(opts)
     rescue Excon::Error::Socket, Excon::Error::Timeout => e
       response = nil
     end
@@ -37,7 +45,7 @@ class SubscriptionClient::Request
 
       data
     else
-      create_error(url)
+      create_error(url, response)
       nil
     end
   end
@@ -64,7 +72,7 @@ class SubscriptionClient::Request
     self.send("#{@type}_limit")
   end
 
-  def create_error(url)
+  def create_error(url, response)
     if attrs = current_error
       attrs[:updated_at] = Time.now
       attrs[:count] = attrs[:count].to_i + 1
@@ -75,6 +83,19 @@ class SubscriptionClient::Request
         message: I18n.t("subscription_client.notices.connection_error", url: url),
         created_at: Time.now,
         count: 1
+      }
+    end
+
+    if response.present?
+      begin
+        body = JSON.parse(response.body)
+      rescue JSON::ParserError
+        body = nil
+      end
+
+      attrs[:response] = {
+        status: response.status,
+        body: body
       }
     end
 

@@ -6,16 +6,10 @@ en:
 
         message:
           subscriptions:
-            documentation: Learn more about subscriptions
-            authorize: "Authorize this forum to use your subscription plans."
-            not_subscribed: "You've authorized, but are not currently subscribed to a plan on %{server}."
-            please_authenticate: "You need to authorize with %{server} but clicking the button above"
-            subsciptions_listed: "You are authorized with %{server} and your subsciptions should be listed above"
-            subscription_expiring: "Your subscription is active, but will expire in the next 48 hours."
-            subscription_active: "Your subscription is active."
-            subscription_inactive: "Your subscription is inactive on this forum. Read more in <a href='https://thepavilion.io/t/3652'>the documentation</a>."
-            unauthorized: "You're unauthorized. If you have a subscription, it will become inactive in the next 48 hours."
-            unauthorize_failed: Failed to unauthorize.
+            info: Plugin subscriptions on this forum.
+            no_resources: No plugins on this forum offer subscriptions.
+            no_authorized_suppliers: <a href="/admin/plugins/subscriptions-client/suppliers">Authorize a plugin supplier</a> to activate their subscriptions.
+            documentation: Learn more about subscriptions.
           notices:
             info: "Plugin status and subscription notices"
             documentation: Learn more about notices
@@ -23,26 +17,19 @@ en:
             info: "Subscription suppliers"
             documentation: Learn more about subscription suppliers
 
-        subscription_container:
-          title: Subscriber Features
-          subscribed:
-            label: Subscribed
-            title: You're subscribed and can use these features
-          not_subscribed:
-            label: Not Subscribed
-            title: Subscribe to use these features
-
         suppliers:
           nav_label: Suppliers
           title: Suppliers
-          unauthorize: cancel
           none: No suppliers.
 
         supplier:
           name: Name
           actions: Actions
+          status: Status
           authorize: Authorize
           authorized: Authorized
+          not_authorized: Not Authorized
+          unauthorize: deauthorize
 
         subscriptions:
           nav_label: Subscriptions
@@ -52,12 +39,14 @@ en:
 
         subscription:
           supplier: Supplier
+          resource: Plugin
           product: Product
           price: Price
           status:
+            label: Status
             active: Active
             inactive: Inactive
-          last_updated: Last updated
+          last_updated: Last Updated
 
         notice:
           subscription: Subscription

@@ -32,6 +32,19 @@ describe SubscriptionClient::Subscriptions do
     expect(old_subscription.active).to eq(false)
   end
 
+  it "reactivates subscriptions" do
+    stub_subscription_request(200, resource, subscription_response)
+    described_class.update
+
+    subscription = SubscriptionClientSubscription.find_by(product_id: subscription_response[:product_id])
+    subscription.update(active: false)
+
+    described_class.update
+    subscription.reload
+
+    expect(subscription.active).to eq(true)
+  end
+
   it "handles subscription http errors" do
     stub_subscription_request(404, resource, {})
     described_class.update

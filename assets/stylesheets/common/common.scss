@@ -1,7 +1,7 @@
 @import "common/components/buttons";
-@import "components/container";
 @import "components/message";
 @import "components/notice";
+@import "components/supplier";
 
 .admin-subscription-client-controls {
   display: flex;
@@ -33,7 +33,7 @@
 
 .admin-subscription-client-container {
   .detail-container {
-    padding: 1em;
+    padding: 0.25em 1em 1em 1em;
     background-color: var(--primary-very-low);
 
     .subscription-state {
@@ -73,6 +73,10 @@
   }
 }
 
+.notice-count-container {
+  position: relative;
+}
+
 .active-notice-count {
   background-color: var(--danger);
   color: var(--secondary);
@@ -85,4 +89,56 @@
   top: -8px;
   right: -8px;
   font-size: 0.7em;
+}
+
+.subscription-client-notice {
+  padding: 0.75em;
+  margin-bottom: 1em;
+  border: 1px solid var(--primary-low);
+
+  &.dismissed {
+    display: none;
+  }
+  &.expired .notice-badge:not(.notice-expired-at),
+  &.expired a,
+  &.expired p {
+    color: var(--primary-medium) !important;
+  }
+
+  .notice-header {
+    display: flex;
+
+    .notice-title {
+      padding: 0;
+    }
+
+    .notice-header-right {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+
+      .notice-badge {
+        margin-left: 0.5em;
+      }
+    }
+  }
+
+  .dismiss-notice-container,
+  .hide-notice-container {
+    width: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .dismiss-notice,
+  .hide-notice {
+    display: flex;
+    align-items: center;
+
+    .d-icon {
+      margin-right: 0;
+      color: var(--primary);
+    }
+  }
 }

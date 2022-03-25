@@ -1,5 +1,4 @@
 import SubscriptionClientSubscription from "../models/subscription-client-subscription";
-import SubscriptionClient from "../models/subscription-client";
 import DiscourseRoute from "discourse/routes/discourse";
 import { A } from "@ember/array";
 
@@ -9,11 +8,8 @@ export default DiscourseRoute.extend({
   },
 
   setupController(controller, model) {
-    const parentController = this.controllerFor('adminPluginsSubscriptionClient');
     controller.setProperties({
-      subscriptions: A(model),
-      authentication: parentController.get('authentication')
+      subscriptions: A(model.subscriptions),
     });
-    controller.setup();
-  }
+  },
 });

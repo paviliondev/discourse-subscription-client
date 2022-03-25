@@ -77,7 +77,7 @@ describe SubscriptionClient::Notices do
     it "converts warning into notice" do
       notice = SubscriptionClientNotice.list.first
       expect(notice.notice_type).to eq(SubscriptionClientNotice.types[:warning])
-      expect(notice.message).to eq(I18n.t("subscription_client.notices.compatibility_issue.message", url: SubscriptionClient.plugin_status_server_url))
+      expect(notice.message).to eq(I18n.t("subscription_client.notices.compatibility_issue.message", resource: plugin_status[:name])
       expect(notice.changed_at.to_datetime).to be_within(1.second).of (plugin_status[:status_changed_at].to_datetime)
     end
 

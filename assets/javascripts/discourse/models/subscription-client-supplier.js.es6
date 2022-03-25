@@ -10,15 +10,18 @@ SubscriptionClientSupplier.reopenClass({
     return ajax(basePath).catch(popupAjaxError);
   },
 
-  authorize() {
-    window.location.href = `${basePath}/authorize`;
+  authorize(supplierId) {
+    window.location.href = `${basePath}/authorize?supplier_id=${supplierId}`;
   },
 
-  unauthorize() {
+  unauthorize(supplierId) {
     return ajax(`${basePath}/authorize`, {
       type: "DELETE",
+      data: {
+        supplier_id: supplierId,
+      },
     }).catch(popupAjaxError);
-  }
+  },
 });
 
 export default SubscriptionClientSupplier;

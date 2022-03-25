@@ -1,27 +1,29 @@
-import Controller from "@ember/controller";
+import Controller, { inject as controller } from "@ember/controller";
 import SubscriptionClientSubscription from "../models/subscription-client-subscription";
-import { notEmpty } from "@ember/object/computed";
-import discourseComputed from "discourse-common/utils/decorators";
-import I18n from "I18n";
+import { alias, notEmpty } from "@ember/object/computed";
+import { observes, on } from "discourse-common/utils/decorators";
 
 export default Controller.extend({
-  classNameBindings: [
-    ":subscription",
-    "subscription.active:active:inactive",
-  ],
+  adminPluginsSubscriptionClient: controller(),
+  authorizedSupplierCount: alias(
+    "adminPluginsSubscriptionClient.authorizedSupplierCount"
+  ),
+  resourceCount: alias("adminPluginsSubscriptionClient.resourceCount"),
+  classNameBindings: [":subscription", "subscription.active:active:inactive"],
   hasSubscriptions: notEmpty("subscriptions"),
   messageUrl: "https://thepavilion.io/t/3652",
   messageKey: "info",
   messageClass: "info",
 
-  setup() {
-    if (!this.hasSubscriptions) {
-      this.set("messageKey", this.authenticated ? "not_subscribed" : "authorize");
+  @on("init")
+  @observes("authorizedSupplierCount")
+  changeMessageKey() {
+    if (this.resourceCount === 0) {
+      this.set("messageKey", "no_resources");
+    } else if (this.authorizedSupplierCount === 0) {
+      this.set("messageKey", "no_authorized_suppliers");
     } else {
-      this.set(
-        "messageKey",
-        !this.authenticated ? "please_authenticate" : "subsciptions_listed"
-      );
+      this.set("messageKey", "info");
     }
   },
 
@@ -34,7 +36,6 @@ export default Controller.extend({
             this.setProperties({
               updateIcon: "check",
               subscriptions: result.subscriptions,
-              updated_at: result.updated_at,
             });
           } else {
             this.set("updateIcon", "times");
@@ -47,5 +48,5 @@ export default Controller.extend({
           }, 7000);
         });
     },
-  }
+  },
 });

@@ -6,10 +6,6 @@ class SubscriptionClientNotice < ActiveRecord::Base
 
   scope :warnings, -> { where(notice_type: SubscriptionClientNotice.types[:warning]) }
 
-  def notice_subject_type=(class_name)
-    super(class_name.constantize.base_class.to_s)
-  end
-
   def self.types
     @types ||= Enum.new(
       info: 0,
@@ -23,6 +19,13 @@ class SubscriptionClientNotice < ActiveRecord::Base
       resource: "SubscriptionClientResource",
       supplier: "SubscriptionClientSupplier"
     }
+  end
+
+  def self.error_types
+    @error_types ||= [
+      types[:connection_error],
+      types[:warning]
+    ]
   end
 
   def dismiss!
@@ -59,10 +62,7 @@ class SubscriptionClientNotice < ActiveRecord::Base
   end
 
   def can_hide?
-    !hidden? && (
-      notice_type === self.class.types[:connection_error] ||
-      notice_type === self.class.types[:warning]
-    ) && (
+    !hidden? && self.class.error_types.include?(notice_type) && (
       notice_subject_type === self.class.notice_subject_types[:resource]
     )
   end
@@ -84,8 +84,11 @@ class SubscriptionClientNotice < ActiveRecord::Base
   end
 
   def self.publish_notice_count
-    payload = { active_notice_count: list.count }
-    MessageBus.publish("/subscription-client/notices", payload, group_ids: [Group::AUTO_GROUPS[:admins]])
+    payload = {
+      active_notice_count: list.count,
+      active_critical_notice_count: list(notice_type: error_types, visible: true).count
+    }
+    MessageBus.publish("/subscription-client", payload, group_ids: [Group::AUTO_GROUPS[:admins]])
   end
 
   def self.list(notice_type: nil, notice_subject_type: nil, notice_subject_id: nil, title: nil, include_all: false, visible: false, page: nil, page_limit: 30)
@@ -104,13 +107,15 @@ class SubscriptionClientNotice < ActiveRecord::Base
     query.order("expired_at DESC, updated_at DESC, dismissed_at DESC, created_at DESC")
   end
 
-  def self.notify_connection_error(notice_subject_type, notice_subject_id)
+  def self.notify_connection_error(notice_subject_type_key, notice_subject_id)
+    notice_subject_type = notice_subject_types[notice_subject_type_key.to_sym]
+    return false unless notice_subject_type
+
     notices = list(
       notice_type: types[:connection_error],
-      notice_subject_type: notice_subject_types[notice_subject_type.to_sym],
+      notice_subject_type: notice_subject_type,
       notice_subject_id: notice_subject_id
     )
-
     if notices.any?
       notice = notices.first
       notice.updated_at = DateTime.now.iso8601(3)
@@ -121,14 +126,10 @@ class SubscriptionClientNotice < ActiveRecord::Base
         supplier = SubscriptionClientSupplier.find(notice_subject_id)
         opts[:supplier] = supplier.name
       end
-      if notice_subject_type === notice_subject_types[:resource]
-        opts[:url] = SubscriptionClient.plugin_status_server_url
-      end
-
       create!(
-        title: I18n.t("subscription_client.notices.#{notice_subject_type.to_s}.connection_error.title", opts),
-        message: I18n.t("subscription_client.notices.#{notice_subject_type.to_s}.connection_error.message", opts),
-        notice_subject_type: notice_subject_types[notice_subject_type.to_sym],
+        title: I18n.t("subscription_client.notices.#{notice_subject_type_key.to_s}.connection_error.title", opts),
+        message: I18n.t("subscription_client.notices.#{notice_subject_type_key.to_s}.connection_error.message", opts),
+        notice_subject_type: notice_subject_type,
         notice_subject_id: notice_subject_id,
         notice_type: types[:connection_error],
         created_at: DateTime.now.iso8601(3),

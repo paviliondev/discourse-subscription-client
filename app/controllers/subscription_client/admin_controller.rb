@@ -6,7 +6,9 @@ class SubscriptionClient::AdminController < Admin::AdminController
   def index
     render_json_dump(
       active_notice_count: SubscriptionClientNotice.list.count,
-      featured_notices: serialize_data(featured_notices, SubscriptionClientNoticeSerializer)
+      featured_notices: serialize_data(featured_notices, SubscriptionClientNoticeSerializer),
+      authorized_supplier_count: SubscriptionClientSupplier.authorized.count,
+      resource_count: SubscriptionClientResource.count
     )
   end
 

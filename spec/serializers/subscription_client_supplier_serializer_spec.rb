@@ -9,6 +9,6 @@ describe SubscriptionClientSupplierSerializer do
     serialized_supplier = described_class.new(supplier)
     expect(serialized_supplier.name).to eq(supplier.name)
     expect(serialized_supplier.user.username).to eq(supplier.user.username)
-    expect(serialized_supplier.authorized_at).to eq(supplier.authorized_at)
+    expect(serialized_supplier.authorized_at).to eq_time(supplier.authorized_at)
   end
 end

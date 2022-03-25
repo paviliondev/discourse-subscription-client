@@ -1,25 +1,20 @@
 import Controller, { inject as controller } from "@ember/controller";
-import { default as discourseComputed } from "discourse-common/utils/decorators";
-import { alias } from "@ember/object/computed";
 import { isPresent } from "@ember/utils";
 import { A } from "@ember/array";
-import SubscriptionClient from "../models/subscription-client";
 
 export default Controller.extend({
   adminPluginsSubscriptionClientNotices: controller(),
   messageUrl: "https://thepavilion.io/t/3652",
   messageType: "info",
   messageKey: null,
-  authenticated: alias("authentication.active"),
-  showSubscriptions: alias("authenticated"),
 
   unsubscribe() {
-    this.messageBus.unsubscribe("/subscription-client/notices");
+    this.messageBus.unsubscribe("/subscription-client");
   },
 
   subscribe() {
     this.unsubscribe();
-    this.messageBus.subscribe("/subscription-client/notices", (data) => {
+    this.messageBus.subscribe("/subscription-client", (data) => {
       if (isPresent(data.active_notice_count)) {
         this.set("activeNoticeCount", data.active_notice_count);
         this.adminPluginsSubscriptionClientNotices.setProperties({
@@ -29,6 +24,9 @@ export default Controller.extend({
         });
         this.adminPluginsSubscriptionClientNotices.loadMoreNotices();
       }
+      if (isPresent(data.authorized_supplier_count)) {
+        this.set("authorizedSupplierCount", data.authorized_supplier_count);
+      }
     });
-  }
+  },
 });

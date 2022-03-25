@@ -1,15 +1,14 @@
 {{#admin-nav}}
-  {{nav-item route="adminPlugins.subscriptionClient.suppliers" label="admin.subscription_client.suppliers.nav_label"}}
   {{nav-item route="adminPlugins.subscriptionClient.subscriptions" label="admin.subscription_client.subscriptions.nav_label"}}
-  {{#nav-item route="adminPlugins.subscriptionClient.notices" label="admin.subscription_client.notices.nav_label"}}
-    {{#if activeNoticeCount}}
-      <span class="active-notice-count">{{activeNoticeCount}}</span>
-    {{/if}}
-  {{/nav-item}}
-
-  <div class="subscription-client-actions">
-
-  </div>
+  {{nav-item route="adminPlugins.subscriptionClient.suppliers" label="admin.subscription_client.suppliers.nav_label"}}
+  <li>
+    {{#link-to "adminPlugins.subscriptionClient.notices" class="notice-count-container"}}
+      {{i18n "admin.subscription_client.notices.nav_label"}}
+      {{#if activeNoticeCount}}
+        <span class="active-notice-count">{{activeNoticeCount}}</span>
+      {{/if}}
+    {{/link-to}}
+  </li>
 {{/admin-nav}}
 
 <div class="admin-container">

@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 class SubscriptionClientNoticeSerializer < ApplicationSerializer
-  attributes :title,
+  attributes :id,
+             :title,
              :message,
              :notice_type,
              :notice_subject_type,

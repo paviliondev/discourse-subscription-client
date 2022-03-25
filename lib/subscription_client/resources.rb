@@ -58,7 +58,7 @@ class SubscriptionClient::Resources
 
   def save_resources
     @resources.each do |resource|
-      supplier = @suppliers.select { |supplier| supplier.url === resource[:supplier_url] }.first
+      supplier = @suppliers.select { |s| s.url === resource[:supplier_url] }.first
 
       if supplier.present?
         attrs = {

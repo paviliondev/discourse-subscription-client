@@ -8,16 +8,16 @@ en:
     notices:
       connection_error: "Failed to connect to %{url}"
       compatibility_issue:
-        title: The %{plugin} Plugin is incompatibile with the latest version of Discourse.
-        message: Please check the plugin's status on [%{url}](%{url}) before updating Discourse.
-      plugin:
+        title: The %{resource} is incompatibile with the latest version of Discourse.
+        message: Please check the %{resource} status before updating Discourse.
+      resource:
         connection_error:
           title: Unable to connect to the plugin status server
-          message: Please check the plugins status on [%{url}](%{url}) before updating Discourse. If this issue persists contact the plugin provider.
+          message: Please check your plugins' compatibility with the latest version of Discourse before updating.
       supplier:
         connection_error:
           title: Unable to connect to %{supplier}'s subscription server
-          message: Any subscriptions you have with %{supplier} have been deactivated. You can reactivate them once an authorized connection is re-established. If this issue persists contact %{supplier} for further assistance.
+          message: Any subscriptions you have with %{supplier} have been deactivated.
 
     subscriptions:
       error:

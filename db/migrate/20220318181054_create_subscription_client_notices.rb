@@ -6,7 +6,7 @@ class CreateSubscriptionClientNotices < ActiveRecord::Migration[6.1]
       t.string :title, null: false
       t.string :message
       t.integer :notice_type, null: false
-      t.references :notice_subject, polymorphic: true
+      t.references :notice_subject, polymorphic: true # rubocop:disable Discourse/NoAddReferenceOrAliasesActiveRecordMigration
       t.datetime :changed_at
       t.datetime :retrieved_at
       t.datetime :dismissed_at

@@ -9,7 +9,7 @@ export default DiscourseRoute.extend({
 
   setupController(controller, model) {
     controller.setProperties({
-      suppliers: A(model)
+      suppliers: A(model),
     });
-  }
+  },
 });

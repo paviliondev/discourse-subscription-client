@@ -5,7 +5,7 @@ class SubscriptionClient::Notices
   PLUGIN_STATUSES_TO_WARN = %w(incompatible tests_failing)
 
   def initialize
-    @suppliers = SubscriptionClientSupplier.with_keys
+    @suppliers = SubscriptionClientSupplier.authorized
   end
 
   def self.update(subscription: true, plugin: true)
@@ -29,12 +29,14 @@ class SubscriptionClient::Notices
   end
 
   def update_subscription_messages(supplier)
+    url = "#{supplier.url}/subscription-server/messages"
     request = SubscriptionClient::Request.new(:supplier, supplier.id)
-    messages = request.perform(supplier.url)
+    messages = request.perform(url)
 
     if messages.present?
       messages[:messages].each do |message|
-        notice_type = SubscriptionClientNotice.types[message[:notice_type].to_sym]
+        notice_type = SubscriptionClientNotice.types[message[:type].to_sym]
+
         if message[:resource] && resource = SubscriptionClientResource.find_by(name: message[:resource], supplier_id: supplier.id)
           notice_subject_type = SubscriptionClientNotice.notice_subject_types[:resource]
           notice_subject_id = resource.id
@@ -42,6 +44,7 @@ class SubscriptionClient::Notices
           notice_subject_type = SubscriptionClientNotice.notice_subject_types[:supplier]
           notice_subject_id = supplier.id
         end
+
         changed_at = message[:created_at]
         notice = SubscriptionClientNotice.find_by(
           notice_type: notice_type,
@@ -123,8 +126,8 @@ class SubscriptionClient::Notices
         notice.touch
       else
         SubscriptionClientNotice.create!(
-          title: I18n.t('subscription_client.notices.compatibility_issue.title', plugin: warning[:name]),
-          message: I18n.t('subscription_client.notices.compatibility_issue.message', url: SubscriptionClient.plugin_status_server_url),
+          title: I18n.t('subscription_client.notices.compatibility_issue.title', resource: warning[:name]),
+          message: I18n.t('subscription_client.notices.compatibility_issue.message', resource: warning[:name]),
           notice_type: notice_type,
           notice_subject_type: notice_subject_type,
           notice_subject_id: notice_subject_id,

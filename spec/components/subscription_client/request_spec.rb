@@ -5,7 +5,7 @@ require_relative '../../plugin_helper'
 describe SubscriptionClient::Request do
   fab!(:user) { Fabricate(:user) }
   fab!(:supplier) { Fabricate(:subscription_client_supplier, api_key: Fabricate(:subscription_client_user_api_key)) }
-  fab!(:resource) { Fabricate(:subscription_client_resource, name: 'discourse-custom-wizard', supplier: supplier)}
+  fab!(:resource) { Fabricate(:subscription_client_resource, name: 'discourse-custom-wizard', supplier: supplier) }
   fab!(:subscription) { Fabricate(:subscription_client_subscription, resource: resource, active: true) }
   let(:subscription_message) {
     {
@@ -67,7 +67,7 @@ describe SubscriptionClient::Request do
     request = described_class.new(:resource, SubscriptionClient::Notices::PLUGIN_STATUS_RESOURCE_ID)
     request.limit.times { SubscriptionClient::Notices.update(subscription: false) }
 
-    stub_plugin_status_request(200, { statuses: [plugin_status], total: 1})
+    stub_plugin_status_request(200, { statuses: [plugin_status], total: 1 })
     SubscriptionClient::Notices.update(subscription: false)
     notice = SubscriptionClientNotice.list(notice_type: SubscriptionClientNotice.types[:connection_error], include_all: true).first
 

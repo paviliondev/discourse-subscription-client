@@ -18,10 +18,10 @@ SubscriptionClient.reopenClass({
     return ajax(`${basePath}/authorize`, {
       type: "DELETE",
       data: {
-        supplier_id: supplierId
-      }
+        supplier_id: supplierId,
+      },
     }).catch(popupAjaxError);
-  }
+  },
 });
 
 export default SubscriptionClient;

@@ -36,14 +36,22 @@ after_initialize do
     load File.expand_path(path, __FILE__)
   end
 
-  AdminDashboardData.add_problem_check do
-    warnings = SubscriptionClientNotice.list_warnings
-    warnings.any? ? ActionView::Base.full_sanitizer.sanitize(warnings.first.message, tags: %w(a)) : nil
-  end
-
   SubscriptionClient::Resources.find_all unless Rails.env.test?
 
   User.has_many(:subscription_client_suppliers)
+
+  AdminDashboardData.add_scheduled_problem_check(:subscription_client) do
+    notices = SubscriptionClientNotice.list(
+      notice_type: SubscriptionClientNotice.error_types
+    )
+    notices.map do |notice|
+      AdminDashboardData::Problem.new(
+        "#{notice.title}: #{notice.message}",
+        priority: "high",
+        identifier: "subscription_client_notice_#{notice.id}"
+      )
+    end
+  end
 
   DiscourseEvent.trigger(:subscription_client_ready)
 end

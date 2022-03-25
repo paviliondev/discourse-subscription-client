@@ -9,9 +9,6 @@
     {{#if notice.expired}}
       {{notice-badge class="notice-expired-at" icon="check" label="admin.subscription_client.notice.expired_at" date=notice.expired_at}}
     {{/if}}
-    {{#if showSubscription}}
-      {{notice-badge class="notice-sub" icon="plug" title="admin.subscription_client.notice.subscription" label="admin.subscription_client.notice.subscription" url="/admin/wizards/notices"}}
-    {{/if}}
     {{notice-badge class="notice-created-at" icon="far-clock" label="admin.subscription_client.notice.created_at" date=notice.created_at leaveAgo=true}}
     {{#if notice.updated_at}}
       {{notice-badge class="notice-updated-at" icon="far-clock" label="admin.subscription_client.notice.updated_at" date=notice.updated_at}}

@@ -1,29 +1,37 @@
 import Component from "@ember/component";
 import SubscriptionClientSupplier from "../models/subscription-client-supplier";
-import { alias } from "@ember/object/computed";
+import discourseComputed from "discourse-common/utils/decorators";
+import { notEmpty } from "@ember/object/computed";
+import I18n from "I18n";
 
 export default Component.extend({
-  tagName: 'tr',
+  tagName: "tr",
   classNames: ["supplier-row"],
-  authorized: alias('supplier.api_key'),
+  authorized: notEmpty("supplier.authorized_at"),
+
+  @discourseComputed("supplier.authorized")
+  status(authorized) {
+    let key = authorized ? "authorized" : "not_authorized";
+    return I18n.t(`admin.subscription_client.supplier.${key}`);
+  },
 
   actions: {
-    authorize(supplier) {
-      SubscriptionClientSupplier.authorize(supplier.id);
+    authorize() {
+      SubscriptionClientSupplier.authorize(this.supplier.id);
     },
 
-    unauthorize(supplier) {
+    unauthorize() {
       this.set("unauthorizing", true);
 
-      SubscriptionClientSupplier.unauthorize(supplier.id)
+      SubscriptionClientSupplier.unauthorize(this.supplier.id)
         .then((result) => {
           if (result.success) {
-            this.set('supplier', result.supplier)
+            this.set("supplier", result.supplier);
           }
         })
         .finally(() => {
           this.set("unauthorizing", false);
         });
     },
-  }
+  },
 });

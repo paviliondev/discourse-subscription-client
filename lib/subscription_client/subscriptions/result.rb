@@ -10,7 +10,7 @@ class ::SubscriptionClient::Subscriptions::Result
     product_name
     price_name
   )
-  KEYS = REQUIRED_KEYS + REQUIRED_KEYS
+  KEYS = REQUIRED_KEYS + OPTIONAL_KEYS
 
   attr_reader :errors,
               :errored_suppliers,
@@ -30,7 +30,7 @@ class ::SubscriptionClient::Subscriptions::Result
 
     unless subscriptions_data.present? && subscriptions_data.is_a?(Array)
       error("invalid_response", supplier)
-      return nil
+      return []
     end
 
     # subscriptions must be properly formed
@@ -40,7 +40,6 @@ class ::SubscriptionClient::Subscriptions::Result
         .map(&:symbolize_keys)
         .each { |data| data[:resource_id] = data[:resource] }
         .select { |data| REQUIRED_KEYS.all? { |key| data.has_key?(key) } }
-
 
     # we only care about subscriptions for resources on this instance
 

@@ -5,14 +5,27 @@ class SubscriptionClientSubscription < ActiveRecord::Base
   validates :price_id, presence: true
 
   belongs_to :resource, class_name: "SubscriptionClientResource"
-  delegate :name, to: :resource, prefix: true
+
+  scope :active, -> { where("active = true AND updated_at > ?", SubscriptionClientSubscription.update_period) }
 
   def active?
-    self.active && updated_at.to_datetime > (Time.zone.now - 2.hours).to_datetime
+    self.active && updated_at.to_datetime > self.class.update_period.to_datetime
   end
 
   def deactivate!
     self.update(active: false)
+  end
+
+  def resource_name
+    resource.name
+  end
+
+  def supplier_name
+    resource.supplier.name
+  end
+
+  def self.update_period
+    Time.zone.now - 2.days
   end
 end
 

@@ -7,15 +7,16 @@ export default DiscourseRoute.extend({
   },
 
   afterModel() {
-    this.transitionTo('adminPlugins.subscriptionClient.suppliers')
+    this.transitionTo("adminPlugins.subscriptionClient.subscriptions");
   },
 
   setupController(controller, model) {
     controller.setProperties({
-      authentication: model.authentication,
       featuredNotices: model.featured_notices,
-      activeNoticeCount: model.active_notice_count
+      activeNoticeCount: model.active_notice_count,
+      authorizedSupplierCount: model.authorized_supplier_count,
+      resourceCount: model.resource_count,
     });
     controller.subscribe();
-  }
+  },
 });
