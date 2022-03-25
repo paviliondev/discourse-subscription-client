@@ -8,8 +8,8 @@ SubscriptionClient::Engine.routes.draw do
   get 'suppliers/authorize/callback' => 'suppliers#authorize_callback'
   delete 'suppliers/authorize' => 'suppliers#destroy'
 
-  get 'subscriptions' => 'subscriptions#index'
-  post 'subscriptions' => 'subscriptions#update'
+  get 'subscriptions' => 'subscriptions#index', defaults: { format: 'json' }
+  post 'subscriptions' => 'subscriptions#update', defaults: { format: 'json' }
 
   get 'notices' => 'notices#index'
   put 'notices/:notice_id/dismiss' => 'notices#dismiss'

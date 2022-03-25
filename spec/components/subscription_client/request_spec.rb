@@ -36,7 +36,7 @@ describe SubscriptionClient::Request do
   end
 
   it "only creates one connection error per type at a time" do
-    stub_request(:get, supplier.url).to_return(status: 400, body: {}.to_json)
+    stub_subscription_messages_request(supplier, 400, [])
     stub_plugin_status_request(400, {})
 
     5.times { SubscriptionClient::Notices.update }
@@ -56,7 +56,7 @@ describe SubscriptionClient::Request do
   end
 
   it "deactivates all supplier's subscriptions if supplier connection error limit is reached" do
-    stub_request(:get, supplier.url).to_return(status: 400, body: {}.to_json)
+    stub_subscription_messages_request(supplier, 400, [])
     request = described_class.new(:supplier, supplier.id)
     request.limit.times { SubscriptionClient::Notices.update(plugin: false) }
     expect(subscription.active?).to eq(false)

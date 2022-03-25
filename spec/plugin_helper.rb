@@ -27,6 +27,10 @@ def stub_server_request(server_url, supplier, status = 200)
   stub_request(:get, "#{server_url}/subscription-server").to_return(status: status, body: { supplier: supplier }.to_json)
 end
 
+def stub_subscription_messages_request(supplier, status, messages)
+  stub_request(:get, "#{supplier.url}/subscription-server/messages").to_return(status: status, body: { messages: messages }.to_json)
+end
+
 def stub_plugin_status_request(status, response)
   stub_request(:get, SubscriptionClient.plugin_status_server_url).to_return(status: status, body: response.to_json)
 end

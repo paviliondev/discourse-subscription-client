@@ -10,7 +10,7 @@ describe SubscriptionClient::Notices do
     {
       title: "Title of message about subscription",
       message: "Message about subscription",
-      notice_type: "info",
+      type: "info",
       created_at: Time.now - 3.day,
       expired_at: nil
     }
@@ -26,7 +26,7 @@ describe SubscriptionClient::Notices do
   context "subscription" do
     before do
       freeze_time
-      stub_request(:get, supplier.url).to_return(status: 200, body: { messages: [subscription_message] }.to_json)
+      stub_subscription_messages_request(supplier, 200, [subscription_message])
       described_class.update(plugin: false)
     end
 
@@ -39,7 +39,7 @@ describe SubscriptionClient::Notices do
 
     it "expires notice if subscription message is expired" do
       subscription_message[:expired_at] = Time.now
-      stub_request(:get, supplier.url).to_return(status: 200, body: { messages: [subscription_message] }.to_json)
+      stub_subscription_messages_request(supplier, 200, [subscription_message])
       described_class.update(plugin: false)
 
       notice = SubscriptionClientNotice.list(include_all: true).first
@@ -58,7 +58,7 @@ describe SubscriptionClient::Notices do
       4.times do |index|
         subscription_message[:title] += " #{index}"
         subscription_message[:created_at] = subscription_message[:created_at] + (index + 1)
-        stub_request(:get, supplier.url).to_return(status: 200, body: { messages: [subscription_message] }.to_json)
+        stub_subscription_messages_request(supplier, 200, [subscription_message])
         described_class.update(plugin: false)
       end
       expect(SubscriptionClientNotice.list.count).to eq(5)
@@ -77,7 +77,7 @@ describe SubscriptionClient::Notices do
     it "converts warning into notice" do
       notice = SubscriptionClientNotice.list.first
       expect(notice.notice_type).to eq(SubscriptionClientNotice.types[:warning])
-      expect(notice.message).to eq(I18n.t("subscription_client.notices.compatibility_issue.message", resource: plugin_status[:name])
+      expect(notice.message).to eq(I18n.t("subscription_client.notices.compatibility_issue.message", resource: plugin_status[:name]))
       expect(notice.changed_at.to_datetime).to be_within(1.second).of (plugin_status[:status_changed_at].to_datetime)
     end
 
@@ -102,7 +102,7 @@ describe SubscriptionClient::Notices do
 
   it "lists notices not expired more than a day ago" do
     subscription_message[:expired_at] = Time.now - 8.hours
-    stub_request(:get, supplier.url).to_return(status: 200, body: { messages: [subscription_message] }.to_json)
+    stub_subscription_messages_request(supplier, 200, [subscription_message])
     stub_plugin_status_request(200, { statuses: [plugin_status], total: 1})
 
     described_class.update

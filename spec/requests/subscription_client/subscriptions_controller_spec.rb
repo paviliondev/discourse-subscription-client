@@ -3,7 +3,8 @@ require_relative '../../plugin_helper'
 
 describe SubscriptionClient::SubscriptionsController do
   fab!(:user) { Fabricate(:user, admin: true) }
-  fab!(:supplier) { Fabricate(:subscription_client_supplier, api_key: Fabricate(:subscription_client_user_api_key)) }
+  fab!(:authorized_at) { Time.now }
+  fab!(:supplier) { Fabricate(:subscription_client_supplier, api_key: Fabricate(:subscription_client_user_api_key), authorized_at: authorized_at, user: user) }
   fab!(:resource) { Fabricate(:subscription_client_resource, supplier: supplier) }
   fab!(:subscription) { Fabricate(:subscription_client_subscription, resource: resource) }
 
