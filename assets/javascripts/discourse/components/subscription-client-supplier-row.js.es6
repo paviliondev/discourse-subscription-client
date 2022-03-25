@@ -20,10 +20,10 @@ export default Component.extend({
       SubscriptionClientSupplier.authorize(this.supplier.id);
     },
 
-    unauthorize() {
+    deauthorize() {
       this.set("unauthorizing", true);
 
-      SubscriptionClientSupplier.unauthorize(this.supplier.id)
+      SubscriptionClientSupplier.deauthorize(this.supplier.id)
         .then((result) => {
           if (result.success) {
             this.set("supplier", result.supplier);

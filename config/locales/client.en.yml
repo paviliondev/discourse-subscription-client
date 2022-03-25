@@ -29,7 +29,7 @@ en:
           authorize: Authorize
           authorized: Authorized
           not_authorized: Not Authorized
-          unauthorize: deauthorize
+          deauthorize: deauthorize
 
         subscriptions:
           nav_label: Subscriptions

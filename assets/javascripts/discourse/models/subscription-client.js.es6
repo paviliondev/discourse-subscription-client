@@ -14,7 +14,7 @@ SubscriptionClient.reopenClass({
     window.location.href = `${basePath}/authorize?supplier_id=${supplierId}`;
   },
 
-  unauthorize(supplierId) {
+  deauthorize(supplierId) {
     return ajax(`${basePath}/authorize`, {
       type: "DELETE",
       data: {

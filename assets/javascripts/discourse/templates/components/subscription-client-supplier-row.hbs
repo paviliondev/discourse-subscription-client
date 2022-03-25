@@ -6,8 +6,8 @@
   <div class="supplier-actions">
     {{#if authorized}}
       {{conditional-loading-spinner size="small" condition=unauthorizing}}
-      <a {{action "unauthorize"}} title={{i18n "admin.subscription_client.supplier.unauthorize"}} role="button" disabled={{unauthorizing}}>
-        {{i18n "admin.subscription_client.supplier.unauthorize"}}
+      <a {{action "deauthorize"}} title={{i18n "admin.subscription_client.supplier.deauthorize"}} role="button" disabled={{unauthorizing}}>
+        {{i18n "admin.subscription_client.supplier.deauthorize"}}
       </a>
     {{else}}
       {{d-button
