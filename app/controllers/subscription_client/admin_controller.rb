@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class SubscriptionClient::AdminController < Admin::AdminController
-  before_action :ensure_admin
-
   def index
     render_json_dump(
       active_notice_count: SubscriptionClientNotice.list.count,

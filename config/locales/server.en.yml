@@ -2,9 +2,6 @@ en:
   subscription_client:
     custom_title: "Subscription"
 
-    validation:
-      subscription: "%{type} %{property} is subscription only"
-
     notices:
       connection_error: "Failed to connect to %{url}"
       compatibility_issue:
@@ -35,3 +32,4 @@ en:
   site_settings:
     subscription_client_enabled: "Enable the subscription client"
     subscription_client_critical_notices_on_dashboard: "Show critical notices about subscriptions on the admin dashboard."
+    subscription_client_allow_moderator_supplier_authorization: "Allow moderators to authorize subscription suppliers"

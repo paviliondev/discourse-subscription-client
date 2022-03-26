@@ -7,3 +7,5 @@ plugins:
   subscription_client_critical_notices_on_dashboard:
     default: true
     client: true
+  subscription_client_allow_moderator_supplier_authorization:
+    default: false

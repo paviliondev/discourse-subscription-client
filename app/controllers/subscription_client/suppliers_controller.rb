@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class SubscriptionClient::SuppliersController < SubscriptionClient::AdminController
+  before_action :ensure_access
   skip_before_action :check_xhr, :preload_json, :verify_authenticity_token, only: [:authorize, :authorize_callback]
   before_action :find_supplier, only: [:authorize, :destroy]
 
@@ -50,5 +51,9 @@ class SubscriptionClient::SuppliersController < SubscriptionClient::AdminControl
     params.require(:supplier_id)
     @supplier = SubscriptionClientSupplier.find(params[:supplier_id])
     raise Discourse::InvalidParameters.new(:supplier_id) unless @supplier
+  end
+
+  def ensure_access
+    ensure_admin unless SiteSetting.subscription_client_allow_moderator_supplier_authorization
   end
 end
