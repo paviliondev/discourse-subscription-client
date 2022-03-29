@@ -5,6 +5,7 @@ class SubscriptionClientNotice < ActiveRecord::Base
   delegate :name, to: :subject
 
   scope :warnings, -> { where(notice_type: SubscriptionClientNotice.types[:warning]) }
+  scope :hidden, -> { where("hidden_at IS NOT NULL AND dismissed_at IS NULL AND expired_at IS NULL") }
 
   def self.types
     @types ||= Enum.new(
@@ -28,6 +29,36 @@ class SubscriptionClientNotice < ActiveRecord::Base
     ]
   end
 
+  def supplier
+    if supplier?
+      notice_subject
+    elsif resource?
+      notice_subject.supplier
+    else
+      nil
+    end
+  end
+
+  def resource
+    if resource?
+      notice_subject
+    else
+      nil
+    end
+  end
+
+  def supplier?
+    notice_subject_type === self.class.notice_subject_types[:supplier]
+  end
+
+  def resource?
+    notice_subject_type === self.class.notice_subject_types[:resource] && !plugin_status_resource?
+  end
+
+  def plugin_status_resource?
+    SubscriptionClient::Notices::PLUGIN_STATUS_RESOURCE_ID === notice_subject_id
+  end
+
   def dismiss!
     if dismissable?
       self.dismissed_at = DateTime.now.iso8601(3)
@@ -38,6 +69,15 @@ class SubscriptionClientNotice < ActiveRecord::Base
   def hide!
     if can_hide?
       self.hidden_at = DateTime.now.iso8601(3)
+      self.save_and_publish
+    else
+      false
+    end
+  end
+
+  def show!
+    if hidden?
+      self.hidden_at = nil
       self.save_and_publish
     else
       false
@@ -85,15 +125,14 @@ class SubscriptionClientNotice < ActiveRecord::Base
 
   def self.publish_notice_count
     payload = {
-      active_notice_count: list.count,
-      active_critical_notice_count: list(notice_type: error_types, visible: true).count
+      visible_notice_count: list(visible: true).count
     }
-    MessageBus.publish("/subscription-client", payload, group_ids: [Group::AUTO_GROUPS[:admins]])
+    MessageBus.publish("/subscription_client_user", payload, group_ids: [Group::AUTO_GROUPS[:staff]])
   end
 
   def self.list(notice_type: nil, notice_subject_type: nil, notice_subject_id: nil, title: nil, include_all: false, visible: false, page: nil, page_limit: 30)
     query = SubscriptionClientNotice.all
-    query = query.where("hidden_at IS NULL") if visible
+    query = query.where("hidden_at IS NULL") if visible && !include_all
     query = query.where("dismissed_at IS NULL") unless include_all
     query = query.where("expired_at IS NULL") unless include_all
     query = query.where("notice_subject_type = ?", notice_subject_type.to_s) if notice_subject_type
@@ -139,28 +178,25 @@ class SubscriptionClientNotice < ActiveRecord::Base
   end
 
   def self.expire_connection_error(notice_subject_type_key, notice_subject_id)
-    expire_all(types[:connection_error], notice_subject_types[notice_subject_type_key.to_sym], notice_subject_id)
+    expired_count = expire_all(types[:connection_error], notice_subject_types[notice_subject_type_key.to_sym], notice_subject_id)
+    publish_notice_count if expired_count.to_i > 0
   end
 
   def self.dismiss_all
-    dismissed_count = self.where("
+    self.where("
       notice_type = #{types[:info]} AND
       expired_at IS NULL AND
       dismissed_at IS NULL
     ").update_all("dismissed_at = now()")
-    publish_notice_count if dismissed_count.to_i > 0
-    dismissed_count
   end
 
   def self.expire_all(notice_type, notice_subject_type, notice_subject_id)
-    expired_count = self.where("
+    self.where("
       notice_type = #{notice_type} AND
       notice_subject_type = '#{notice_subject_type}' AND
       notice_subject_id = #{notice_subject_id} AND
       expired_at IS NULL
     ").update_all("expired_at = now()")
-    publish_notice_count if expired_count.to_i > 0
-    expired_count
   end
 end
 

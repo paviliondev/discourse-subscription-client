@@ -1,34 +1,49 @@
 import Controller from "@ember/controller";
 import SubscriptionClientNotice from "../models/subscription-client-notice";
-import discourseComputed from "discourse-common/utils/decorators";
-import { notEmpty } from "@ember/object/computed";
+import { observes } from "discourse-common/utils/decorators";
+import { gt, notEmpty } from "@ember/object/computed";
 import { A } from "@ember/array";
-import I18n from "I18n";
-import bootbox from "bootbox";
 
 export default Controller.extend({
+  queryParams: ["all", "hidden"],
   messageUrl: "https://thepavilion.io/t/3652",
   messageKey: "info",
   messageClass: "info",
   hasNotices: notEmpty("notices"),
+  hasHiddenNotices: gt("hiddenNoticeCount", 0),
   page: 0,
   loadingMore: false,
   canLoadMore: true,
+  hidden: false,
+  all: false,
 
-  @discourseComputed("notices.[]", "notices.@each.dismissed")
-  allDismisssed(notices) {
-    return notices.every((n) => !n.canDismiss || n.dismissed);
+  @observes("currentUser.subscription_notice_count")
+  visibleNoticeCountChanged() {
+    this.setProperties({
+      notices: A(),
+      page: 0,
+      canLoadMore: true,
+    });
+    this.loadMoreNotices();
   },
 
   loadMoreNotices() {
     if (!this.canLoadMore) {
       return;
     }
-    const page = this.get("page");
+
+    const opts = {
+      page: this.get("page"),
+      visible: !this.get("hidden"),
+      include_all: this.get("all"),
+    };
+
     this.set("loadingMore", true);
 
-    SubscriptionClientNotice.list({ page, include_all: true })
+    SubscriptionClientNotice.list(opts)
       .then((result) => {
+        this.set("hiddenNoticeCount", result.hidden_notice_count);
+
         if (result.notices.length === 0) {
           this.set("canLoadMore", false);
           return;
@@ -53,20 +68,18 @@ export default Controller.extend({
       }
     },
 
-    dismissAll() {
-      bootbox.confirm(
-        I18n.t("admin.subscription_client.notice.dismiss_all.confirm"),
-        I18n.t("no_value"),
-        I18n.t("yes_value"),
-        (result) => {
-          if (result) {
-            this.set("loadingMore", true);
-            SubscriptionClientNotice.dismissAll().finally(() =>
-              this.set("loadingMore", false)
-            );
-          }
-        }
-      );
+    toggleHidden(e) {
+      if (e) {
+        e.stopPropagation();
+      }
+      this.toggleProperty("hidden");
+    },
+
+    toggleAll(e) {
+      if (e) {
+        e.stopPropagation();
+      }
+      this.toggleProperty("all");
     },
   },
 });

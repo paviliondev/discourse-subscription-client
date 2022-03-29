@@ -6,14 +6,14 @@ export default DiscourseRoute.extend({
     return SubscriptionClient.show();
   },
 
-  afterModel() {
-    this.transitionTo("adminPlugins.subscriptionClient.subscriptions");
+  afterModel(model, transition) {
+    if (transition.to.name === "adminPlugins.subscriptionClient.index") {
+      this.transitionTo("adminPlugins.subscriptionClient.subscriptions");
+    }
   },
 
   setupController(controller, model) {
     controller.setProperties({
-      featuredNotices: model.featured_notices,
-      activeNoticeCount: model.active_notice_count,
       authorizedSupplierCount: model.authorized_supplier_count,
       resourceCount: model.resource_count,
     });

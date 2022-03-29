@@ -6,16 +6,20 @@ en:
 
         message:
           subscriptions:
-            info: Plugin subscriptions on this forum.
-            no_resources: No plugins on this forum offer subscriptions.
-            no_authorized_suppliers: <a href="/admin/plugins/subscriptions-client/suppliers">Authorize a plugin supplier</a> to activate their subscriptions.
-            documentation: Learn more about subscriptions.
+            info: Subscriptions on this forum.
+            no_resources: Nothing offers a subscription on this forum.
+            no_authorized_suppliers: <a href="/admin/plugins/subscriptions-client/suppliers">Authorize a supplier</a> to import subscriptions.
+            no_authorized_suppliers_no_access: An admin needs to authorize a subscription supplier.
+            documentation: Learn more about subscriptions
           notices:
-            info: "Plugin status and subscription notices"
+            info: "Subscription notices"
             documentation: Learn more about notices
           suppliers:
             info: "Subscription suppliers"
             documentation: Learn more about subscription suppliers
+
+        notifications:
+          subscription_notice_count: Subscription notices
 
         suppliers:
           nav_label: Suppliers
@@ -29,6 +33,8 @@ en:
           authorize: Authorize
           authorized: Authorized
           not_authorized: Not Authorized
+          authorized_at: Authorized at
+          authorized_by: Authorized by
           deauthorize: deauthorize
 
         subscriptions:
@@ -51,23 +57,31 @@ en:
         notice:
           subscription: Subscription
           message: Message
-          time: Time
+          show_message: Message
+          updated: Updated
           status: Status
-          title: Title
+          action: Action
           dismiss:
             label: Dismiss
             title: Dismiss notice
-          dismiss_all:
-            label: Dismiss All
-            title: Dismiss all informational subscription notices
-            confirm: Are you sure you want to dismiss all informational subscription notices?
+          hide:
+            label: Hide
+            title: Hide notice
+          show:
+            label: Show
+            title: Show notice
           active: active
+          hidden: hidden
           created_at: issued
           updated_at: updated
           expired_at: expired
           dismissed_at: dismissed
+          source: Source
+          resource: Resource
+          plugin_status_resource:
+            label: Plugin Status
+            resource: all plugins
           type:
-            label: Type
             info: Information
             warning: Warning
             connection_error: Connection Error
@@ -76,3 +90,9 @@ en:
           nav_label: Notices
           title: Notices
           none: No notices at the moment.
+          toggle_hidden:
+            label: Show Hidden
+            title: Show hidden notices.
+          toggle_all:
+            label: Show All
+            title: Show all notices.

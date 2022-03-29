@@ -1,14 +1,20 @@
 # frozen_string_literal: true
 
 class SubscriptionClient::NoticesController < SubscriptionClient::AdminController
-  before_action :find_notice, only: [:dismiss, :hide]
+  before_action :find_notice, only: [:dismiss, :hide, :show]
 
   def index
     notice_type = params[:notice_type]
     notice_subject_type = params[:notice_subject_type]
     page = params[:page].to_i
-    include_all = ActiveRecord::Type::Boolean.new.cast(params[:include_all])
+
     visible = ActiveRecord::Type::Boolean.new.cast(params[:visible])
+
+    if current_user.admin
+      include_all = ActiveRecord::Type::Boolean.new.cast(params[:include_all])
+    else
+      include_all = false
+    end
 
     if notice_type
       if notice_type.is_a?(Array)
@@ -34,7 +40,10 @@ class SubscriptionClient::NoticesController < SubscriptionClient::AdminControlle
       visible: visible
     )
 
-    render_serialized(notices, SubscriptionClientNoticeSerializer, root: :notices)
+    render_json_dump(
+      notices: serialize_data(notices, SubscriptionClientNoticeSerializer),
+      hidden_notice_count: SubscriptionClientNotice.hidden.count
+    )
   end
 
   def dismiss
@@ -45,17 +54,17 @@ class SubscriptionClient::NoticesController < SubscriptionClient::AdminControlle
     end
   end
 
-  def hide
-    if @notice.can_hide? && @notice.hide!
-      render json: success_json.merge(hidden_at: @notice.hidden_at)
+  def show
+    if @notice.hidden? && @notice.show!
+      render json: success_json
     else
       render json: failed_json
     end
   end
 
-  def dismiss_all
-    if SubscriptionClientNotice.dismiss_all
-      render json: success_json
+  def hide
+    if @notice.can_hide? && @notice.hide!
+      render json: success_json.merge(hidden_at: @notice.hidden_at)
     else
       render json: failed_json
     end

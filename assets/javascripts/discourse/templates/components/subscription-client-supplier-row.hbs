@@ -2,6 +2,19 @@
 <td>
   <label title={{status}}>{{status}}</label>
 </td>
+<td>
+  {{dash-if-empty (format-date supplier.authorized_at leaveAgo="true")}}
+</td>
+<td>
+  {{#if supplier.user}}
+    {{#link-to "adminUser" supplier.user.id supplier.user.username}}
+      {{avatar supplier.user imageSize="tiny"}}
+      {{supplier.user.username}}
+    {{/link-to}}
+  {{else}}
+    &mdash;
+  {{/if}}
+</td>
 <td class="action-column">
   <div class="supplier-actions">
     {{#if authorized}}

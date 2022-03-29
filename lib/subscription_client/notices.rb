@@ -21,7 +21,7 @@ class SubscriptionClient::Notices
       end
     end
 
-    if plugin
+    if plugin && SiteSetting.subscription_client_request_plugin_statuses
       update_plugin_statuses
     end
 

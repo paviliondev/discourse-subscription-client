@@ -5,7 +5,7 @@ require_relative '../../plugin_helper'
 describe SubscriptionClient::Notices do
   fab!(:user) { Fabricate(:user) }
   fab!(:supplier) { Fabricate(:subscription_client_supplier, api_key: Fabricate(:subscription_client_user_api_key)) }
-  fab!(:resource) { Fabricate(:subscription_client_resource, name: 'discourse-custom-wizard', supplier_id: supplier.id)}
+  fab!(:resource) { Fabricate(:subscription_client_resource, name: 'discourse-custom-wizard', supplier_id: supplier.id) }
   let(:subscription_message) {
     {
       title: "Title of message about subscription",
@@ -70,7 +70,7 @@ describe SubscriptionClient::Notices do
   context "plugin status" do
     before do
       freeze_time
-      stub_plugin_status_request(200, { statuses: [plugin_status], total: 1})
+      stub_plugin_status_request(200, { statuses: [plugin_status], total: 1 })
       described_class.update(subscription: false)
     end
 
@@ -84,7 +84,7 @@ describe SubscriptionClient::Notices do
     it "expires warning notices if status is recommended or compatible" do
       plugin_status[:status] = 'compatible'
       plugin_status[:status_changed_at] = Time.now
-      stub_plugin_status_request(200, { statuses: [plugin_status], total: 1})
+      stub_plugin_status_request(200, { statuses: [plugin_status], total: 1 })
       described_class.update(subscription: false)
 
       notice = SubscriptionClientNotice.list(notice_type: SubscriptionClientNotice.types[:warning], include_all: true).first
@@ -103,7 +103,7 @@ describe SubscriptionClient::Notices do
   it "lists notices not expired more than a day ago" do
     subscription_message[:expired_at] = Time.now - 8.hours
     stub_subscription_messages_request(supplier, 200, [subscription_message])
-    stub_plugin_status_request(200, { statuses: [plugin_status], total: 1})
+    stub_plugin_status_request(200, { statuses: [plugin_status], total: 1 })
 
     described_class.update
     expect(SubscriptionClientNotice.list(include_all: true).length).to eq(2)

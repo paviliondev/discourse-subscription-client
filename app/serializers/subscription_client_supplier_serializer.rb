@@ -6,7 +6,7 @@ class SubscriptionClientSupplierSerializer < ApplicationSerializer
              :authorized,
              :authorized_at
 
-  has_one :user, serializer: BasicUserSerializer
+  has_one :user, serializer: BasicUserSerializer, embed: :objects
 
   def authorized
     object.api_key.present? && object.authorized_at.present?

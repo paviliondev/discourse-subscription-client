@@ -1,23 +1,70 @@
 $info: #038ae7;
 $warning: #d47e00;
+$error: $danger;
+$notice_tertiary: #3c1c8c;
+
+.subscription-notice {
+  background-color: $notice_tertiary;
+}
+
+.d-header-icons .subscription-notice {
+  right: 0;
+  left: unset;
+}
+
+.nav-pills .subscription-notice {
+  margin-left: 0.5em;
+}
 
 .subscription-client-notice-row {
   padding: 0.75em;
   margin-bottom: 1em;
   border: 1px solid var(--primary-low);
 
-  &.dismissed {
-    display: none;
+  &.expired,
+  &.dismissed,
+  &.expired p,
+  &.dismissed p {
+    color: var(--primary-medium) !important;
+
+    .btn {
+      border: 1px solid rgba($notice_tertiary, 0.3);
+      background: rgba($notice_tertiary, 0.1);
+      color: var(--primary-medium);
+
+      &:hover,
+      &:active {
+        border: 1px solid rgba($notice_tertiary, 0.5) !important;
+        background: rgba($notice_tertiary, 0.5) !important;
+        color: rgba($secondary, 0.9) !important;
+      }
+    }
   }
 
-  &.expired .notice-badge:not(.notice-expired-at),
   &.expired a,
-  &.expired p {
-    color: var(--primary-medium) !important;
+  &.dismissed a {
+    color: rgba($tertiary, 0.5);
   }
 
   .notice-badge {
     padding: 0 0.5em;
+  }
+
+  .btn {
+    padding: 0.35em 0.5em;
+  }
+
+  .btn {
+    border: 1px solid rgba($notice_tertiary, 0.3);
+    background: rgba($notice_tertiary, 0.1);
+    color: var(--primary);
+
+    &:hover,
+    &:active {
+      border: 1px solid $notice_tertiary !important;
+      background: $notice_tertiary !important;
+      color: var(--secondary) !important;
+    }
   }
 
   .notice-header {
@@ -66,36 +113,84 @@ $warning: #d47e00;
   color: var(--primary) !important;
 }
 
-a.show-notice-message {
-  padding: 0.25em 0.5em;
-  color: var(--primary);
-}
-
 .subscription-client-notice,
-.subscription-client-notice-row:not(.expired):not(.dismissed) {
-  &.info {
-    background-color: rgba($info, 0.1);
-    border: 1px solid rgba($info, 0.5);
+tr.subscription-client-notice-row {
+  background-color: rgba($primary-medium, 0.1);
+  border: 1px solid rgba($primary-medium, 0.5);
+
+  &:not(.expired):not(.dismissed) {
+    &.info {
+      background-color: rgba($info, 0.1);
+      border: 1px solid rgba($info, 0.5);
+
+      td {
+        border-top: 1px solid rgba($info, 0.5);
+      }
+
+      &:last-of-type td {
+        border-bottom: 1px solid rgba($info, 0.5);
+      }
+    }
+
+    &.warning {
+      background-color: rgba($warning, 0.1);
+      border: 1px solid rgba($warning, 0.5);
+
+      td {
+        border-top: 1px solid rgba($warning, 0.5);
+      }
+
+      &:last-of-type td {
+        border-bottom: 1px solid rgba($warning, 0.5);
+      }
+    }
+
+    &.connection-error {
+      background-color: rgba($error, 0.1);
+      border: 1px solid rgba($error, 0.5);
+
+      td {
+        border-top: 1px solid rgba($error, 0.5);
+      }
+
+      &:last-of-type td {
+        border-bottom: 1px solid rgba($error, 0.5);
+      }
+    }
   }
-  &.warning,
-  &.connection-error {
-    background-color: rgba($warning, 0.1);
-    border: 1px solid rgba($warning, 0.5);
+
+  &:last-of-type td {
+    border-bottom: 1px solid rgba($primary-medium, 0.5);
   }
 }
 
 .notice-message {
   position: relative;
 
-  .cooked-notice-message {
+  .notice-message-content {
     background-color: var(--secondary);
     padding: 1em;
     z-index: 1;
     box-shadow: shadow("dropdown");
     border-top: 1px solid var(--primary-low);
+    width: 500px;
 
     p {
       margin: 0;
     }
   }
+}
+
+.notice-type {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.notice-source,
+.notice-resource {
+  white-space: nowrap;
+}
+
+.notice-status {
+  width: 200px;
 }

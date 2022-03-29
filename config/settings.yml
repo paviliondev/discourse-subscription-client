@@ -4,8 +4,10 @@ plugins:
     client: true
   subscription_client_verbose_logs:
     default: false
-  subscription_client_critical_notices_on_dashboard:
+  subscription_client_warning_notices_on_dashboard:
     default: true
-    client: true
   subscription_client_allow_moderator_supplier_authorization:
     default: false
+    client: true
+  subscription_client_request_plugin_statuses:
+    default: true

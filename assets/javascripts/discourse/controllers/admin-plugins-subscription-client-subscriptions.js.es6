@@ -16,12 +16,18 @@ export default Controller.extend({
   messageClass: "info",
 
   @on("init")
-  @observes("authorizedSupplierCount")
+  @observes(
+    "authorizedSupplierCount",
+    "currentUser.canAccessSubscriptionSuppliers"
+  )
   changeMessageKey() {
     if (this.resourceCount === 0) {
       this.set("messageKey", "no_resources");
     } else if (this.authorizedSupplierCount === 0) {
-      this.set("messageKey", "no_authorized_suppliers");
+      let key = this.currentUser.canAccessSubscriptionSuppliers
+        ? "no_authorized_suppliers"
+        : "no_authorized_suppliers_no_access";
+      this.set("messageKey", key);
     } else {
       this.set("messageKey", "info");
     }

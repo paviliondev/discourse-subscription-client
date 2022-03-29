@@ -24,7 +24,7 @@ class SubscriptionClientSupplier < ActiveRecord::Base
 
   def self.publish_authorized_supplier_count
     payload = { authorized_supplier_count: authorized.count }
-    MessageBus.publish("/subscription-client", payload, group_ids: [Group::AUTO_GROUPS[:admins]])
+    MessageBus.publish("/subscription_client", payload, group_ids: [Group::AUTO_GROUPS[:staff]])
   end
 end
 

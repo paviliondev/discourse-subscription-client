@@ -4,7 +4,7 @@ import { cookAsync } from "discourse/lib/text";
 import { createPopper } from "@popperjs/core";
 
 export default Mixin.create({
-  showCookedMessage: false,
+  showMessage: false,
 
   didReceiveAttrs() {
     const message = this.notice.message;
@@ -15,11 +15,11 @@ export default Mixin.create({
 
   createMessageModal() {
     let container = this.element.querySelector(".notice-message");
-    let modal = this.element.querySelector(".cooked-notice-message");
+    let modal = this.element.querySelector(".notice-message-content");
 
     this._popper = createPopper(container, modal, {
       strategy: "absolute",
-      placement: "bottom-start",
+      placement: "auto",
       modifiers: [
         {
           name: "preventOverflow",
@@ -52,15 +52,15 @@ export default Mixin.create({
         `[data-notice-id="${this.notice.id}"] .notice-message`
       )
     ) {
-      this.set("showCookedMessage", false);
+      this.set("showMessage", false);
     }
   },
 
   actions: {
-    toggleCookedMessage() {
-      this.toggleProperty("showCookedMessage");
+    toggleMessage() {
+      this.toggleProperty("showMessage");
 
-      if (this.showCookedMessage) {
+      if (this.showMessage) {
         scheduleOnce("afterRender", this, this.createMessageModal);
       }
     },

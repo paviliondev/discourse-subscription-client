@@ -2,12 +2,17 @@
   <h3>{{i18n "admin.subscription_client.notices.title"}}</h3>
 
   <div class="buttons">
-    {{d-button
-      label="admin.subscription_client.notice.dismiss_all.label"
-      title="admin.subscription_client.notice.dismiss_all.title"
-      action=(action "dismissAll")
-      disabled=allDismisssed
-      icon="check"}}
+    {{#if currentUser.admin}}
+      {{#d-button action=(action "toggleAll") title="admin.subscription_client.notices.toggle_all.title"}}
+        {{input type="checkbox" checked=all click=(action "toggleAll")}}
+        {{i18n "admin.subscription_client.notices.toggle_all.label"}}
+      {{/d-button}}
+    {{else if hasHiddenNotices}}
+      {{#d-button action=(action "toggleHidden") title="admin.subscription_client.notices.toggle_hidden.title"}}
+        {{input type="checkbox" checked=hidden click=(action "toggleHidden")}}
+        {{i18n "admin.subscription_client.notices.toggle_hidden.label"}}
+      {{/d-button}}
+    {{/if}}
   </div>
 </div>
 
@@ -26,10 +31,12 @@
       <table>
         <thead>
           <tr>
-            <th>{{I18n "admin.subscription_client.notice.time"}}</th>
-            <th>{{I18n "admin.subscription_client.notice.type.label"}}</th>
-            <th>{{I18n "admin.subscription_client.notice.title"}}</th>
+            <th>{{I18n "admin.subscription_client.notice.updated"}}</th>
+            <th>{{I18n "admin.subscription_client.notice.source"}}</th>
+            <th>{{I18n "admin.subscription_client.notice.resource"}}</th>
+            <th>{{I18n "admin.subscription_client.notice.message"}}</th>
             <th>{{I18n "admin.subscription_client.notice.status"}}</th>
+            <th>{{I18n "admin.subscription_client.notice.action"}}</th>
           </tr>
         </thead>
         <tbody>

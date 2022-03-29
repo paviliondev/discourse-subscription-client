@@ -28,6 +28,14 @@
     .loading-container {
       margin-right: 1em;
     }
+
+    button {
+      margin-left: 0.75em;
+
+      input {
+        margin: 0 0.5em 0 0;
+      }
+    }
   }
 }
 
@@ -56,6 +64,14 @@
   display: flex;
   align-items: center;
   margin-left: auto;
+}
+
+.subscription-client.notices .admin-subscription-client-container tbody {
+  border-top: unset;
+
+  tr {
+    border-bottom: unset;
+  }
 }
 
 .subscription-notices-link {

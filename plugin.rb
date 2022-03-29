@@ -8,6 +8,7 @@
 register_asset 'stylesheets/common/common.scss'
 enabled_site_setting :subscription_client_enabled
 add_admin_route "admin.subscription_client.title", "subscriptionClient"
+register_svg_icon "far-building"
 
 after_initialize do
   %w[
@@ -27,9 +28,10 @@ after_initialize do
     ../app/controllers/subscription_client/subscriptions_controller.rb
     ../app/controllers/subscription_client/suppliers_controller.rb
     ../app/controllers/subscription_client/notices_controller.rb
+    ../app/serializers/subscription_client_supplier_serializer.rb
+    ../app/serializers/subscription_client_resource_serializer.rb
     ../app/serializers/subscription_client_notice_serializer.rb
     ../app/serializers/subscription_client_subscription_serializer.rb
-    ../app/serializers/subscription_client_supplier_serializer.rb
     ../app/jobs/scheduled/subscription_client/update_subscriptions.rb
     ../app/jobs/scheduled/subscription_client/update_notices.rb
   ].each do |path|
@@ -39,8 +41,16 @@ after_initialize do
   SubscriptionClient::Resources.find_all unless Rails.env.test?
 
   User.has_many(:subscription_client_suppliers)
+  add_to_serializer(:current_user, :subscription_notice_count) do
+    SubscriptionClientNotice.list(visible: true).count
+  end
+  add_to_serializer(:current_user, :include_subscription_notice_count) do
+    scope.is_staff? && SiteSetting.subscription_client_enabled
+  end
 
   AdminDashboardData.add_scheduled_problem_check(:subscription_client) do
+    return unless SiteSetting.subscription_client_warning_notices_on_dashboard
+
     notices = SubscriptionClientNotice.list(
       notice_type: SubscriptionClientNotice.error_types
     )

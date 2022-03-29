@@ -58,6 +58,22 @@ const SubscriptionClientNotice = EmberObject.extend({
       })
       .catch(popupAjaxError);
   },
+
+  show() {
+    if (!this.get("hidden")) {
+      return;
+    }
+
+    return ajax(`${basePath}/${this.get("id")}/show`, {
+      type: "PUT",
+    })
+      .then((result) => {
+        if (result.success) {
+          this.set("hidden_at", null);
+        }
+      })
+      .catch(popupAjaxError);
+  },
 });
 
 SubscriptionClientNotice.reopenClass({
@@ -65,12 +81,6 @@ SubscriptionClientNotice.reopenClass({
     return ajax(`${basePath}`, {
       type: "GET",
       data,
-    }).catch(popupAjaxError);
-  },
-
-  dismissAll() {
-    return ajax(`${basePath}/dismiss`, {
-      type: "PUT",
     }).catch(popupAjaxError);
   },
 });

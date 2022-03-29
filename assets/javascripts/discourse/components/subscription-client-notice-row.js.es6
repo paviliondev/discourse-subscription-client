@@ -1,5 +1,6 @@
 import Component from "@ember/component";
 import NoticeMessage from "../mixins/notice-message";
+import { readOnly } from "@ember/object/computed";
 
 export default Component.extend(NoticeMessage, {
   tagName: "tr",
@@ -10,10 +11,19 @@ export default Component.extend(NoticeMessage, {
     "notice.expired:expired",
     "notice.dismissed:dismissed",
   ],
+  canHide: readOnly("can_hide"),
 
   actions: {
     dismiss() {
       this.notice.dismiss();
+    },
+
+    hide() {
+      this.notice.hide();
+    },
+
+    show() {
+      this.notice.show();
     },
   },
 });

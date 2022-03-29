@@ -13,7 +13,7 @@ en:
           message: Please check your plugins' compatibility with the latest version of Discourse before updating.
       supplier:
         connection_error:
-          title: Unable to connect to %{supplier}'s subscription server
+          title: Unable to connect to %{supplier}
           message: Any subscriptions you have with %{supplier} have been deactivated.
 
     subscriptions:
@@ -30,6 +30,8 @@ en:
         failed_to_create_subscription: "Failed to create subscription for %{resource_name} (%{resource-id}). product: %{product_id}; price: %{price}. From %{supplier} (%{supplier_url})"
 
   site_settings:
-    subscription_client_enabled: "Enable the subscription client"
-    subscription_client_critical_notices_on_dashboard: "Show critical notices about subscriptions on the admin dashboard."
-    subscription_client_allow_moderator_supplier_authorization: "Allow moderators to authorize subscription suppliers"
+    subscription_client_enabled: "Enable the subscription client."
+    subscription_client_verbose_logs: "Enable verbose logs for the subscription client."
+    subscription_client_warning_notices_on_dashboard: "Show warning notices about subscriptions on the admin dashboard."
+    subscription_client_allow_moderator_supplier_authorization: "Allow moderators to authorize subscription suppliers."
+    subscription_client_request_plugin_statuses: Request the status of plugins from plugins.discourse.pavilion.tech.
