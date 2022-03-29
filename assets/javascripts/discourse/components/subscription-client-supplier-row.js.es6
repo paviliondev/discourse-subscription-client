@@ -6,7 +6,7 @@ import I18n from "I18n";
 
 export default Component.extend({
   tagName: "tr",
-  classNames: ["supplier-row"],
+  classNames: ["subscription-client-supplier-row"],
   authorized: notEmpty("supplier.authorized_at"),
 
   @discourseComputed("supplier.authorized")

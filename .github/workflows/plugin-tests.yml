@@ -123,5 +123,10 @@ jobs:
           bin/rake db:migrate
 
       - name: Plugin RSpec with Coverage
-        if: matrix.build_type == 'backend' && steps.check_spec.outputs.files_exists == 'true'
-        run: SIMPLECOV=1 bin/rake plugin:spec[${{ steps.repo-name.outputs.value }}]
+        if: matrix.build_type == 'backend'
+        run: bin/rake plugin:spec[${{ steps.repo-name.outputs.value }}]
+
+      - name: Plugin QUnit
+        if: matrix.build_type == 'frontend'
+        run: bin/rake plugin:qunit['${{ github.event.repository.name }}','1200000']
+        timeout-minutes: 30

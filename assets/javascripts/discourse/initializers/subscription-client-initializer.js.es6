@@ -10,10 +10,10 @@ export default {
   after: "message-bus",
   initialize(container) {
     const user = container.lookup("current-user:main");
+    const siteSettings = container.lookup("site-settings:main");
 
-    if (user) {
+    if (user && user.staff && siteSettings.subscription_client_enabled) {
       const bus = container.lookup("message-bus:main");
-      const siteSettings = container.lookup("site-settings:main");
 
       bus.subscribe("/subscription_client_user", (data) => {
         if (isPresent(data.visible_notice_count)) {
