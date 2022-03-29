@@ -1,7 +1,7 @@
 export default {
   "/admin/plugins/subscription-client.json": {
     authorized_supplier_count: 1,
-    resource_count: 1
+    resource_count: 1,
   },
   "/admin/plugins/subscription-client/subscriptions.json": {
     subscriptions: [
@@ -11,7 +11,7 @@ export default {
         product_name: "Business",
         price_name: "yearly",
         active: true,
-        updated_at: "2022-03-28T11:43:04.936Z"
+        updated_at: "2022-03-28T11:43:04.936Z",
       },
       {
         supplier_name: "Supplier 1",
@@ -19,16 +19,17 @@ export default {
         product_name: "Standard",
         price_name: "monthly",
         active: true,
-        updated_at: "2022-03-28T11:43:04.946Z"
-      }
-    ]
+        updated_at: "2022-03-28T11:43:04.946Z",
+      },
+    ],
   },
   "/admin/plugins/subscription-client/notices.json": {
     notices: [
       {
         id: 1,
         title: "Unable to connect to the plugin status server",
-        message: "Please check your plugins' statuses before updating Discourse.",
+        message:
+          "Please check your plugins' statuses before updating Discourse.",
         notice_type: "connection_error",
         notice_subject_type: "SubscriptionClientResource",
         notice_subject_id: -1,
@@ -40,7 +41,7 @@ export default {
         retrieved_at: null,
         hidden_at: null,
         dismissable: false,
-        can_hide: true
+        can_hide: true,
       },
       {
         id: 2,
@@ -67,16 +68,16 @@ export default {
             id: 1,
             username: "angus",
             name: null,
-            avatar_template: "/user_avatar/localhost/angus/{size}/3_2.png"
-          }
+            avatar_template: "/user_avatar/localhost/angus/{size}/3_2.png",
+          },
         },
         resource: {
           id: 1,
-          name: "discourse-plugin-1"
-        }
-      }
+          name: "discourse-plugin-1",
+        },
+      },
     ],
-    hidden_notice_count: 1
+    hidden_notice_count: 1,
   },
   "/admin/plugins/subscription-client/suppliers.json": [
     {
@@ -88,8 +89,8 @@ export default {
         id: 1,
         username: "angus",
         name: null,
-        avatar_template: "/user_avatar/localhost/angus/{size}/3_2.png"
-      }
-    }
-  ]
+        avatar_template: "/user_avatar/localhost/angus/{size}/3_2.png",
+      },
+    },
+  ],
 };
