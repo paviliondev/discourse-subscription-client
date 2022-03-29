@@ -30,7 +30,8 @@ describe SubscriptionClient::NoticesController do
 
     get "/admin/plugins/subscription-client/notices.json"
     expect(response.status).to eq(200)
-    expect(response.parsed_body.length).to eq(1)
+    expect(response.parsed_body['notices'][0]["id"]).to eq(subscription_message_notice.id)
+    expect(response.parsed_body['hidden_notice_count']).to eq(0)
   end
 
   it "dismisses notices" do
@@ -41,18 +42,6 @@ describe SubscriptionClient::NoticesController do
 
     updated = SubscriptionClientNotice.find(notice.id)
     expect(updated.dismissed?).to eq(true)
-  end
-
-  it "dismisses all notices" do
-    5.times do |index|
-      subscription_notice_params[:changed_at] = Time.now + index
-      Fabricate(:subscription_client_notice, subscription_notice_params)
-    end
-
-    expect(SubscriptionClientNotice.list.size).to eq(5)
-    put "/admin/plugins/subscription-client/notices/dismiss.json"
-    expect(response.status).to eq(200)
-    expect(SubscriptionClientNotice.list.size).to eq(0)
   end
 
   it "hides notices" do

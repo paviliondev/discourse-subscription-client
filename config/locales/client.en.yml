@@ -57,7 +57,9 @@ en:
         notice:
           subscription: Subscription
           message: Message
-          show_message: Message
+          show_message:
+            label: Message
+            title: Show message
           updated: Updated
           status: Status
           action: Action

@@ -7,7 +7,7 @@ const basePath = "/admin/plugins/subscription-client";
 
 SubscriptionClient.reopenClass({
   show() {
-    return ajax(basePath).catch(popupAjaxError);
+    return ajax(`${basePath}.json`).catch(popupAjaxError);
   },
 
   authorize(supplierId) {

@@ -13,14 +13,14 @@ describe SubscriptionClient::SubscriptionsController do
   end
 
   it "#index" do
-    get "/admin/plugins/subscription-client/subscriptions"
+    get "/admin/plugins/subscription-client/subscriptions.json"
     expect(response.status).to eq(200)
     expect(response.parsed_body.size).to eq(1)
   end
 
   it "#update" do
     stub_subscription_request(200, resource, {})
-    post "/admin/plugins/subscription-client/subscriptions"
+    post "/admin/plugins/subscription-client/subscriptions.json"
     expect(response.status).to eq(200)
     expect(subscription.active).to eq(false)
   end

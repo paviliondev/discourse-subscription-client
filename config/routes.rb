@@ -2,6 +2,7 @@
 
 SubscriptionClient::Engine.routes.draw do
   get '' => 'admin#index'
+  get '.json' => 'admin#index'
 
   get 'suppliers' => 'suppliers#index'
   get 'suppliers/authorize' => 'suppliers#authorize'
