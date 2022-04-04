@@ -26,6 +26,7 @@ describe SubscriptionClient::Request do
 
   before do
     freeze_time
+    SiteSetting.subscription_client_request_plugin_statuses = true
   end
 
   it "creates an error if connection to notice server fails" do

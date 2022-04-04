@@ -23,6 +23,10 @@ describe SubscriptionClient::Notices do
     }
   }
 
+  before do
+    SiteSetting.subscription_client_request_plugin_statuses = true
+  end
+
   context "subscription" do
     before do
       freeze_time
