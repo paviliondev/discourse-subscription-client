@@ -10,4 +10,5 @@ plugins:
     default: false
     client: true
   subscription_client_request_plugin_statuses:
-    default: true
+    default: false
+    hidden: true
