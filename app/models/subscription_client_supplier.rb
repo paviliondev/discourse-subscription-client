@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class SubscriptionClientSupplier < ActiveRecord::Base
-  has_many :resources, foreign_key: "supplier_id", class_name: "SubscriptionClientResource"
+  has_many :resources, foreign_key: "supplier_id", class_name: "SubscriptionClientResource", dependent: :destroy
   has_many :subscriptions, through: :resources
   has_many :notices, class_name: "SubscriptionClientNotice", as: :notice_subject, dependent: :destroy
 

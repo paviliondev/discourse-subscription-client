@@ -3,7 +3,7 @@
 class SubscriptionClientResource < ActiveRecord::Base
   belongs_to :supplier, class_name: "SubscriptionClientSupplier"
   has_many :notices, class_name: "SubscriptionClientNotice", as: :notice_subject, dependent: :destroy
-  has_many :subscriptions, foreign_key: "resource_id", class_name: "SubscriptionClientSubscription"
+  has_many :subscriptions, foreign_key: "resource_id", class_name: "SubscriptionClientSubscription", dependent: :destroy
 end
 
 # == Schema Information
