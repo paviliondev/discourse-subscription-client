@@ -66,6 +66,14 @@ class SubscriptionClient::Authorization
     )
   end
 
+  def self.revoke(supplier)
+    url = "#{supplier.url}/user-api-key/revoke"
+    request = SubscriptionClient::Request.new(:supplier, supplier.id)
+    headers = { "User-Api-Key" => supplier.api_key }
+    result = request.perform(url, headers: headers, body: nil, opts: { method: "POST" })
+    result && result[:success] == "OK"
+  end
+
   private
 
   def self.keys_db_key

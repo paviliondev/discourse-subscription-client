@@ -17,7 +17,7 @@ class SubscriptionClient::Request
     "#{type}_#{id}"
   end
 
-  def perform(url, headers: {}, body: nil, opts: { type: "GET" })
+  def perform(url, headers: {}, body: nil, opts: { method: "GET" })
     return nil unless VALID_TYPES.include?(type)
 
     if body
