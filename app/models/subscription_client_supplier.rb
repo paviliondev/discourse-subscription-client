@@ -24,7 +24,7 @@ class SubscriptionClientSupplier < ActiveRecord::Base
   end
 
   def deactivate_all_subscriptions!
-    subscriptions.update_all(active: false)
+    subscriptions.update_all(subscribed: false)
   end
 
   def self.publish_authorized_supplier_count
@@ -38,15 +38,16 @@ end
 # Table name: subscription_client_suppliers
 #
 #  id            :bigint           not null, primary key
-#  name          :string           not null
+#  name          :string
 #  url           :string           not null
 #  api_key       :string
-#  user_id       :datetime
+#  user_id       :bigint
 #  authorized_at :datetime
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #
 # Indexes
 #
-#  index_subscription_client_suppliers_on_url  (url) UNIQUE
+#  index_subscription_client_suppliers_on_url      (url) UNIQUE
+#  index_subscription_client_suppliers_on_user_id  (user_id)
 #

@@ -12,7 +12,7 @@ class SubscriptionClient::SuppliersController < SubscriptionClient::AdminControl
   def authorize
     request_id = SubscriptionClient::Authorization.request_id(@supplier.id)
     cookies[:user_api_request_id] = request_id
-    redirect_to SubscriptionClient::Authorization.url(current_user, @supplier, request_id).to_s
+    redirect_to SubscriptionClient::Authorization.url(current_user, @supplier, request_id).to_s, allow_other_host: true
   end
 
   def authorize_callback

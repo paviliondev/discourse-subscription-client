@@ -6,5 +6,5 @@ Fabricator(:subscription_client_subscription) do
   product_name { sequence(:product_name) { |i| "Subscription #{i}" } }
   price_id { SecureRandom.hex(8) }
   price_name { sequence(:price_name) { |i| "Price #{i}" } }
-  active  { true }
+  subscribed  { true }
 end

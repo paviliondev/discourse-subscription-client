@@ -8,12 +8,12 @@ class SubscriptionClientSubscription < ActiveRecord::Base
 
   scope :active, -> { where("active = true AND updated_at > ?", SubscriptionClientSubscription.update_period) }
 
-  def active?
-    self.active && updated_at.to_datetime > self.class.update_period.to_datetime
+  def active
+    self.subscribed && updated_at.to_datetime > self.class.update_period.to_datetime
   end
 
   def deactivate!
-    self.update(active: false)
+    self.update(subscribed: false)
   end
 
   def resource_name
@@ -39,7 +39,7 @@ end
 #  product_name :string
 #  price_id     :string           not null
 #  price_name   :string
-#  active       :boolean          default(FALSE), not null
+#  subscribed   :boolean          default(FALSE), not null
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
 #

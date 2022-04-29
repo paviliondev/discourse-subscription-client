@@ -35,7 +35,7 @@ describe SubscriptionClient::SuppliersController do
 
     subscription = SubscriptionClientSubscription.find_by(resource_id: resource.id)
     expect(subscription.present?).to eq(true)
-    expect(subscription.active).to eq(true)
+    expect(subscription.subscribed).to eq(true)
   end
 
   it "#destroy" do

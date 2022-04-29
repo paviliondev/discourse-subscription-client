@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 def authenticate_subscription
-  SubscriptionClient::Authentication.any_instance.stubs(:active?).returns(true)
+  SubscriptionClient::Authentication.any_instance.stubs(:active).returns(true)
 end
 
 def valid_subscription

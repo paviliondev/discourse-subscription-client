@@ -23,13 +23,13 @@ describe SubscriptionClient::Subscriptions do
 
     subscription = SubscriptionClientSubscription.find_by(product_id: subscription_response[:product_id])
     expect(subscription.present?).to eq(true)
-    expect(subscription.active).to eq(true)
+    expect(subscription.subscribed).to eq(true)
   end
 
   it "deactivates subscriptions" do
     stub_subscription_request(200, resource, subscription_response)
     described_class.update
-    expect(old_subscription.active).to eq(false)
+    expect(old_subscription.subscribed).to eq(false)
   end
 
   it "reactivates subscriptions" do
@@ -37,12 +37,12 @@ describe SubscriptionClient::Subscriptions do
     described_class.update
 
     subscription = SubscriptionClientSubscription.find_by(product_id: subscription_response[:product_id])
-    subscription.update(active: false)
+    subscription.update(subscribed: false)
 
     described_class.update
     subscription.reload
 
-    expect(subscription.active).to eq(true)
+    expect(subscription.subscribed).to eq(true)
   end
 
   it "handles subscription http errors" do

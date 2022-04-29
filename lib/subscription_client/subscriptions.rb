@@ -69,10 +69,12 @@ class SubscriptionClient::Subscriptions
 
     subscription_data.each do |data|
       if data.subscription.present?
-        data.subscription.update(active: true)
+        data.subscription.update(subscribed: true)
+        data.subscription.touch
+
         @result.updated_subscription(supplier, subscription_ids: data.required)
       else
-        subscription = SubscriptionClientSubscription.create!(data.create.merge(active: true))
+        subscription = SubscriptionClientSubscription.create!(data.create.merge(subscribed: true))
 
         if subscription
           @result.created_subscription(supplier, subscription_ids: data.required)

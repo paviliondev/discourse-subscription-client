@@ -22,6 +22,6 @@ describe SubscriptionClient::SubscriptionsController do
     stub_subscription_request(200, resource, {})
     post "/admin/plugins/subscription-client/subscriptions.json"
     expect(response.status).to eq(200)
-    expect(subscription.active).to eq(false)
+    expect(subscription.subscribed).to eq(false)
   end
 end

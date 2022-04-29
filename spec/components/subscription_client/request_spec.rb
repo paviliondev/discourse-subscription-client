@@ -6,7 +6,7 @@ describe SubscriptionClient::Request do
   fab!(:user) { Fabricate(:user) }
   fab!(:supplier) { Fabricate(:subscription_client_supplier, api_key: Fabricate(:subscription_client_user_api_key)) }
   fab!(:resource) { Fabricate(:subscription_client_resource, name: 'discourse-custom-wizard', supplier: supplier) }
-  fab!(:subscription) { Fabricate(:subscription_client_subscription, resource: resource, active: true) }
+  fab!(:subscription) { Fabricate(:subscription_client_subscription, resource: resource, subscribed: true) }
   let(:subscription_message) {
     {
       title: "Title of message about subscription",
@@ -60,7 +60,7 @@ describe SubscriptionClient::Request do
     stub_subscription_messages_request(supplier, 400, [])
     request = described_class.new(:supplier, supplier.id)
     request.limit.times { SubscriptionClient::Notices.update(plugin: false) }
-    expect(subscription.active?).to eq(false)
+    expect(subscription.active).to eq(false)
   end
 
   it "expires a connection error notice if connection succeeds" do
