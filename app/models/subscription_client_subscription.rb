@@ -6,7 +6,7 @@ class SubscriptionClientSubscription < ActiveRecord::Base
 
   belongs_to :resource, class_name: "SubscriptionClientResource"
 
-  scope :active, -> { where("active = true AND updated_at > ?", SubscriptionClientSubscription.update_period) }
+  scope :active, -> { where("subscribed = true AND updated_at > ?", SubscriptionClientSubscription.update_period) }
 
   def active
     self.subscribed && updated_at.to_datetime > self.class.update_period.to_datetime
