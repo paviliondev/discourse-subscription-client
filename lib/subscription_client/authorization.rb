@@ -12,7 +12,7 @@ class SubscriptionClient::Authorization
     params = {
       public_key: keys.public_key,
       nonce: keys.nonce,
-      client_id: get_client_id || set_client_id,
+      client_id: client_id(user.id),
       auth_redirect: "#{Discourse.base_url}/admin/plugins/subscription-client/suppliers/authorize/callback",
       application_name: SiteSetting.title,
       scopes: SCOPE
@@ -74,24 +74,14 @@ class SubscriptionClient::Authorization
     result && result[:success] == "OK"
   end
 
+  def self.client_id(user_id)
+    "#{Discourse.current_hostname}:#{user_id}"
+  end
+
   private
 
   def self.keys_db_key
     "keys"
-  end
-
-  def self.client_id_db_key
-    "client_id"
-  end
-
-  def self.get_client_id
-    PluginStore.get(SubscriptionClient::PLUGIN_NAME, client_id_db_key)
-  end
-
-  def self.set_client_id
-    client_id = SecureRandom.hex(32)
-    PluginStore.set(SubscriptionClient::PLUGIN_NAME, client_id_db_key, client_id)
-    client_id
   end
 
   def self.set_keys(request_id, user_id, rsa, nonce)
