@@ -14,11 +14,11 @@ class ::SubscriptionClient::Subscriptions::Result
 
   attr_reader :errors,
               :errored_suppliers,
-              :info
+              :infos
 
   def initialize
     @errors = []
-    @info = []
+    @infos = []
   end
 
   def not_authorized(supplier)
@@ -101,7 +101,7 @@ class ::SubscriptionClient::Subscriptions::Result
     attrs.merge!(subscription_ids) if subscription_ids.present?
     attrs[:resource] if resource.present?
 
-    @info << I18n.t("subscription_client.subscriptions.info.#{key}", attrs)
+    @infos << I18n.t("subscription_client.subscriptions.info.#{key}", attrs)
   end
 
   def error(key, supplier)

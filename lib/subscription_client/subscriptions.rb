@@ -28,8 +28,8 @@ class SubscriptionClient::Subscriptions
       end
     end
 
-    if SiteSetting.subscription_client_verbose_logs && @result.info.any?
-      @result.info.each do |info|
+    if SiteSetting.subscription_client_verbose_logs && @result.infos.any?
+      @result.infos.each do |info|
         Rails.logger.info "SubscriptionClient::Subscriptions.update: #{info}"
       end
     end
@@ -46,10 +46,10 @@ class SubscriptionClient::Subscriptions
     url = "#{supplier.url}/subscription-server/user-subscriptions"
 
     response = request.perform(url, headers: headers, body: { resources: resources.map(&:name) })
-    return @result.connection_error(supplier) if response.nil?
+    return (supplier.deactivate_all_subscriptions! && @result.connection_error(supplier)) if response.nil?
 
     subscription_data = @result.retrieve_subscriptions(supplier, response)
-    return if @result.errors.any?
+    return supplier.deactivate_all_subscriptions! if @result.errors.any?
 
     # deactivate any of the supplier's subscriptions not retrieved from supplier
     if supplier.subscriptions.present?

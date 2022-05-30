@@ -18,9 +18,9 @@ def invalid_subscription
   }
 end
 
-def stub_subscription_request(status, resource, response)
+def stub_subscription_request(status, resource, body)
   url = resource.supplier.url
-  stub_request(:get, "#{url}/subscription-server/user-subscriptions?resources[]=#{resource.name}").to_return(status: status, body: { subscriptions: [response] }.to_json)
+  stub_request(:get, "#{url}/subscription-server/user-subscriptions?resources[]=#{resource.name}").to_return(status: status, body: body.to_json)
 end
 
 def stub_server_request(server_url, supplier, status = 200)

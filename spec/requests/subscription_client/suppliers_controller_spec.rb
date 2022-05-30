@@ -7,11 +7,15 @@ describe SubscriptionClient::SuppliersController do
   fab!(:resource) { Fabricate(:subscription_client_resource, supplier: supplier) }
   let(:subscription_response) do
     {
-      resource: resource.name,
-      product_id: SecureRandom.hex(8),
-      product_name: "Business Subscription",
-      price_id: SecureRandom.hex(8),
-      price_name: "Yearly"
+      subscriptions: [
+        {
+          resource: resource.name,
+          product_id: SecureRandom.hex(8),
+          product_name: "Business Subscription",
+          price_id: SecureRandom.hex(8),
+          price_name: "Yearly"
+        }
+      ]
     }
   end
 

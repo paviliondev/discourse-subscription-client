@@ -19,7 +19,7 @@ describe SubscriptionClient::SubscriptionsController do
   end
 
   it "#update" do
-    stub_subscription_request(200, resource, {})
+    stub_subscription_request(200, resource, { subscriptions: [] })
     post "/admin/plugins/subscription-client/subscriptions.json"
     expect(response.status).to eq(200)
     expect(subscription.subscribed).to eq(false)
