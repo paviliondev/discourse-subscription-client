@@ -1,4 +1,4 @@
-# discourse-subscription-client
+# Discourse Subscription Client
 
 Manage your Discourse plugin subscriptions using this plugin.
 
