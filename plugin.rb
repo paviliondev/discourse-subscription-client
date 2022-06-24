@@ -52,7 +52,8 @@ after_initialize do
     return unless SiteSetting.subscription_client_warning_notices_on_dashboard
 
     notices = SubscriptionClientNotice.list(
-      notice_type: SubscriptionClientNotice.error_types
+      notice_type: SubscriptionClientNotice.error_types,
+      visible: true
     )
     notices.map do |notice|
       AdminDashboardData::Problem.new(
