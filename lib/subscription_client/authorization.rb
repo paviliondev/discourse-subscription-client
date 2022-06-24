@@ -75,7 +75,7 @@ class SubscriptionClient::Authorization
   end
 
   def self.client_id(user_id)
-    "#{Discourse.current_hostname}:#{user_id}"
+    "#{Discourse.current_hostname}:#{user_id}:#{SecureRandom.hex(8)}"
   end
 
   private
