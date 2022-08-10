@@ -26,6 +26,8 @@ class SubscriptionClient::Request
       url = uri.to_s
     end
 
+    headers.merge!({ "Origin" => Discourse.base_url_no_prefix })
+
     connection = Excon.new(url, headers: headers)
 
     begin
