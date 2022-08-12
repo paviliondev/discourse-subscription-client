@@ -4,6 +4,7 @@
 # version: 0.1.0
 # authors: Robert Barrow, Angus McLeod
 # url: https://github.com/paviliondev/discourse-subscription-client.git
+# contact_emails: development@pavilion.tech
 
 register_asset 'stylesheets/common/common.scss'
 enabled_site_setting :subscription_client_enabled
