@@ -11,7 +11,6 @@ export default Controller.extend({
   resourceCount: alias("adminPluginsSubscriptionClient.resourceCount"),
   classNameBindings: [":subscription", "subscription.active:active:inactive"],
   hasSubscriptions: notEmpty("subscriptions"),
-  messageUrl: "https://thepavilion.io/t/3652",
   messageKey: "info",
   messageClass: "info",
 

@@ -3,7 +3,6 @@ import { isPresent } from "@ember/utils";
 
 export default Controller.extend({
   adminPluginsSubscriptionClientNotices: controller(),
-  messageUrl: "https://thepavilion.io/t/3652",
   messageType: "info",
   messageKey: null,
 

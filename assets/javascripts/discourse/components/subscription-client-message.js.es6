@@ -1,5 +1,5 @@
 import { default as discourseComputed } from "discourse-common/utils/decorators";
-import { not, notEmpty } from "@ember/object/computed";
+import { alias, and, not, notEmpty } from "@ember/object/computed";
 import Component from "@ember/component";
 import I18n from "I18n";
 
@@ -12,8 +12,10 @@ const icons = {
 
 export default Component.extend({
   classNameBindings: [":subscription-client-message", "type", "loading"],
-  showDocumentation: not("loading"),
-  showIcon: not("loading"),
+  showDocumentation: and("notLoading", "hasUrl"),
+  showIcon: alias("notLoading"),
+  notLoading: not("loading"),
+  hasUrl: notEmpty("url"),
   hasItems: notEmpty("items"),
 
   @discourseComputed("type")

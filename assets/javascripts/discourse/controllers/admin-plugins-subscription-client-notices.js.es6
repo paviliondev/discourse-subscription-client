@@ -6,7 +6,6 @@ import { A } from "@ember/array";
 
 export default Controller.extend({
   queryParams: ["all", "hidden"],
-  messageUrl: "https://thepavilion.io/t/3652",
   messageKey: "info",
   messageClass: "info",
   hasNotices: notEmpty("notices"),
