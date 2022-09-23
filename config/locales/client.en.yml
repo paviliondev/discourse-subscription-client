@@ -2,7 +2,7 @@ en:
   admin_js:
     admin:
       subscription_client:
-        title: "Subscriptions"
+        title: "Subscription Client"
 
         message:
           subscriptions:
