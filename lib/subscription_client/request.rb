@@ -99,6 +99,8 @@ class SubscriptionClient::Request
         status: response.status,
         body: body
       }
+
+      attrs[:message] = body["error"] if body && body["error"]
     end
 
     PluginStore.set(namespace, key, attrs)
