@@ -14,6 +14,8 @@ class SubscriptionClient::Resources
   end
 
   def find_all
+    return unless SubscriptionClient.database_exists?
+
     setup_resources
     find_resources
 

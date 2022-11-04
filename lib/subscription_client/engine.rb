@@ -16,5 +16,13 @@ module ::SubscriptionClient
     def plugin_status_server_url
       "https://plugins.discourse.pavilion.tech"
     end
+
+    def database_exists?
+      ActiveRecord::Base.connection
+    rescue ActiveRecord::NoDatabaseError
+      false
+    else
+      true
+    end
   end
 end
