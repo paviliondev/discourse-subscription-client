@@ -10,7 +10,9 @@ class SubscriptionClient::Resources
   end
 
   def self.find_all
-    new.find_all
+    RailsMultisite::ConnectionManagement.each_connection do
+      self.new.find_all
+    end
   end
 
   def find_all

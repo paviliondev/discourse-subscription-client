@@ -40,7 +40,7 @@ after_initialize do
     load File.expand_path(path, __FILE__)
   end
 
-  if SubscriptionClient.database_exists?
+  if SubscriptionClient.database_exists? && !Rails.env.test?
     Jobs.enqueue(:subscription_client_find_resources)
   end
 
