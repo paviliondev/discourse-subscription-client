@@ -33,13 +33,16 @@ after_initialize do
     ../app/serializers/subscription_client_resource_serializer.rb
     ../app/serializers/subscription_client_notice_serializer.rb
     ../app/serializers/subscription_client_subscription_serializer.rb
+    ../app/jobs/regular/subscription_client/find_resources.rb
     ../app/jobs/scheduled/subscription_client/update_subscriptions.rb
     ../app/jobs/scheduled/subscription_client/update_notices.rb
   ].each do |path|
     load File.expand_path(path, __FILE__)
   end
 
-  SubscriptionClient::Resources.find_all unless Rails.env.test?
+  if SubscriptionClient.database_exists? && !Rails.env.test?
+    Jobs.enqueue(:subscription_client_find_resources)
+  end
 
   User.has_many(:subscription_client_suppliers)
   add_to_serializer(:current_user, :subscription_notice_count) do

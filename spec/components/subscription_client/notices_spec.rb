@@ -27,7 +27,7 @@ describe SubscriptionClient::Notices do
     SiteSetting.subscription_client_request_plugin_statuses = true
   end
 
-  context "subscription" do
+  context "with subscription" do
     before do
       freeze_time
       stub_subscription_messages_request(supplier, 200, [subscription_message])
@@ -71,7 +71,7 @@ describe SubscriptionClient::Notices do
     end
   end
 
-  context "plugin status" do
+  context "with plugin status" do
     before do
       freeze_time
       stub_plugin_status_request(200, { statuses: [plugin_status], total: 1 })

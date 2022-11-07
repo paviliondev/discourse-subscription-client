@@ -6,4 +6,4 @@
 # authors: Angus McLeod
 # contact_emails: angus@test.com
 # url: https://github.com/paviliondev/discourse-subscription-plugin.git
-# subscription_url: https://plugins.discourse.pavilion.tech
+# subscription_url: https://coop.pavilion.tech
