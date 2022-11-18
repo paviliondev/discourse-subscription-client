@@ -6,6 +6,8 @@ plugins:
     default: false
   subscription_client_warning_notices_on_dashboard:
     default: true
+  subscription_client_allow_moderator_subscription_management:
+    default: false
   subscription_client_allow_moderator_supplier_authorization:
     default: false
     client: true

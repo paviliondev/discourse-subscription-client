@@ -29,7 +29,8 @@ class SubscriptionClientSupplier < ActiveRecord::Base
 
   def self.publish_authorized_supplier_count
     payload = { authorized_supplier_count: authorized.count }
-    MessageBus.publish("/subscription_client", payload, group_ids: [Group::AUTO_GROUPS[:staff]])
+    group_id_key = SiteSetting.subscription_client_allow_moderator_subscription_management ? :staff : :admins
+    MessageBus.publish("/subscription_client", payload, group_ids: [Group::AUTO_GROUPS[group_id_key.to_sym]])
   end
 end
 

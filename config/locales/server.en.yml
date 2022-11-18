@@ -33,5 +33,6 @@ en:
     subscription_client_enabled: "Enable the subscription client."
     subscription_client_verbose_logs: "Enable verbose logs for the subscription client."
     subscription_client_warning_notices_on_dashboard: "Show warning notices about subscriptions on the admin dashboard."
+    subscription_client_allow_moderator_subscription_management: "Allow moderators to manage subscriptions."
     subscription_client_allow_moderator_supplier_authorization: "Allow moderators to authorize subscription suppliers."
     subscription_client_request_plugin_statuses: Request the status of plugins from discourse.pluginmanager.org.
