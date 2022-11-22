@@ -12,13 +12,13 @@ describe SubscriptionClient::SubscriptionsController do
     sign_in(user)
   end
 
-  it "#index" do
+  it "returns subscriptions" do
     get "/admin/plugins/subscription-client/subscriptions.json"
     expect(response.status).to eq(200)
     expect(response.parsed_body.size).to eq(1)
   end
 
-  it "#update" do
+  it "updates subscriptions" do
     stub_subscription_request(200, resource, { subscriptions: [] })
     post "/admin/plugins/subscription-client/subscriptions.json"
     expect(response.status).to eq(200)

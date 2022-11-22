@@ -29,7 +29,7 @@ export default {
     });
 
     const allowModSupplierAuth =
-      siteSettings.subscription_client_allow_moderator_supplier_authorization;
+      siteSettings.subscription_client_allow_moderator_supplier_management;
     const canAccessSubscriptionSuppliers =
       user.admin || (user.moderator && allowModSupplierAuth);
     User.currentProp(

@@ -11,6 +11,8 @@ enabled_site_setting :subscription_client_enabled
 add_admin_route "admin.subscription_client.title", "subscriptionClient"
 register_svg_icon "far-building"
 
+load File.expand_path("../lib/validators/allow_moderator_supplier_management.rb", __FILE__)
+
 after_initialize do
   %w[
     ../lib/subscription_client/engine.rb
@@ -49,8 +51,17 @@ after_initialize do
     return false unless SiteSetting.subscription_client_enabled
 
     is_admin? || (
-      SiteSetting.subscription_client_allow_moderator_subscription_management &&
-      is_staff?
+      is_staff? &&
+      SiteSetting.subscription_client_allow_moderator_subscription_management
+    )
+  end
+
+  add_to_class(:guardian, :can_manage_suppliers?) do
+    return false unless SiteSetting.subscription_client_enabled && can_manage_subscriptions?
+
+    is_admin? || (
+      is_staff? &&
+      SiteSetting.subscription_client_allow_moderator_supplier_management
     )
   end
 

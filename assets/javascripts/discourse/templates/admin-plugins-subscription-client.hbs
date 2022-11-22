@@ -1,6 +1,6 @@
 {{#admin-nav}}
   {{nav-item route="adminPlugins.subscriptionClient.subscriptions" label="admin.subscription_client.subscriptions.nav_label"}}
-  {{#if currentUser.admin}}
+  {{#if currentUser.canAccessSubscriptionSuppliers}}
     {{nav-item route="adminPlugins.subscriptionClient.suppliers" label="admin.subscription_client.suppliers.nav_label" class="subscription-client-suppliers-nav"}}
   {{/if}}
   <li>
