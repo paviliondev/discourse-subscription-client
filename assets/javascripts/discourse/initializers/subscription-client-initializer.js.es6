@@ -9,8 +9,8 @@ export default {
   name: "subscription-client",
   after: "message-bus",
   initialize(container) {
-    const user = container.lookup("current-user:main");
-    const siteSettings = container.lookup("site-settings:main");
+    const user = container.lookup("service:current-user");
+    const siteSettings = container.lookup("service:site-settings");
 
     if (
       !siteSettings.subscription_client_enabled ||

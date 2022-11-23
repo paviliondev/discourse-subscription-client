@@ -79,18 +79,20 @@ export default {
     ],
     hidden_notice_count: 1,
   },
-  "/admin/plugins/subscription-client/suppliers.json": [
-    {
-      id: 3,
-      name: "Supplier 1",
-      authorized: true,
-      authorized_at: "2022-03-26T12:24:02.987Z",
-      user: {
-        id: 1,
-        username: "angus",
-        name: null,
-        avatar_template: "/user_avatar/localhost/angus/{size}/3_2.png",
+  "/admin/plugins/subscription-client/suppliers.json": {
+    suppliers: [
+      {
+        id: 3,
+        name: "Supplier 1",
+        authorized: true,
+        authorized_at: "2022-03-26T12:24:02.987Z",
+        user: {
+          id: 1,
+          username: "angus",
+          name: null,
+          avatar_template: "/user_avatar/localhost/angus/{size}/3_2.png",
+        },
       },
-    },
-  ],
+    ],
+  },
 };

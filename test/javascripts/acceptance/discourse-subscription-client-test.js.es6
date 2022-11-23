@@ -3,54 +3,17 @@ import {
   count,
   exists,
   queryAll,
-  updateCurrentUser,
 } from "discourse/tests/helpers/qunit-helpers";
 import { click, visit } from "@ember/test-helpers";
 import fixtures from "../fixtures/subscription-client-fixtures";
 import { test } from "qunit";
 
-acceptance(
-  "Subscription Client - Cannot manage subscriptions",
-  function (needs) {
-    needs.user({ can_manage_subscriptions: false, moderator: true });
-    needs.settings({ subscription_client_enabled: true });
-
-    test("Does not show subscription elements", async function (assert) {
-      updateCurrentUser({ subscription_notice_count: 2 });
-
-      await visit("/");
-
-      await pauseTest();
-      assert.ok(
-        !exists(
-          "#toggle-hamburger-menu .badge-notification.subscription-notice"
-        ),
-        "subscription notice badge does not show"
-      );
-
-      await click(".hamburger-dropdown");
-      assert.ok(
-        !exists(
-          ".subscription-notices .badge-notification.subscription-notice"
-        ),
-        "subscription notice item does not show"
-      );
-    });
-  }
-);
-
 acceptance("Subscription Client - Hamburger Menu", function (needs) {
-  needs.user();
+  needs.user({ subscription_notice_count: 2, can_manage_subscriptions: true });
   needs.settings({ subscription_client_enabled: true });
 
-  test("Shows notice count", async function (assert) {
-    updateCurrentUser({
-      subscription_notice_count: 2,
-      can_manage_subscriptions: true,
-    });
-
+  test("As a subscription manager", async function (assert) {
     await visit("/");
-
     assert.strictEqual(
       queryAll(
         "#toggle-hamburger-menu .badge-notification.subscription-notice"
@@ -69,7 +32,7 @@ acceptance("Subscription Client - Hamburger Menu", function (needs) {
 });
 
 acceptance("Subscription Client - Admin", function (needs) {
-  needs.user({ admin: true, can_manage_subscriptions: true });
+  needs.user({ can_manage_subscriptions: true });
   needs.settings({ subscription_client_enabled: true });
   needs.pretender((server, helper) => {
     server.get("/admin/plugins/subscription-client.json", () =>
