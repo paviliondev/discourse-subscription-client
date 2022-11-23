@@ -14,17 +14,19 @@ Once you've got a subscription, go to the admin panel of the forum where this pl
 
 ### Who has access
 
+#### Admins
 Admins can do everything, including:
 
 - Authorize a supplier
 - See subscriptions
 - See all notices (including dismissed and expired)
 
-By default moderators can
-- See subscriptions
-- See active notices
+#### Moderators
+By default moderators cannot do or see anything subscription related and the plugin interface is hidden from them.
 
-You can allow moderators to authorize a supplier, allowing the forum to use a subscription the moderator has with the supplier, if you enable the site setting `subscription client allow moderator supplier authorization`.
+Enable the site setting `subscription client allow moderator subscription management` to let moderators see subscriptions and active subscription notices.
+
+Enable the site setting `subscription client allow moderator supplier authorization` to allow moderators to authorize a supplier, allowing the forum to use a subscription the moderator has with the supplier.
 
 ### Notices
 

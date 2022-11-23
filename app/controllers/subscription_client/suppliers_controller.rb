@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
 class SubscriptionClient::SuppliersController < SubscriptionClient::AdminController
-  before_action :ensure_access
+  before_action :ensure_can_manage_suppliers
   skip_before_action :check_xhr, :preload_json, :verify_authenticity_token, only: [:authorize, :authorize_callback]
   before_action :find_supplier, only: [:authorize, :destroy]
 
   def index
-    render_serialized(SubscriptionClientSupplier.all, ::SubscriptionClientSupplierSerializer, root: false)
+    render_serialized(SubscriptionClientSupplier.all, ::SubscriptionClientSupplierSerializer, root: "suppliers")
   end
 
   def authorize
@@ -53,7 +53,7 @@ class SubscriptionClient::SuppliersController < SubscriptionClient::AdminControl
     raise Discourse::InvalidParameters.new(:supplier_id) unless @supplier
   end
 
-  def ensure_access
-    ensure_admin unless SiteSetting.subscription_client_allow_moderator_supplier_authorization
+  def ensure_can_manage_suppliers
+    Guardian.new(current_user).ensure_can_manage_suppliers!
   end
 end

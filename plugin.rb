@@ -11,6 +11,8 @@ enabled_site_setting :subscription_client_enabled
 add_admin_route "admin.subscription_client.title", "subscriptionClient"
 register_svg_icon "far-building"
 
+load File.expand_path("../lib/validators/allow_moderator_supplier_management.rb", __FILE__)
+
 after_initialize do
   %w[
     ../lib/subscription_client/engine.rb
@@ -36,6 +38,7 @@ after_initialize do
     ../app/jobs/regular/subscription_client/find_resources.rb
     ../app/jobs/scheduled/subscription_client/update_subscriptions.rb
     ../app/jobs/scheduled/subscription_client/update_notices.rb
+    ../extensions/admin_plugins_controller.rb
   ].each do |path|
     load File.expand_path(path, __FILE__)
   end
@@ -44,12 +47,33 @@ after_initialize do
     Jobs.enqueue(:subscription_client_find_resources)
   end
 
+  add_to_class(:guardian, :can_manage_subscriptions?) do
+    return false unless SiteSetting.subscription_client_enabled
+
+    is_admin? || (
+      is_staff? &&
+      SiteSetting.subscription_client_allow_moderator_subscription_management
+    )
+  end
+
+  add_to_class(:guardian, :can_manage_suppliers?) do
+    return false unless SiteSetting.subscription_client_enabled && can_manage_subscriptions?
+
+    is_admin? || (
+      is_staff? &&
+      SiteSetting.subscription_client_allow_moderator_supplier_management
+    )
+  end
+
   User.has_many(:subscription_client_suppliers)
   add_to_serializer(:current_user, :subscription_notice_count) do
     SubscriptionClientNotice.list(visible: true).count
   end
   add_to_serializer(:current_user, :include_subscription_notice_count) do
-    scope.is_staff? && SiteSetting.subscription_client_enabled
+    scope.can_manage_subscriptions?
+  end
+  add_to_serializer(:current_user, :can_manage_subscriptions) do
+    scope.can_manage_subscriptions?
   end
 
   AdminDashboardData.add_scheduled_problem_check(:subscription_client) do
@@ -67,6 +91,8 @@ after_initialize do
       )
     end
   end
+
+  Admin::PluginsController.prepend AdminPluginsControllerExtension
 
   DiscourseEvent.trigger(:subscription_client_ready)
 end

@@ -9,7 +9,7 @@ export default DiscourseRoute.extend({
   },
 
   setupController(controller, model) {
-    const suppliers = model.map((supplier) => {
+    const suppliers = model.suppliers.map((supplier) => {
       if (supplier.user) {
         supplier.user = User.create(supplier.user);
       }

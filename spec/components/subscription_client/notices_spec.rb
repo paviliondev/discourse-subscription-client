@@ -3,7 +3,7 @@
 require_relative '../../plugin_helper'
 
 describe SubscriptionClient::Notices do
-  fab!(:user) { Fabricate(:user) }
+  fab!(:admin) { Fabricate(:user, admin: true) }
   fab!(:supplier) { Fabricate(:subscription_client_supplier, api_key: Fabricate(:subscription_client_user_api_key)) }
   fab!(:resource) { Fabricate(:subscription_client_resource, name: 'discourse-custom-wizard', supplier_id: supplier.id) }
   let(:subscription_message) {
@@ -31,10 +31,12 @@ describe SubscriptionClient::Notices do
     before do
       freeze_time
       stub_subscription_messages_request(supplier, 200, [subscription_message])
-      described_class.update(plugin: false)
+
     end
 
     it "converts subscription messages into notices" do
+      described_class.update(plugin: false)
+
       notice = SubscriptionClientNotice.list.first
       expect(notice.notice_type).to eq(SubscriptionClientNotice.types[:info])
       expect(notice.message).to eq(subscription_message[:message])
@@ -42,6 +44,8 @@ describe SubscriptionClient::Notices do
     end
 
     it "expires notice if subscription message is expired" do
+      described_class.update(plugin: false)
+
       subscription_message[:expired_at] = Time.now
       stub_subscription_messages_request(supplier, 200, [subscription_message])
       described_class.update(plugin: false)
@@ -51,6 +55,8 @@ describe SubscriptionClient::Notices do
     end
 
     it "dismisses informational subscription notices" do
+      described_class.update(plugin: false)
+
       notice = SubscriptionClientNotice.list(include_all: true).first
       expect(notice.dismissed?).to eq(false)
 
@@ -59,7 +65,7 @@ describe SubscriptionClient::Notices do
     end
 
     it "dismisses all informational subscription notices" do
-      4.times do |index|
+      5.times do |index|
         subscription_message[:title] += " #{index}"
         subscription_message[:created_at] = subscription_message[:created_at] + (index + 1)
         stub_subscription_messages_request(supplier, 200, [subscription_message])
@@ -68,6 +74,32 @@ describe SubscriptionClient::Notices do
       expect(SubscriptionClientNotice.list.count).to eq(5)
       SubscriptionClientNotice.dismiss_all
       expect(SubscriptionClientNotice.list.count).to eq(0)
+    end
+
+    it "publishes notices to admins" do
+      messages = MessageBus.track_publish("/subscription_client_user") do
+        described_class.update(plugin: false)
+      end
+
+      expect(messages.size).to eq(1)
+      expect(messages.first.data[:visible_notice_count]).to eq(1)
+      expect(messages.first.group_ids).to eq([Group::AUTO_GROUPS[:admins]])
+    end
+
+    context "with moderator subscription management" do
+      before do
+        SiteSetting.subscription_client_allow_moderator_subscription_management = true
+      end
+
+      it "publishes notices to staff" do
+        messages = MessageBus.track_publish("/subscription_client_user") do
+          described_class.update(plugin: false)
+        end
+
+        expect(messages.size).to eq(1)
+        expect(messages.first.data[:visible_notice_count]).to eq(1)
+        expect(messages.first.group_ids).to eq([Group::AUTO_GROUPS[:staff]])
+      end
     end
   end
 

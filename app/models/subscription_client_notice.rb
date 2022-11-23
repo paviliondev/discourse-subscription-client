@@ -127,7 +127,8 @@ class SubscriptionClientNotice < ActiveRecord::Base
     payload = {
       visible_notice_count: list(visible: true).count
     }
-    MessageBus.publish("/subscription_client_user", payload, group_ids: [Group::AUTO_GROUPS[:staff]])
+    group_id_key = SiteSetting.subscription_client_allow_moderator_subscription_management ? :staff : :admins
+    MessageBus.publish("/subscription_client_user", payload, group_ids: [Group::AUTO_GROUPS[group_id_key.to_sym]])
   end
 
   def self.list(notice_type: nil, notice_subject_type: nil, notice_subject_id: nil, title: nil, include_all: false, visible: false, page: nil, page_limit: 30)
