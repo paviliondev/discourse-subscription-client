@@ -3,7 +3,8 @@ import { popupAjaxError } from "discourse/lib/ajax-error";
 import EmberObject from "@ember/object";
 
 const SubscriptionClient = EmberObject.extend();
-const basePath = "/admin/plugins/subscription-client";
+const baseUrl = window.location.href.split("/admin");
+const basePath = baseUrl + "/admin/plugins/subscription-client";
 
 SubscriptionClient.reopenClass({
   show() {
