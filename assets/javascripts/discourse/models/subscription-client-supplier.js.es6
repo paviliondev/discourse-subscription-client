@@ -4,7 +4,7 @@ import EmberObject from "@ember/object";
 
 const SubscriptionClientSupplier = EmberObject.extend();
 const baseUrl = window.location.href.split("/admin");
-const basePath = baseUrl + "/admin/plugins/subscription-client/suppliers";
+const basePath = baseUrl[0] + "/admin/plugins/subscription-client/suppliers";
 
 SubscriptionClientSupplier.reopenClass({
   list() {
