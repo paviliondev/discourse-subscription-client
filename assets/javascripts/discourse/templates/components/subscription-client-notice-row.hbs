@@ -7,7 +7,7 @@
 </td>
 <td class="notice-source">
   {{#if notice.supplier}}
-    {{#if currentUser.canAccessSubscriptionSuppliers}}
+    {{#if currentUser.can_manage_suppliers}}
       {{#link-to "adminPlugins.subscriptionClient.suppliers"}}{{notice.supplier.name}}{{/link-to}}
     {{else}}
       {{notice.supplier.name}}
