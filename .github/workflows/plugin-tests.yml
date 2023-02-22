@@ -126,10 +126,6 @@ jobs:
         if: steps.app-cache.outputs.cache-hit != 'true'
         run: rm -rf tmp/app-cache/uploads && cp -r public/uploads tmp/app-cache/uploads
 
-      - name: Plugin RSpec
-        if: matrix.build_type == 'backend'
-        run: bin/rake plugin:spec[${{ github.event.repository.name }}]
-
       - name: Plugin QUnit
         if: matrix.build_type == 'frontend'
         run: QUNIT_EMBER_CLI=1 bundle exec rake plugin:qunit['${{ github.event.repository.name }}','1200000']

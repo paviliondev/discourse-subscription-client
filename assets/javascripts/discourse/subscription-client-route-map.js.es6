@@ -9,6 +9,7 @@ export default {
         this.route("subscriptions", { path: "/subscriptions" });
         this.route("suppliers", { path: "/suppliers" });
         this.route("notices", { path: "/notices" });
+        this.route("noAccess", { path: "/no-access" });
       }
     );
   },

@@ -10,6 +10,7 @@ en:
             no_resources: Nothing offers a subscription on this forum.
             no_authorized_suppliers: <a href="/admin/plugins/subscription-client/suppliers">Authorize a supplier</a> to import subscriptions.
             no_authorized_suppliers_no_access: An admin needs to authorize a subscription supplier.
+            no_access: "Only administrators can manage plugin subscriptions."
             documentation: Learn more about subscriptions
           notices:
             info: "Subscription notices"

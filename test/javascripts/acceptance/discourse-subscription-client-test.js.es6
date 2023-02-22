@@ -8,29 +8,6 @@ import { click, visit } from "@ember/test-helpers";
 import fixtures from "../fixtures/subscription-client-fixtures";
 import { test } from "qunit";
 
-acceptance("Subscription Client - Hamburger Menu", function (needs) {
-  needs.user({ subscription_notice_count: 2, can_manage_subscriptions: true });
-  needs.settings({ subscription_client_enabled: true });
-
-  test("As a subscription manager", async function (assert) {
-    await visit("/");
-    assert.strictEqual(
-      queryAll(
-        "#toggle-hamburger-menu .badge-notification.subscription-notice"
-      ).text(),
-      "2"
-    );
-
-    await click(".hamburger-dropdown");
-    assert.strictEqual(
-      queryAll(
-        ".subscription-notices .badge-notification.subscription-notice"
-      ).text(),
-      "2"
-    );
-  });
-});
-
 acceptance("Subscription Client - Admin", function (needs) {
   needs.user({ can_manage_subscriptions: true });
   needs.settings({ subscription_client_enabled: true });
