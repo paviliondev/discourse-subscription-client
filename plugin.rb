@@ -10,4 +10,4 @@ register_asset 'stylesheets/common/common.scss'
 register_svg_icon "far-building"
 add_admin_route "admin.subscription_client.title", "subscriptionClient"
 
-gem "discourse_subscription_client", "0.1.0.pre9", require_name: "discourse_subscription_client"
+gem "discourse_subscription_client", "0.1.0.pre10", require_name: "discourse_subscription_client"
