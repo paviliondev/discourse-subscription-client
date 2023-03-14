@@ -16,6 +16,8 @@ SubscriptionClient::Engine.routes.draw do
   put 'notices/:notice_id/dismiss' => 'notices#dismiss'
   put 'notices/:notice_id/hide' => 'notices#hide'
   put 'notices/:notice_id/show' => 'notices#show'
+
+  get 'no-access' => 'no_access#index'
 end
 
 Discourse::Application.routes.append do

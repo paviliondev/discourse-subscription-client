@@ -12,6 +12,10 @@ class SubscriptionClientSubscription < ActiveRecord::Base
     self.subscribed && updated_at.to_datetime > self.class.update_period.to_datetime
   end
 
+  def activate!
+    self.update(subscribed: true)
+  end
+
   def deactivate!
     self.update(subscribed: false)
   end

@@ -13,12 +13,11 @@ class ::SubscriptionClient::Subscriptions::Result
   KEYS = REQUIRED_KEYS + OPTIONAL_KEYS
 
   attr_reader :errors,
-              :errored_suppliers,
               :infos
 
   def initialize
-    @errors = []
-    @infos = []
+    @errors = {}
+    @infos = {}
   end
 
   def not_authorized(supplier)
@@ -26,12 +25,14 @@ class ::SubscriptionClient::Subscriptions::Result
   end
 
   def retrieve_subscriptions(supplier, raw_data)
-    subscriptions_data = raw_data[:subscriptions].compact
-
-    unless subscriptions_data.present? && subscriptions_data.is_a?(Array)
+    unless raw_data[:subscriptions].is_a?(Array)
       error("invalid_response", supplier)
       return []
     end
+
+    return [] if raw_data[:subscriptions].none?
+
+    subscriptions_data = raw_data[:subscriptions].compact
 
     # subscriptions must be properly formed
 
@@ -101,10 +102,10 @@ class ::SubscriptionClient::Subscriptions::Result
     attrs.merge!(subscription_ids) if subscription_ids.present?
     attrs[:resource] if resource.present?
 
-    @infos << I18n.t("subscription_client.subscriptions.info.#{key}", attrs)
+    @infos[key] = I18n.t("subscription_client.subscriptions.info.#{key}", attrs)
   end
 
   def error(key, supplier)
-    @errors << I18n.t("subscription_client.subscriptions.error.#{key}", supplier: supplier.name, supplier_url: supplier.url)
+    @errors[key] = I18n.t("subscription_client.subscriptions.error.#{key}", supplier: supplier.name, supplier_url: supplier.url)
   end
 end

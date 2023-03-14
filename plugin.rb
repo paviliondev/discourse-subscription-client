@@ -31,6 +31,7 @@ after_initialize do
     ../app/controllers/subscription_client/subscriptions_controller.rb
     ../app/controllers/subscription_client/suppliers_controller.rb
     ../app/controllers/subscription_client/notices_controller.rb
+    ../app/controllers/subscription_client/no_access_controller.rb
     ../app/serializers/subscription_client_supplier_serializer.rb
     ../app/serializers/subscription_client_resource_serializer.rb
     ../app/serializers/subscription_client_notice_serializer.rb
@@ -74,6 +75,9 @@ after_initialize do
   end
   add_to_serializer(:current_user, :can_manage_subscriptions) do
     scope.can_manage_subscriptions?
+  end
+  add_to_serializer(:current_user, :can_manage_suppliers) do
+    scope.can_manage_suppliers?
   end
 
   AdminDashboardData.add_scheduled_problem_check(:subscription_client) do
