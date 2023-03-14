@@ -4,7 +4,7 @@ import {
   exists,
   queryAll,
 } from "discourse/tests/helpers/qunit-helpers";
-import { click, visit } from "@ember/test-helpers";
+import { visit } from "@ember/test-helpers";
 import fixtures from "../fixtures/subscription-client-fixtures";
 import { test } from "qunit";
 

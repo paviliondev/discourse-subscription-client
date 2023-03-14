@@ -4,12 +4,12 @@ import SubscriptionClient from "../models/subscription-client";
 export default DiscourseRoute.extend({
   beforeModel() {
     if (!this.currentUser.can_manage_subscriptions) {
-      this.set('noAccess', true);
+      this.set("noAccess", true);
       this.transitionTo("adminPlugins.subscriptionClient.noAccess");
     }
   },
 
-  model(model, transition) {
+  model() {
     if (this.noAccess) {
       return {};
     } else {
@@ -26,7 +26,7 @@ export default DiscourseRoute.extend({
   setupController(controller, model) {
     if (this.noAccess) {
       controller.setProperties({
-        noAccess: true
+        noAccess: true,
       });
     } else {
       controller.setProperties({
