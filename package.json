@@ -1,7 +1,7 @@
 {
-  "name": "discourse-subscription-client",
+  "name": "discourse-subscription-server",
   "version": "1.0.0",
-  "repository": "git@github.com:paviliondev/discourse-subscription-client.git",
+  "repository": "git@github.com:paviliondev/discourse-subscription-server.git",
   "author": "Pavilion",
   "license": "GPL V2",
   "devDependencies": {
