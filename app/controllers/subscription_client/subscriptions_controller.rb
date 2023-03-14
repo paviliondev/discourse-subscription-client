@@ -6,10 +6,12 @@ class SubscriptionClient::SubscriptionsController < SubscriptionClient::AdminCon
   end
 
   def update
-    if SubscriptionClient::Subscriptions.update
+    result = SubscriptionClient::Subscriptions.update
+
+    if result.errors.blank?
       render_serialized(SubscriptionClientSubscription.all, ::SubscriptionClientSubscriptionSerializer, root: 'subscriptions')
     else
-      render json: failed_json
+      render json: failed_json.merge(errors: result.errors)
     end
   end
 end

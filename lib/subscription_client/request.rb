@@ -107,13 +107,7 @@ class SubscriptionClient::Request
 
     @current_error = nil
 
-    if reached_limit?
-      SubscriptionClientNotice.notify_connection_error(type, id)
-
-      if type === 'supplier' && supplier = SubscriptionClientSupplier.find_by_id(id)
-        supplier.deactivate_all_subscriptions!
-      end
-    end
+    SubscriptionClientNotice.notify_connection_error(type, id) if reached_limit?
   end
 
   def expire_error
