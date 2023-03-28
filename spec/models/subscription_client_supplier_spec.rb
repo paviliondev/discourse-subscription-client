@@ -6,13 +6,27 @@ describe SubscriptionClientSupplier do
   fab!(:resource) { Fabricate(:subscription_client_resource, supplier: supplier) }
   fab!(:subscription) { Fabricate(:subscription_client_subscription, resource: resource, subscribed: true) }
 
-  it "destroys authorization" do
-    stub_request(:post, "#{supplier.url}/user-api-key/revoke").to_return(status: 200, body: "{ \"success\": \"OK\" }")
+  context "when api key revocation succeeds" do
+    it "destroys authorization" do
+      stub_request(:post, "#{supplier.url}/user-api-key/revoke").to_return(status: 200, body: "{ \"success\": \"OK\" }")
 
-    expect(supplier.destroy_authorization).to eq(true)
-    expect(supplier.api_key).to eq(nil)
-    expect(supplier.user_id).to eq(nil)
-    expect(supplier.authorized_at).to eq(nil)
-    expect(subscription.subscribed).to eq(false)
+      expect(supplier.destroy_authorization).to eq(1)
+      expect(supplier.api_key).to eq(nil)
+      expect(supplier.user_id).to eq(nil)
+      expect(supplier.authorized_at).to eq(nil)
+      expect(subscription.subscribed).to eq(false)
+    end
+  end
+
+  context "when api key revocation fails" do
+    it "destroys authorization" do
+      stub_request(:post, "#{supplier.url}/user-api-key/revoke").to_return(status: 400, body: "{ \"failed\": \"FAILED\" }")
+
+      expect(supplier.destroy_authorization).to eq(1)
+      expect(supplier.api_key).to eq(nil)
+      expect(supplier.user_id).to eq(nil)
+      expect(supplier.authorized_at).to eq(nil)
+      expect(subscription.subscribed).to eq(false)
+    end
   end
 end

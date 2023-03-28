@@ -10,13 +10,9 @@ class SubscriptionClientSupplier < ActiveRecord::Base
   scope :authorized, -> { where("api_key IS NOT NULL") }
 
   def destroy_authorization
-    if SubscriptionClient::Authorization.revoke(self)
-      update(api_key: nil, user_id: nil, authorized_at: nil)
-      deactivate_all_subscriptions!
-      true
-    else
-      false
-    end
+    SubscriptionClient::Authorization.revoke(self)
+    update(api_key: nil, user_id: nil, authorized_at: nil)
+    deactivate_all_subscriptions!
   end
 
   def authorized?
