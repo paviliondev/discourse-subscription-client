@@ -85,13 +85,12 @@ class SubscriptionClient::Resources
     Dir["#{SubscriptionClient.root}/plugins/*/plugin.rb"].sort.each do |path|
       source = File.read(path)
       metadata = Plugin::Metadata.parse(source)
+      next unless metadata.subscription_url.present?
 
-      if metadata.subscription_url.present?
-        @resources << {
-          name: metadata.name,
-          supplier_url: metadata.subscription_url
-        }
-      end
+      @resources << {
+        name: metadata.name,
+        supplier_url: ENV["TEST_SUBSCRIPTION_URL"] || metadata.subscription_url
+      }
     end
   end
 end

@@ -24,5 +24,23 @@ module ::SubscriptionClient
     else
       true
     end
+
+    def find_subscriptions(resource_name = nil)
+      return nil unless resource_name
+
+      subscriptions = SubscriptionClientSubscription.active
+        .includes(resource: [:supplier])
+        .references(resource: [:supplier])
+        .where("subscription_client_resources.name = ? ", resource_name)
+
+      result = SubscriptionClient::Subscriptions::Result.new
+      return result unless subscriptions.exists?
+
+      result.resource = subscriptions.first.resource
+      result.supplier = subscriptions.first.resource.supplier
+      result.subscriptions = subscriptions.to_a
+
+      result
+    end
   end
 end

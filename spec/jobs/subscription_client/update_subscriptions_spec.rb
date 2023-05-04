@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe Jobs::SubscriptionClientUpdateSubscriptions do
-  let(:result) { SubscriptionClient::Subscriptions::Result.new }
+  let(:result) { SubscriptionClient::Subscriptions::UpdateResult.new }
 
   context "when the update succeeds" do
     before do
