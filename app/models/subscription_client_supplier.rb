@@ -19,6 +19,14 @@ class SubscriptionClientSupplier < ActiveRecord::Base
     api_key.present?
   end
 
+  def product_slugs(resource)
+    return {} unless products.present? && products[resource]
+
+    products[resource].each_with_object({}) do |product, result|
+      result[product["product_id"]] = product["product_slug"]
+    end
+  end
+
   def deactivate_all_subscriptions!
     subscriptions.update_all(subscribed: false)
   end
@@ -42,6 +50,7 @@ end
 #  authorized_at :datetime
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
+#  products      :json
 #
 # Indexes
 #
