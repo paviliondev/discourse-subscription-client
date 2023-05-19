@@ -41,21 +41,13 @@ class SubscriptionClient::Resources
     supplier_urls = @resources.map { |resource| resource[:supplier_url] }.uniq.compact
 
     supplier_urls.each do |url|
-      supplier = SubscriptionClientSupplier.find_by(url: url)
+      supplier = SubscriptionClientSupplier.find_or_create_by(url: url)
+      request = SubscriptionClient::Request.new(:supplier, supplier.id)
+      data = request.perform("#{url}/subscription-server")
 
-      if supplier && supplier.name
+      if valid_supplier_data?(data)
+        supplier.update(name: data[:supplier], products: data[:products])
         @suppliers << supplier
-      else
-        supplier = supplier || SubscriptionClientSupplier.create!(url: url)
-        request = SubscriptionClient::Request.new(:supplier, supplier.id)
-        data = request.perform("#{url}/subscription-server")
-
-        if data
-          supplier.update(name: data[:supplier])
-          @suppliers << supplier
-        else
-          supplier.destroy!
-        end
       end
     end
   end
@@ -85,13 +77,28 @@ class SubscriptionClient::Resources
     Dir["#{SubscriptionClient.root}/plugins/*/plugin.rb"].sort.each do |path|
       source = File.read(path)
       metadata = Plugin::Metadata.parse(source)
+      next unless metadata.subscription_url.present?
 
-      if metadata.subscription_url.present?
-        @resources << {
-          name: metadata.name,
-          supplier_url: metadata.subscription_url
-        }
-      end
+      @resources << {
+        name: metadata.name,
+        supplier_url: ENV["TEST_SUBSCRIPTION_URL"] || metadata.subscription_url
+      }
+    end
+  end
+
+  def valid_supplier_data?(data)
+    return false unless data.present? && data.is_a?(Hash)
+    return false unless %i[supplier products].all? { |key| data.key?(key) }
+    return false unless data[:supplier].is_a?(String)
+    return false unless data[:products].is_a?(Hash)
+
+    data[:products].all? do |resource, products|
+      products.is_a?(Array) &&
+        products.all? do |product|
+          %i[product_id product_slug].all? do |key|
+            product.key?(key) && product[key].is_a?(String)
+          end
+        end
     end
   end
 end

@@ -23,6 +23,7 @@ after_initialize do
     ../lib/subscription_client/notices.rb
     ../lib/subscription_client/subscriptions.rb
     ../lib/subscription_client/subscriptions/result.rb
+    ../lib/subscription_client/subscriptions/update_result.rb
     ../app/models/subscription_client_notice.rb
     ../app/models/subscription_client_resource.rb
     ../app/models/subscription_client_subscription.rb

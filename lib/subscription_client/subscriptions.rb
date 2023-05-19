@@ -12,7 +12,7 @@ class SubscriptionClient::Subscriptions
   def update
     return if !SiteSetting.subscription_client_enabled
 
-    @result = SubscriptionClient::Subscriptions::Result.new
+    @result = SubscriptionClient::Subscriptions::UpdateResult.new
 
     if @suppliers.blank?
       @result.no_suppliers
