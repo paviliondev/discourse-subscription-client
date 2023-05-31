@@ -15,10 +15,7 @@ export default Controller.extend({
   messageClass: "info",
 
   @on("init")
-  @observes(
-    "authorizedSupplierCount",
-    "currentUser.can_manage_suppliers"
-  )
+  @observes("authorizedSupplierCount", "currentUser.can_manage_suppliers")
   changeMessageKey() {
     if (this.resourceCount === 0) {
       this.set("messageKey", "no_resources");
