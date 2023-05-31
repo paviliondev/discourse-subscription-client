@@ -14,7 +14,7 @@ module ::SubscriptionClient
     end
 
     def plugin_status_server_url
-      "https://discourse.pluginmanager.org"
+      "https://coop.pavilion.tech"
     end
 
     def database_exists?
