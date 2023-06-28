@@ -6,6 +6,7 @@ describe SubscriptionClient::SuppliersController do
   fab!(:moderator) { Fabricate(:user, moderator: true) }
   fab!(:supplier) { Fabricate(:subscription_client_supplier) }
   fab!(:resource) { Fabricate(:subscription_client_resource, supplier: supplier) }
+  let!(:products) { { "subscription-plugin": [{ product_id: "prod_CBTNpi3fqWWkq0", product_slug: "business" }] } }
   let(:subscription_response) do
     {
       subscriptions: [
@@ -49,6 +50,28 @@ describe SubscriptionClient::SuppliersController do
       subscription = SubscriptionClientSubscription.find_by(resource_id: resource.id)
       expect(subscription.present?).to eq(true)
       expect(subscription.subscribed).to eq(true)
+    end
+
+    it "handles authorization callbacks and deals with legacy implementation" do
+      request_id = cookies[:user_api_request_id] = SubscriptionClient::Authorization.request_id(supplier.id)
+      payload = generate_auth_payload(admin.id, request_id)
+
+      resource.supplier.products = nil
+      resource.save!
+      supplier.products = nil
+      supplier.save!
+
+      stub_subscription_request(200, resource, subscription_response)
+      stub_server_request_with_headers("https://coop.pavilion.tech", supplier: supplier.dup, products: products)
+
+      get "/admin/plugins/subscription-client/suppliers/authorize/callback", params: { payload: payload }
+      expect(response).to redirect_to("/admin/plugins/subscription-client/subscriptions")
+
+      subscription = SubscriptionClientSubscription.find_by(resource_id: resource.id)
+
+      expect(subscription.present?).to eq(true)
+      expect(subscription.subscribed).to eq(true)
+      expect(supplier.products).not_to eq(nil)
     end
 
     it "destroys authorizations" do

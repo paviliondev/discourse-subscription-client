@@ -32,6 +32,8 @@ class SubscriptionClient::SuppliersController < SubscriptionClient::AdminControl
       authorized_at: DateTime.now.iso8601(3)
     )
 
+    SubscriptionClient::Resources.find_all
+
     SubscriptionClient::Subscriptions.update
 
     redirect_to '/admin/plugins/subscription-client/subscriptions'

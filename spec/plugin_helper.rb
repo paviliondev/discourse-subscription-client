@@ -25,10 +25,30 @@ end
 
 def stub_server_request(server_url, supplier: nil, products: [], status: 200)
   body = {}
+  supplier.products = products if products.present?
   body[:supplier] = supplier if supplier.present?
   body[:products] = products if products.present?
 
   stub_request(:get, "#{server_url}/subscription-server").to_return(
+    status: status,
+    body: body.to_json
+  )
+end
+
+def stub_server_request_with_headers(server_url, supplier: nil, products: [], status: 200)
+  body = {}
+  supplier.products = products if products.present?
+  body[:supplier] = supplier if supplier.present?
+  body[:products] = products if products.present?
+
+  stub_request(:get, "#{server_url}/subscription-server").
+  with(
+    headers: {
+      'Host'=>'coop.pavilion.tech',
+      'Origin'=>'http://test.localhost'
+    }
+  ).
+  to_return(
     status: status,
     body: body.to_json
   )

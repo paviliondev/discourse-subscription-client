@@ -39,12 +39,10 @@ class SubscriptionClient::Resources
 
   def find_suppliers
     supplier_urls = @resources.map { |resource| resource[:supplier_url] }.uniq.compact
-
     supplier_urls.each do |url|
       supplier = SubscriptionClientSupplier.find_or_create_by(url: url)
       request = SubscriptionClient::Request.new(:supplier, supplier.id)
       data = request.perform("#{url}/subscription-server")
-
       if valid_supplier_data?(data)
         supplier.update(name: data[:supplier], products: data[:products])
         @suppliers << supplier
