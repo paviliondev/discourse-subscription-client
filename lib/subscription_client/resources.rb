@@ -97,10 +97,9 @@ class SubscriptionClient::Resources
   def valid_supplier_data?(data)
     return false unless data.present? && data.is_a?(Hash)
     return false unless %i[supplier products].all? { |key| data.key?(key) }
-   # byebug
     return false unless data[:supplier].is_a?(String)
     return false unless data[:products].is_a?(Hash)
-  #  byebug
+
     data[:products].all? do |resource, products|
       products.is_a?(Array) &&
         products.all? do |product|
