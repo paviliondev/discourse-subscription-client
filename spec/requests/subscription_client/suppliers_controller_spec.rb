@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 require_relative '../../plugin_helper'
+require_relative '../../spec_helper'
 
 describe SubscriptionClient::SuppliersController do
   fab!(:admin) { Fabricate(:user, admin: true) }
@@ -20,10 +21,13 @@ describe SubscriptionClient::SuppliersController do
       ]
     }
   end
+  let(:sub_client_resources) { instance_double(SubscriptionClient::Resources) }
 
   context "with admin" do
     before do
       sign_in(admin)
+      allow(SubscriptionClient::Resources).to receive(:new).and_return(sub_client_resources)
+      allow(sub_client_resources).to receive(:find_plugins).and_return([{name: supplier.name, url: supplier.url}])
     end
 
     it "lists suppliers" do
@@ -62,7 +66,6 @@ describe SubscriptionClient::SuppliersController do
       supplier.save!
 
       stub_subscription_request(200, resource, subscription_response)
-      stub_server_request_with_headers("https://coop.pavilion.tech", supplier: supplier.dup, products: products)
 
       get "/admin/plugins/subscription-client/suppliers/authorize/callback", params: { payload: payload }
       expect(response).to redirect_to("/admin/plugins/subscription-client/subscriptions")
@@ -89,6 +92,8 @@ describe SubscriptionClient::SuppliersController do
     before do
       SiteSetting.subscription_client_allow_moderator_subscription_management = true
       sign_in(moderator)
+      allow(SubscriptionClient::Resources).to receive(:new).and_return(sub_client_resources)
+      allow(sub_client_resources).to receive(:find_plugins).and_return([{name: supplier.name, url: supplier.url}])
     end
 
     it "doesnt allow access" do

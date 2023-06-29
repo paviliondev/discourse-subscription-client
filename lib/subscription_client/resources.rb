@@ -34,7 +34,13 @@ class SubscriptionClient::Resources
   end
 
   def find_resources
-    find_plugins
+    resources = find_plugins
+    resources.each do |r|
+      @resources << {
+        name: r.name,
+        supplier_url: r.supplier_url
+      }
+    end
   end
 
   def find_suppliers
@@ -74,24 +80,27 @@ class SubscriptionClient::Resources
   end
 
   def find_plugins
+    plugins = []
     Dir["#{SubscriptionClient.root}/plugins/*/plugin.rb"].sort.each do |path|
       source = File.read(path)
       metadata = Plugin::Metadata.parse(source)
       next unless metadata.subscription_url.present?
 
-      @resources << {
+      plugins << {
         name: metadata.name,
         supplier_url: ENV["TEST_SUBSCRIPTION_URL"] || metadata.subscription_url
       }
     end
+    plugins
   end
 
   def valid_supplier_data?(data)
     return false unless data.present? && data.is_a?(Hash)
     return false unless %i[supplier products].all? { |key| data.key?(key) }
+   # byebug
     return false unless data[:supplier].is_a?(String)
     return false unless data[:products].is_a?(Hash)
-
+  #  byebug
     data[:products].all? do |resource, products|
       products.is_a?(Array) &&
         products.all? do |product|

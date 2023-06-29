@@ -1,4 +1,6 @@
 # frozen_string_literal: true
+require_relative 'spec_helper'
+
 def authenticate_subscription
   SubscriptionClient::Authentication.any_instance.stubs(:active).returns(true)
 end
@@ -25,8 +27,10 @@ end
 
 def stub_server_request(server_url, supplier: nil, products: [], status: 200)
   body = {}
+  pp server_url
+ # byebug
   supplier.products = products if products.present?
-  body[:supplier] = supplier if supplier.present?
+  body[:supplier] = supplier.name if supplier.present?
   body[:products] = products if products.present?
 
   stub_request(:get, "#{server_url}/subscription-server").to_return(
@@ -35,24 +39,24 @@ def stub_server_request(server_url, supplier: nil, products: [], status: 200)
   )
 end
 
-def stub_server_request_with_headers(server_url, supplier: nil, products: [], status: 200)
-  body = {}
-  supplier.products = products if products.present?
-  body[:supplier] = supplier if supplier.present?
-  body[:products] = products if products.present?
+# def stub_server_request(server_url, supplier: nil, products: [], status: 200)
+#   body = {}
+#   supplier.products = products if products.present?
+#   body[:supplier] = supplier if supplier.present?
+#   body[:products] = products if products.present?
 
-  stub_request(:get, "#{server_url}/subscription-server").
-  with(
-    headers: {
-      'Host'=>'coop.pavilion.tech',
-      'Origin'=>'http://test.localhost'
-    }
-  ).
-  to_return(
-    status: status,
-    body: body.to_json
-  )
-end
+#   stub_request(:get, "https://coop.pavilion.tech/subscription-server").
+#   with(
+#     headers: {
+#       'Host'=>'coop.pavilion.tech',
+#       'Origin'=>'http://test.localhost'
+#     }
+#   ).
+#   to_return(
+#     status: status,
+#     body: body.to_json
+#   )
+# end
 
 def stub_subscription_messages_request(supplier, status, messages)
   stub_request(:get, "#{supplier.url}/subscription-server/messages").to_return(status: status, body: { messages: messages }.to_json)
