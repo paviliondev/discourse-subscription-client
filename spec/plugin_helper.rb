@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 def authenticate_subscription
   SubscriptionClient::Authentication.any_instance.stubs(:active).returns(true)
 end
@@ -33,11 +32,6 @@ def stub_server_request(server_url, supplier: nil, products: [], status: 200)
   body[:products] = products if products.present?
 
   stub_request(:get, "#{server_url}/subscription-server").
-  with(
-    headers: {
-      'Host'=>'supplier',
-      'Origin'=>'http://test.localhost'
-    }).
   to_return(
     status: status,
     body: body.to_json
