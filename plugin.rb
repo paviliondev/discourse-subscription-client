@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 # name: discourse-subscription-client
-# about: Subscription client
+# about: Subscription Client for Plugin Subscriptions
 # version: 0.2.3
 # authors: Robert Barrow, Angus McLeod
 # url: https://github.com/paviliondev/discourse-subscription-client.git
