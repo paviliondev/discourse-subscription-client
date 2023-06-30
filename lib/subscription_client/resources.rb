@@ -37,8 +37,8 @@ class SubscriptionClient::Resources
     resources = find_plugins
     resources.each do |r|
       @resources << {
-        name: r.name,
-        supplier_url: r.supplier_url
+        name: r[:name],
+        supplier_url: r[:url]
       }
     end
   end
@@ -50,9 +50,13 @@ class SubscriptionClient::Resources
       supplier = SubscriptionClientSupplier.find_or_create_by(url: url)
       request = SubscriptionClient::Request.new(:supplier, supplier.id)
       data = request.perform("#{url}/subscription-server")
-
+    #  pp '--------'
+    #  pp data
+    #  pp '--------'
       if valid_supplier_data?(data)
         supplier.update(name: data[:supplier], products: data[:products])
+        supplier.save!
+        pp supplier
         @suppliers << supplier
       end
     end
