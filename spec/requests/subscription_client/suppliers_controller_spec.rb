@@ -27,7 +27,7 @@ describe SubscriptionClient::SuppliersController do
     end
 
     before(:each) do
-      SubscriptionClient::Resources.any_instance.stubs(:find_plugins).returns([{ name: supplier.name, url: supplier.url }])
+      SubscriptionClient::Resources.any_instance.stubs(:find_plugins).returns([{ name: resource.name, url: supplier.url }])
       stub_server_request(supplier.url, supplier: supplier, products: products, status: 200)
     end
 
@@ -100,7 +100,7 @@ describe SubscriptionClient::SuppliersController do
     end
 
     before(:each) do
-      SubscriptionClient::Resources.any_instance.stubs(:find_plugins).returns([{ name: supplier.name, url: supplier.url }])
+      SubscriptionClient::Resources.any_instance.stubs(:find_plugins).returns([{ name: resource.name, url: supplier.url }])
       stub_server_request(supplier.url, supplier: supplier, products: products, status: 200)
     end
 

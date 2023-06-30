@@ -3,11 +3,12 @@
 require_relative '../../plugin_helper'
 
 describe SubscriptionClient::Resources, type: :multisite do
-  let!(:supplier) { "Pavilion" }
+  let!(:supplier) { { name: "Pavilion" } }
   let!(:products) { { "subscription-plugin": [{ product_id: "prod_CBTNpi3fqWWkq0", product_slug: "business" }] } }
 
   before do
     SubscriptionClient.stubs(:root).returns("#{Rails.root}/plugins/discourse-subscription-client/spec/fixtures")
+    SubscriptionClient::Resources.any_instance.stubs(:find_plugins).returns([{ name: "subscription-plugin", url: "https://coop.pavilion.tech" }])
   end
 
   it "finds all resources in all multisite instances" do
