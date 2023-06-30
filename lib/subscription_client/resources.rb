@@ -50,6 +50,7 @@ class SubscriptionClient::Resources
       supplier = SubscriptionClientSupplier.find_or_create_by(url: url)
       request = SubscriptionClient::Request.new(:supplier, supplier.id)
       data = request.perform("#{url}/subscription-server")
+
       if valid_supplier_data?(data)
         supplier.update(name: data[:supplier], products: data[:products])
         @suppliers << supplier
