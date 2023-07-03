@@ -27,7 +27,7 @@ describe SubscriptionClient::SuppliersController do
     end
 
     before(:each) do
-      SubscriptionClient::Resources.any_instance.stubs(:find_plugins).returns([{ name: resource.name, url: supplier.url }])
+      SubscriptionClient::Resources.any_instance.stubs(:find_plugins).returns([{ name: resource.name, supplier_url: supplier.url }])
       stub_server_request(supplier.url, supplier: supplier, products: products, status: 200)
     end
 
@@ -71,7 +71,6 @@ describe SubscriptionClient::SuppliersController do
 
       original_supplier = SubscriptionClientSupplier.first
       expect(original_supplier.products).to eq(nil)
-
       get "/admin/plugins/subscription-client/suppliers/authorize/callback", params: { payload: payload }
       expect(response).to redirect_to("/admin/plugins/subscription-client/subscriptions")
       subscription = SubscriptionClientSubscription.find_by(resource_id: resource.id)
@@ -100,7 +99,7 @@ describe SubscriptionClient::SuppliersController do
     end
 
     before(:each) do
-      SubscriptionClient::Resources.any_instance.stubs(:find_plugins).returns([{ name: resource.name, url: supplier.url }])
+      SubscriptionClient::Resources.any_instance.stubs(:find_plugins).returns([{ name: resource.name, supplier_url: supplier.url }])
       stub_server_request(supplier.url, supplier: supplier, products: products, status: 200)
     end
 

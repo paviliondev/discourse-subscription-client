@@ -38,14 +38,13 @@ class SubscriptionClient::Resources
     resources.each do |r|
       @resources << {
         name: r[:name],
-        supplier_url: r[:url]
+        supplier_url: r[:supplier_url]
       }
     end
   end
 
   def find_suppliers
     supplier_urls = @resources.map { |resource| resource[:supplier_url] }.uniq.compact
-
     supplier_urls.each do |url|
       supplier = SubscriptionClientSupplier.find_or_create_by(url: url)
       request = SubscriptionClient::Request.new(:supplier, supplier.id)

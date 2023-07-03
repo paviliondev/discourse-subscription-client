@@ -8,7 +8,7 @@ describe SubscriptionClient::Resources, type: :multisite do
 
   before do
     SubscriptionClient.stubs(:root).returns("#{Rails.root}/plugins/discourse-subscription-client/spec/fixtures")
-    SubscriptionClient::Resources.any_instance.stubs(:find_plugins).returns([{ name: "subscription-plugin", url: "https://coop.pavilion.tech" }])
+    SubscriptionClient::Resources.any_instance.stubs(:find_plugins).returns([{ name: "subscription-plugin", supplier_url: "https://coop.pavilion.tech" }])
   end
 
   it "finds all resources in all multisite instances" do
