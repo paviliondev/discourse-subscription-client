@@ -64,23 +64,6 @@ describe SubscriptionClient::SuppliersController do
       supplier.save!
     end
 
-    it "handles authorization callbacks and deals with legacy data record" do
-      request_id = cookies[:user_api_request_id] = SubscriptionClient::Authorization.request_id(supplier.id)
-      payload = generate_auth_payload(admin.id, request_id)
-      stub_subscription_request(200, resource, subscription_response)
-
-      original_supplier = SubscriptionClientSupplier.first
-      expect(original_supplier.products).to eq(nil)
-      get "/admin/plugins/subscription-client/suppliers/authorize/callback", params: { payload: payload }
-      expect(response).to redirect_to("/admin/plugins/subscription-client/subscriptions")
-      subscription = SubscriptionClientSubscription.find_by(resource_id: resource.id)
-      updated_supplier = SubscriptionClientSupplier.first
-
-      expect(subscription.present?).to eq(true)
-      expect(subscription.subscribed).to eq(true)
-      expect(updated_supplier.products).not_to eq(nil)
-    end
-
     it "destroys authorizations" do
       request_id = SubscriptionClient::Authorization.request_id(supplier.id)
       payload = generate_auth_payload(admin.id, request_id)

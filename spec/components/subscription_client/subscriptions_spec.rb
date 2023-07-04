@@ -7,6 +7,7 @@ describe SubscriptionClient::Subscriptions do
   fab!(:supplier) { Fabricate(:subscription_client_supplier, api_key: Fabricate(:subscription_client_user_api_key)) }
   fab!(:resource) { Fabricate(:subscription_client_resource, supplier: supplier) }
   fab!(:old_subscription) { Fabricate(:subscription_client_subscription, resource: resource) }
+  let!(:products) { { "subscription-plugin": [{ product_id: "prod_CBTNpi3fqWWkq0", product_slug: "business" }] } }
   let(:response_body) do
     {
       subscriptions: [
@@ -19,6 +20,11 @@ describe SubscriptionClient::Subscriptions do
         }
       ]
     }
+  end
+
+  before(:each) do
+    stub_server_request(supplier.url, supplier: supplier, products: products, status: 200)
+    SubscriptionClient::Resources.any_instance.stubs(:find_plugins).returns([{ name: resource.name, supplier_url: supplier.url }])
   end
 
   it "updates subscriptions" do
