@@ -57,13 +57,6 @@ describe SubscriptionClient::SuppliersController do
       expect(subscription.subscribed).to eq(true)
     end
 
-    before do
-      resource.supplier.products = nil
-      resource.save!
-      supplier.products = nil
-      supplier.save!
-    end
-
     it "destroys authorizations" do
       request_id = SubscriptionClient::Authorization.request_id(supplier.id)
       payload = generate_auth_payload(admin.id, request_id)
