@@ -12,6 +12,8 @@ class SubscriptionClient::Subscriptions
   def update
     return if !SiteSetting.subscription_client_enabled
 
+    SubscriptionClient::Resources.find_all
+
     @result = SubscriptionClient::Subscriptions::UpdateResult.new
 
     if @suppliers.blank?

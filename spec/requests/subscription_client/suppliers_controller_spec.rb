@@ -6,6 +6,7 @@ describe SubscriptionClient::SuppliersController do
   fab!(:moderator) { Fabricate(:user, moderator: true) }
   fab!(:supplier) { Fabricate(:subscription_client_supplier) }
   fab!(:resource) { Fabricate(:subscription_client_resource, supplier: supplier) }
+  let!(:products) { { "subscription-plugin": [{ product_id: "prod_CBTNpi3fqWWkq0", product_slug: "business" }] } }
   let(:subscription_response) do
     {
       subscriptions: [
@@ -23,6 +24,11 @@ describe SubscriptionClient::SuppliersController do
   context "with admin" do
     before do
       sign_in(admin)
+    end
+
+    before(:each) do
+      SubscriptionClient::Resources.any_instance.stubs(:find_plugins).returns([{ name: resource.name, supplier_url: supplier.url }])
+      stub_server_request(supplier.url, supplier: supplier, products: products, status: 200)
     end
 
     it "lists suppliers" do
@@ -66,6 +72,11 @@ describe SubscriptionClient::SuppliersController do
     before do
       SiteSetting.subscription_client_allow_moderator_subscription_management = true
       sign_in(moderator)
+    end
+
+    before(:each) do
+      SubscriptionClient::Resources.any_instance.stubs(:find_plugins).returns([{ name: resource.name, supplier_url: supplier.url }])
+      stub_server_request(supplier.url, supplier: supplier, products: products, status: 200)
     end
 
     it "doesnt allow access" do

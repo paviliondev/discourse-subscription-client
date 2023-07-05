@@ -20,15 +20,17 @@ end
 
 def stub_subscription_request(status, resource, body)
   url = resource.supplier.url
-  stub_request(:get, "#{url}/subscription-server/user-subscriptions?resources[]=#{resource.name}").to_return(status: status, body: body.to_json)
+  supplier_name = resource.supplier.name
+  stub_request(:get, "#{url}/subscription-server/user-subscriptions?resources%5B%5D=#{resource.name}").to_return(status: status, body: body.to_json)
 end
 
 def stub_server_request(server_url, supplier: nil, products: [], status: 200)
   body = {}
-  body[:supplier] = supplier if supplier.present?
+  body[:supplier] = supplier[:name] if supplier.present?
   body[:products] = products if products.present?
 
-  stub_request(:get, "#{server_url}/subscription-server").to_return(
+  stub_request(:get, "#{server_url}/subscription-server").
+    to_return(
     status: status,
     body: body.to_json
   )
