@@ -3,6 +3,16 @@
 @import "components/notice";
 @import "components/supplier";
 
+.admin-client-sub-deprecation-notice {
+  font-weight: bold;
+  text-align: center;
+  border: solid;
+  padding: 5px;
+  border-radius: 3px;
+  border-color: red;
+  margin: 7px;
+}
+
 .admin-subscription-client-controls {
   display: flex;
   justify-content: space-between;
