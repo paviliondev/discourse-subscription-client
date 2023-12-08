@@ -3,6 +3,27 @@
 @import "components/notice";
 @import "components/supplier";
 
+.admin-client-sub-deprecation-notice {
+  padding: 1em;
+  border-radius: 3px;
+  background-color: #3c1c8d2e;
+  margin-bottom: 1em;
+  display: inline-block;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15);
+  font-size: 1.01em;
+
+  h3 {
+    font-weight: unset;
+  }
+  p {
+    margin: 0;
+  }
+  a {
+    color: var(--primary);
+    text-decoration: underline;
+  }
+}
+
 .admin-subscription-client-controls {
   display: flex;
   justify-content: space-between;
