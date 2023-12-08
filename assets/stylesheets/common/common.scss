@@ -4,13 +4,24 @@
 @import "components/supplier";
 
 .admin-client-sub-deprecation-notice {
-  font-weight: bold;
-  text-align: center;
-  border: solid;
-  padding: 5px;
+  padding: 1em;
   border-radius: 3px;
-  border-color: red;
-  margin: 7px;
+  background-color: #3c1c8d2e;
+  margin-bottom: 1em;
+  display: inline-block;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15);
+  font-size: 1.01em;
+
+  h3 {
+    font-weight: unset;
+  }
+  p {
+    margin: 0;
+  }
+  a {
+    color: var(--primary);
+    text-decoration: underline;
+  }
 }
 
 .admin-subscription-client-controls {
